@@ -8,8 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AjukraanidApplication {
 
 	public static void main(String[] args) {
-        TestingLombok lomb = new TestingLombok("ab",  5);
-
 		SpringApplication.run(AjukraanidApplication.class, args);
 	}
 }

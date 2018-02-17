@@ -27,10 +27,13 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter')
+
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter')
     //compile 'org.slf4j:slf4j-api:1.7.25' // for logging activity
     compileOnly 'org.projectlombok:lombok' // TODO 1.16.18?
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+
 
     // JUnit Jupiter API and TestEngine implementation
     //testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
