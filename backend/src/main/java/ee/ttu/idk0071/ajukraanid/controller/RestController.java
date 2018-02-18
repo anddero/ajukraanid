@@ -12,20 +12,18 @@ import java.util.concurrent.atomic.AtomicLong;
 public class RestController {
 
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-
 
     @ResponseBody
     @RequestMapping("/index")
-    public String getData(@RequestHeader(value = "Client") String httpHeaderValue) {
+    public String getHTTPHead(@RequestHeader(value = "Content-Type") String httpHeader) {
 
-        System.out.println("Recieved following json: " + httpHeaderValue);
-        // jajaja varsti teen gsoniga selle, prg lis testimiiseks
-        String gamecode = httpHeaderValue.substring(httpHeaderValue.length() - 6, httpHeaderValue.length() - 2);
+        return "Request header: " + httpHeader;
+    }
 
-        // should return json type data.
-        return "Starting a new game with game code: " + gamecode;
+    @RequestMapping(method= RequestMethod.POST,  value = "index")
+    public String getHTTPBody(@RequestBody String request)  {
+
+        return "Request body: " + request;
     }
 
 }
