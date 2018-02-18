@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-public class DataBase {
+public class Database {
 
     @Getter @Setter ArrayList<Game> games;
 
