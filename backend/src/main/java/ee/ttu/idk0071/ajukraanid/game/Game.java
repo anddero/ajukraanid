@@ -16,4 +16,9 @@ public class Game {
     @Setter @Getter ArrayList<Player> players;
     @Setter @Getter ArrayList<Question> questions;
 
+
+    public void addPlayerToGame(Player player) {
+        players.add(player);
+    }
+
 }
