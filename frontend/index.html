@@ -47,10 +47,10 @@
                 <div class="log">
                     <table style="margin:auto; text-align:center">
                         <tr>
-                            <td><input class="grow" type="image" src="playgame.png" v-on:click="pageWithRandom()"/></td>
+                            <td><input class="grow" type="image" src="playgame.png" v-on:click="switchTab(1)"/></td>
                         </tr>
                         <tr>
-                            <td><input class="grow" type="image" src="make.png" v-on:click="switchTab(2)"/></td>
+                            <td><input class="grow" type="image" src="make.png" v-on:click="pageWithRandom()"/></td>
                         </tr>
                         <tr>
                             <td><input class="grow" type="image" src="settings.png" v-on:click="switchTab(3)"/></td>
@@ -66,11 +66,6 @@
                                    
                 <div class="log">
                     <table style="margin:auto; text-align:center">
-                        <tr>
-                            <td>
-                                    {{theRandomNumber}} 
-                            </td>
-                        </tr>
                         <tr>
                             <td>
                                 <input type="text" placeholder="YOUR NAME"></input>
@@ -92,18 +87,36 @@
             </div>
                
             <div v-if="tabNr==2">
-                <div class="logo">
-                    <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
-                </div>
-                           
-                <div class="log">
-                    <table style="margin:auto; text-align:center">
-                        <tr>
-                            <td><input class="grow" type="image" src="make.png" v-on:click="switchTab(2)"/></td>
-                        </tr>
-                    </table>   
-                </div>
-            </div>            
+                    <div class="logo">
+                        <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
+                    </div>
+                                       
+                    <div class="log">
+                        <table style="margin:auto; text-align:center">
+                            <tr>
+                                <td>
+                                        {{theRandomNumber}} 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="YOUR NAME"></input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div style="padding-top: 10px"></div></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="number" placeholder="GAME CODE"></input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input class="grow" type="image" src="play.png" v-on:click=""/></td>
+                            </tr>
+                        </table>   
+                    </div>
+                </div>        
    
             <div v-if="tabNr==3">
                 <div class="logo">
@@ -138,7 +151,7 @@ var vm = new Vue({
             }
             i = 0;
             this.theRandomNumber = code;
-            this.tabNr = 1;
+            this.tabNr = 2;
             console.log(this.theRandomNumber);
         }
     }
