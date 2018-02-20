@@ -38,81 +38,111 @@
 </head>
 <body>
         <div id="game" class="bg">
-                <div v-if="tabNr==0">
-                        <div class="logo">
-                            <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
-                        </div>
+              
+            <div v-if="tabNr==0">
+                <div class="logo">
+                    <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
+                </div>
                                
-                        <div class="log">
-                            <table style="margin:auto; text-align:center">
-                                <tr>
-                                    <td><input class="grow" type="image" src="play.png" v-on:click="switchTab(1)"/></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="grow" type="image" src="make.png" v-on:click="switchTab(2)"/></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="grow" type="image" src="settings.png" v-on:click="switchTab(3)"/></td>
-                                </tr>
-                            </table>   
-                        </div>
-                    </div>
-            
-                    <div v-if="tabNr==1">
-                            <div class="logo">
-                                    <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
-                            </div>
+                <div class="log">
+                    <table style="margin:auto; text-align:center">
+                        <tr>
+                            <td><input class="grow" type="image" src="playgame.png" v-on:click="pageWithRandom()"/></td>
+                        </tr>
+                        <tr>
+                            <td><input class="grow" type="image" src="make.png" v-on:click="switchTab(2)"/></td>
+                        </tr>
+                        <tr>
+                            <td><input class="grow" type="image" src="settings.png" v-on:click="switchTab(3)"/></td>
+                        </tr>
+                    </table>   
+                </div>
+            </div>
+             
+            <div v-if="tabNr==1">
+                <div class="logo">
+                    <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
+                </div>
                                    
-                            <div class="log">
-                                <table style="margin:auto; text-align:center">
-                                    <tr>
-                                        <td><input class="grow" type="image" src="play.png" v-on:click="switchTab(1)"/></td>
-                                    </tr>
-                                </table>   
-                            </div>
-                        </div>
-            
-                        <div v-if="tabNr==2">
-                                <div class="logo">
-                                        <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
-                                </div>
-                                       
-                                <div class="log">
-                                    <table style="margin:auto; text-align:center">
-                                        <tr>
-                                            <td><input class="grow" type="image" src="make.png" v-on:click="switchTab(2)"/></td>
-                                        </tr>
-                                    </table>   
-                                </div>
-                            </div>
-
-                            <div v-if="tabNr==3">
-                                    <div class="logo">
-                                            <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
-                                    </div>
+                <div class="log">
+                    <table style="margin:auto; text-align:center">
+                        <tr>
+                            <td>
+                                    {{theRandomNumber}} 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" placeholder="YOUR NAME"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div style="padding-top: 10px"></div></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="number" placeholder="GAME CODE"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input class="grow" type="image" src="play.png" v-on:click=""/></td>
+                        </tr>
+                    </table>   
+                </div>
+            </div>
+               
+            <div v-if="tabNr==2">
+                <div class="logo">
+                    <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
+                </div>
+                           
+                <div class="log">
+                    <table style="margin:auto; text-align:center">
+                        <tr>
+                            <td><input class="grow" type="image" src="make.png" v-on:click="switchTab(2)"/></td>
+                        </tr>
+                    </table>   
+                </div>
+            </div>            
+   
+            <div v-if="tabNr==3">
+                <div class="logo">
+                    <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
+                </div>
                                            
-                                    <div class="log">
-                                        <table style="margin:auto; text-align:center">
-                                            <tr>
-                                                <td><input class="grow" type="image" src="settings.png" v-on:click="switchTab(3)"/></td>
-                                            </tr>
-                                        </table>   
-                                    </div>
-                                </div>
+                <div class="log">
+                    <table style="margin:auto; text-align:center">
+                        <tr>
+                            <td><input class="grow" type="image" src="settings.png" v-on:click="switchTab(3)"/></td>
+                        </tr>
+                    </table>   
+                </div>
+            </div>
         </div>
 
-    <script>
+<script>
 var vm = new Vue({
-el: "#game",
-data: {
-    tabNr: 0,
-},
-methods: {
-    switchTab: function(a) { 
-        this.tabNr = a;
-}
-}
+    el: "#game",
+    data: {
+        tabNr: 0,
+        theRandomNumber: "",
+    },
+    methods: {
+        switchTab: function(a) { 
+            this.tabNr = a;
+        },
+        pageWithRandom: function() {
+            var code = "";
+            while (code.length != 4) {
+                code += Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+            }
+            i = 0;
+            this.theRandomNumber = code;
+            this.tabNr = 1;
+            console.log(this.theRandomNumber);
+        }
+    }
 });
-    </script>
+</script>
 </body>
 </html>
