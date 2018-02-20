@@ -147,7 +147,10 @@ var vm = new Vue({
         pageWithRandom: function() {
             var code = "";
             while (code.length != 4) {
-                code += Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+                var temp = Math.floor(Math.random() * 10) + 1;
+                if (temp < 10) {
+                    code += temp;
+                }
             }
             i = 0;
             this.theRandomNumber = code;
