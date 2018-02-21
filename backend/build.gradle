@@ -27,7 +27,7 @@ repositories {
 
 
 dependencies {
-	//compile 'org.json:json:20170516' // TODO Include this thing if you want to use regular JSON library.
+	compile 'org.json:json:20170516' // TODO Include this thing if you want to use regular JSON library.
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter')
     //compile 'org.slf4j:slf4j-api:1.7.25' // for logging activity
