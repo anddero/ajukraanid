@@ -6,11 +6,37 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
+    @Getter List<Game> games;
 
-    @Getter @Setter ArrayList<Game> games;
+    /**
+     * Construct an empty virtual in-memory database. None of the state updates will be synchronized with any
+     * physical permanent database. All data will be lost if this object is terminated.
+     */
+    public Database() {
+        games = new ArrayList<>();
+    }
 
-
-
+    /**
+     * Connect to a remote or local active MySQL database server. All entries of all tables from the given schema are
+     * immediately loaded into memory. If the database contains huge information, this constructor might take a while.
+     * Example for local machine:
+     *  host = "localhost"
+     *  port = "12345"
+     *  databaseName = "MyDB57"
+     *  username = "dbAdmin"
+     *  password = "mySecureDatabasePassword72"
+     *  schema = "ajukraanid"
+     * @param host The URL or IP address of the remote (or local) machine hosting the database server.
+     * @param port The port to which the database accepts connections.
+     * @param databaseName
+     * @param username
+     * @param password
+     * @param schema
+     */
+    public Database(String host, int port, String databaseName, String username, String password, String schema) {
+        this();
+    }
 }
