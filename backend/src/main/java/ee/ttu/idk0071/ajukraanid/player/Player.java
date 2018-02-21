@@ -12,4 +12,9 @@ public class Player {
     @Setter @Getter int questionNumber = 0;
     @Setter @Getter String name;
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

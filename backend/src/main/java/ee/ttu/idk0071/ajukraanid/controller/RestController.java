@@ -20,19 +20,17 @@ public class RestController {
         JSONObject obj = new JSONObject(request);
         String action = obj.get("Action").toString();
         if (Objects.equals(action, "CreateGame")) {
-            System.out.println("Someone wanted to create a new Game");
             return gameController.createNewGame();
         } else if (Objects.equals(action, "JoinGame")) {
             return gameController.addPlayerToGame(obj.getInt("Code"), obj.get("Name").toString());
-        } else if (Objects.equals(action, "BeginGame")) {
+        } else if (Objects.equals(action, "StartGame")) {
             return gameController.startGame(obj.getInt("Code"));
         } else if (Objects.equals(action, "FetchState")) {
-            return gameController.fetchGameState(obj.getInt("Code"), "No such game found.");
-            // AJAJA SEE SUUR SITT SPLITITAKSE TULEVIKUS ÄRA JAJAJAJAJA
+            return gameController.fetchState(obj.getInt("Code"), "No such game found.");
         } else if (Objects.equals(action, "SubmitAnswer")) {
-            return gameController.fetchGameState(obj.getInt("Code"), "No such game found.");
+            return gameController.submitAnswer(obj.getInt("Code"), obj.get("Name").toString());
         } else if (Objects.equals(action, "GiveScore")) {
-            return gameController.fetchGameState(obj.getInt("Code"), "No such game found.");
+            return gameController.giveScore(obj.getInt("Code"), obj.get("Name").toString(), obj.get("Target").toString());
         }
         return "400 Bad Request";
     }

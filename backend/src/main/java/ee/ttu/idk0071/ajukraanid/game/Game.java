@@ -14,7 +14,7 @@ public class Game {
 
     @Setter
     @Getter
-    int GameCode;
+    int gameCode;
 
     @Setter
     @Getter
@@ -28,12 +28,15 @@ public class Game {
     @Setter
     String gameState = "Lobby";
 
+    public Game(int gameCode) {
+        this.gameCode = gameCode;
+
+    }
+
     public String getData() {
         if (Objects.equals(gameState, "Lobby")) {
             return players.toString();
         } else return "{“Number”:”2”,“Question”:“Que pikk question?”}";
-
-
     }
 
     public boolean doesSuchPlayerExist(String playerName) {
