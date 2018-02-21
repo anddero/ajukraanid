@@ -47,10 +47,10 @@
                 <div class="log">
                     <table style="margin:auto; text-align:center">
                         <tr>
-                            <td><input class="grow" type="image" src="playgame.png" v-on:click="switchTab(1)"/></td>
+                            <td><input class="grow" type="image" src="playgame.png" v-on:click="playTheGame()"/></td>
                         </tr>
                         <tr>
-                            <td><input class="grow" type="image" src="make.png" v-on:click="pageWithRandom()"/></td>
+                            <td><input class="grow" type="image" src="make.png" v-on:click="makeTheGame()"/></td>
                         </tr>
                         <tr>
                             <td><input class="grow" type="image" src="settings.png" v-on:click="switchTab(3)"/></td>
@@ -64,25 +64,11 @@
                     <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
                 </div>
                                    
-                <div class="log">
-                    <table style="margin:auto; text-align:center">
-                        <tr>
-                            <td>
-                                <input type="text" placeholder="YOUR NAME"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><div style="padding-top: 10px"></div></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="number" placeholder="GAME CODE"></input>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input class="grow" type="image" src="play.png" v-on:click=""/></td>
-                        </tr>
-                    </table>   
+                <div class="form-group" style="margin:auto; text-align:center">
+                        <input type="text" class="form-control" id="name" v-model="newName" placeholder="YOUR NAME" style="width: 200px; text-align:center; margin:auto"/><br>
+                        <input type="number" class="form-control" id="code" v-model="newCode" placeholder="GAME CODE" style="width: 200px; text-align:center; margin:auto"/><br>
+                        <input class="grow" type="image" src="play.png" value="Lisa" v-on:click="startGame()"/>
+                    
                 </div>
             </div>
                
@@ -91,30 +77,11 @@
                         <input type="image" src="logo.png"  v-on:mouseover="switchTab(0)"/>
                     </div>
                                        
-                    <div class="log">
-                        <table style="margin:auto; text-align:center">
-                            <tr>
-                                <td>
-                                        {{theRandomNumber}} 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" placeholder="YOUR NAME"></input>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><div style="padding-top: 10px"></div></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="number" placeholder="GAME CODE"></input>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input class="grow" type="image" src="play.png" v-on:click=""/></td>
-                            </tr>
-                        </table>   
+                    <div class="form-group" style="margin:auto; text-align:center">
+                            <input type="text" class="form-control" id="name" v-model="newName" placeholder="YOUR NAME" style="width: 200px; text-align:center; margin:auto"/><br>
+                            <input type="number" class="form-control" id="code" v-model="newCode" placeholder="GAME CODE" style="width: 200px; text-align:center; margin:auto"/><br>
+                            <input class="grow" type="image" src="play.png" value="Lisa" v-on:click="startGame()"/>
+                        
                     </div>
                 </div>        
    
@@ -139,23 +106,31 @@ var vm = new Vue({
     data: {
         tabNr: 0,
         theRandomNumber: "",
+        newCode: 0,
+        newName: ""
     },
     methods: {
+        startGame: function() {
+            var myObject = new Object();
+            myObject.Action = "NewGame";
+            myObject.Code = this.newCode;
+            myObject.Name = this.newName;
+            console.log(JSON.stringify(myObject));
+        },
+        playTheGame: function() {
+            this.tabNr = 1;
+            var myObject = new Object();
+            myObject.Action = "NewGame";
+            console.log(JSON.stringify(myObject));
+        },
         switchTab: function(a) { 
             this.tabNr = a;
         },
-        pageWithRandom: function() {
-            var code = "";
-            while (code.length != 4) {
-                var temp = Math.floor(Math.random() * 10) + 1;
-                if (temp < 10) {
-                    code += temp;
-                }
-            }
-            i = 0;
-            this.theRandomNumber = code;
+        makeTheGame: function() {
             this.tabNr = 2;
-            console.log(this.theRandomNumber);
+            var myObject = new Object();
+            myObject.Action = "NewGame";
+            console.log(JSON.stringify(myObject));
         }
     }
 });
