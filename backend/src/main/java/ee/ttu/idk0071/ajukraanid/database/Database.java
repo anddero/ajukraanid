@@ -1,9 +1,7 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.game.Game;
-import ee.ttu.idk0071.ajukraanid.player.Player;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +29,12 @@ public class Database {
      *  schema = "ajukraanid"
      * @param host The URL or IP address of the remote (or local) machine hosting the database server.
      * @param port The port to which the database accepts connections.
-     * @param databaseName
-     * @param username
-     * @param password
-     * @param schema
+     * @param databaseName The name of the SQL database in the server.
+     * @param username The name of a database user which has access to create, read and update entries.
+     * @param password The password of that user.
+     * @param schema The schema to bind this object to, all tables of the schema with their entries are loaded.
      */
     public Database(String host, int port, String databaseName, String username, String password, String schema) {
-        this();
+        this(); // TODD Implement.
     }
 }
