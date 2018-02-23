@@ -112,7 +112,7 @@ var vm = new Vue({
     methods: {
         startGame: function() {
             var myObject = new Object();
-            myObject.Action = "NewGame";
+            myObject.Action = "JoinGame";
             myObject.Code = this.newCode;
             myObject.Name = this.newName;
             var dataToBePosted = JSON.stringify(myObject);
@@ -120,23 +120,17 @@ var vm = new Vue({
             
             var http = new XMLHttpRequest();
             var url = "http://localhost:8080/";
-            http.open("POST", url, true);
-
-            //Send the proper header information along with the request
-            http.setRequestHeader("Content-type", "application/json");
-
-            http.onreadystatechange = function() {//Call a function when the state changes.
-                if(http.readyState == 4 && http.status == 200) {
+            http.onreadystatechange = function() {
+                if (http.readyState == 4 && http.status == 200) {
                     console.log(http.responseText);
                 }
             }
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/json; charset=utf-8");
             http.send(dataToBePosted);
         },
         playTheGame: function() {
             this.tabNr = 1;
-            var myObject = new Object();
-            myObject.Action = "NewGame";
-            console.log(JSON.stringify(myObject));
         },
         switchTab: function(a) { 
             this.tabNr = a;
@@ -144,8 +138,20 @@ var vm = new Vue({
         makeTheGame: function() {
             this.tabNr = 2;
             var myObject = new Object();
-            myObject.Action = "NewGame";
-            console.log(JSON.stringify(myObject));
+            myObject.Action = "CreateGame";
+            var dataToBePosted = JSON.stringify(myObject);
+            console.log(dataToBePosted);
+
+            var http = new XMLHttpRequest();
+            var url = "http://localhost:8080/";
+            http.onreadystatechange = function() {
+                if (http.readyState == 4 && http.status == 200) {
+                    console.log(http.responseText);
+                }
+            }
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+            http.send(dataToBePosted);
         }
     }
 });
