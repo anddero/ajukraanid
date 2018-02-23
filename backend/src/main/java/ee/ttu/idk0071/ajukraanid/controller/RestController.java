@@ -33,6 +33,7 @@ public class RestController {
             return gameController.giveScore(obj.getInt("Code"), obj.get("Name").toString(), obj.get("Target").toString());
         } return "400 Bad Request";
     }
+
 }
 
 
