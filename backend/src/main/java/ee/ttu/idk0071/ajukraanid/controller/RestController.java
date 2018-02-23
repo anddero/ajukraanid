@@ -15,7 +15,7 @@ public class RestController {
     private GameController gameController = new GameController();
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.POST, value = "")
+    @RequestMapping(method = RequestMethod.POST, value = "" )
     public String getHTTPBody(@RequestBody String request) throws JSONException {
         JSONObject obj = new JSONObject(request);
         String action = obj.get("Action").toString();
