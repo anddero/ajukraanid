@@ -12,21 +12,13 @@ import java.util.Objects;
 @Data
 public class Game {
 
-    @Setter
-    @Getter
-    int gameCode;
+    @Setter @Getter int gameCode;
 
-    @Setter
-    @Getter
-    ArrayList<Player> players = new ArrayList<>();
+    @Setter @Getter ArrayList<Player> players = new ArrayList<>();
 
-    @Setter
-    @Getter
-    ArrayList<Question> questions = new ArrayList<>(    );
+    @Setter @Getter ArrayList<Question> questions = new ArrayList<>();
 
-    @Getter
-    @Setter
-    String gameState = "Lobby";
+    @Getter @Setter String gameState = "Lobby";
 
     public Game(int gameCode) {
         this.gameCode = gameCode;
