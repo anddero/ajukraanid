@@ -7,14 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    @Getter List<Game> games;
+    @Getter private final List<Game> games = new ArrayList<>();
 
     /**
      * Construct an empty virtual in-memory database. None of the state updates will be synchronized with any
      * physical permanent database. All data will be lost if this object is terminated.
      */
     public Database() {
-        games = new ArrayList<>();
     }
 
     /**
@@ -35,6 +34,6 @@ public class Database {
      * @param schema The schema to bind this object to, all tables of the schema with their entries are loaded.
      */
     public Database(String host, int port, String databaseName, String username, String password, String schema) {
-        this(); // TODD Implement.
+        this(); // TODO Implement.
     }
 }

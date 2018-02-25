@@ -1,16 +1,13 @@
 package ee.ttu.idk0071.ajukraanid.player;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-
-@Data
-public class Player {
-
-    @Setter @Getter int questionNumber = 0;
-    @Setter @Getter String name;
+@RequiredArgsConstructor
+public class Player { // TODO Move to database module
+    @Getter private final String name;
+    @Getter @Setter private int questionNumber = 0;
 
     @Override
     public String toString() {

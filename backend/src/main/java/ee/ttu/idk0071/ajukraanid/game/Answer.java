@@ -2,14 +2,12 @@ package ee.ttu.idk0071.ajukraanid.game;
 
 
 import ee.ttu.idk0071.ajukraanid.player.Player;
-import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Data
+@RequiredArgsConstructor
 public class Answer {
-
-
-    @Getter @Setter int points;
-    @Getter @Setter Player player;
+    @Getter @Setter private int points = 0;
+    @Getter @Setter private Player player;
 }
