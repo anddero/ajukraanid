@@ -1,6 +1,6 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
-import ee.ttu.idk0071.ajukraanid.game.Game;
+import ee.ttu.idk0071.ajukraanid.database.Game;
 import org.json.JSONException;
 import org.json.JSONObject;
 

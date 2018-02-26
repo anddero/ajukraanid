@@ -1,4 +1,4 @@
-package ee.ttu.idk0071.ajukraanid.game;
+package ee.ttu.idk0071.ajukraanid.database;
 
 import lombok.Getter;
 

@@ -1,6 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
-import ee.ttu.idk0071.ajukraanid.game.Game;
 import lombok.Getter;
 
 import java.util.ArrayList;

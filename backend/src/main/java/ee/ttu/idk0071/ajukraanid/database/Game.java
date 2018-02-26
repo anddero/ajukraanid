@@ -1,7 +1,6 @@
-package ee.ttu.idk0071.ajukraanid.game;
+package ee.ttu.idk0071.ajukraanid.database;
 
 
-import ee.ttu.idk0071.ajukraanid.player.Player;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
