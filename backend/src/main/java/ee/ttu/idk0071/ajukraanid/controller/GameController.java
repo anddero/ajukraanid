@@ -69,7 +69,6 @@ class GameController {
             randomNum = rand.nextInt(8999) + 1000;
         }
         Game newGame = new Game(randomNum);
-        newGame.setGameCode(randomNum);
         activeGames.add(newGame);
         return new JSONObject()
                 .put("Action", "NewGame")
