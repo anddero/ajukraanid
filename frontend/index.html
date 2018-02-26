@@ -160,7 +160,7 @@ var vm = new Vue({
                 },
                 body: JSON.stringify(myObject)
             }).then(res=>res.json())
-            .then(function(res)
+            .then(res =>
             {
                 if (res.State == "Error") {
                     this.tabNr = 4;
