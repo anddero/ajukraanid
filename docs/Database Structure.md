@@ -16,7 +16,7 @@ Database table **games**
 ```
 * `game_id` is referenced by `players.game_id` - each player belongs to a certain game instance
 
-## Player
+### Player
 Player is an object representing a single player who has been bound to a certain game instance.
 
 Database table **players**
@@ -33,7 +33,7 @@ Database table **players**
 
 ## 2. Java
 
-## Game
+### Game
 
 Inaccessible fields:
 * `id` is a primary key, there will be exactly one Java `Game` object associated with the same value of this field, therefore it can be ignored in game logic implementation
@@ -42,7 +42,7 @@ Accessible fields:
 * `code` is a unique code for each game instance, the uniqueness of which is ensured by game logic and not enforced by database constraints - actually the code may be repeated in the future, it must only be unique among all active game instances (this is why PK `game_id` is necessary)
 * `players` is a list of players associated with one game instance
 
-## Player
+### Player
 
 Inaccessible fields:
 * `id` is the primary key
