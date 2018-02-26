@@ -31,8 +31,7 @@ public class Game {
         if (doesSuchPlayerExist(playerName)) {
             return false;
         }
-        Player player = new Player();
-        player.setName(playerName);
+        Player player = new Player(playerName);
         players.add(player);
         return true;
     }
