@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class Player { // TODO Move to database module
+public class Player {
+    // inaccessible
     private int id;
+    // accessible
     @Getter private final String name;
     @Getter @Setter private int questionNumber = 0;
 
