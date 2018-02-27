@@ -1,64 +1,58 @@
-Vue.component('tabs', {
-    template: `
-        <div>
-            <div class="tabs">
-                <ul>
-                    <li v-for="tab in tabs" :class="{ 'is-active': tab.isActive }">
-                        <a :href="tab.href" @click="selectTab(tab)">{{ tab.name }}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="tabs-details">
-                <slot></slot>
-            </div>
-        </div>
-    `,
-
-    data() {
-        return { tabs: [] };
+var vm = new Vue({
+    el: "#game",
+    data: {
+        tabNr: 0,
+        theRandomNumber: "",
+        newCode: "",
+        newName: ""
     },
-
-    created() {
-        this.tabs = this.$children;
-    },
-
     methods: {
-        selectTab(selectedTab) {
-            this.tabs.forEach(tab => {
-                tab.isActive = (tab.href == selectedTab.href);
-            });
+        startGame: function(){
+            var myObject = new Object();
+            myObject.Action = "JoinGame";
+            myObject.Code = document.getElementById("code").value;
+            myObject.Name = document.getElementById("name").value;
+            fetch('http://localhost:8080', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(myObject)
+            }).then(res=>res.json())
+            .then(res =>
+            {
+                if (res.State == "Error") {
+                    this.tabNr = 4;
+                } else {
+                    this.tabNr = 5;
+                }
+            })
+            ;
+        },
+        playTheGame: function() {
+            this.tabNr = 1;
+        },
+        switchTab: function(a) { 
+            this.tabNr = a;
+        },
+        makeTheGame: function() {
+            this.tabNr = 2;
+            var randomCode = "";
+            var myObject = new Object();
+            myObject.Action = "CreateGame";
+            var dataToBePosted = JSON.stringify(myObject);
+
+            var http = new XMLHttpRequest();
+            var url = "http://localhost:8080/";
+            http.onreadystatechange = function() {
+                if (http.readyState == 4 && http.status == 200) {
+                    document.getElementById("forRandomNumber").innerHTML = JSON.parse(http.responseText).Code;
+                }
+            }
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+            http.send(dataToBePosted);
         }
     }
-});
-
-
-Vue.component('tab', {
-    template: `
-        <div v-show="isActive"><slot></slot></div>
-    `,
-
-    props: {
-        name: { required: true },
-        selected: { default: false }
-    },
-
-    data() {
-        return {
-            isActive: false
-        };
-    },
-
-    computed: {
-        href() {
-            return '#' + this.name.toLowerCase().replace(/ /g, '-');
-        }
-    },
-
-    mounted() {
-        this.isActive = this.selected;
-    },
-});
-
-new Vue({
-    el: '#root'
 });

@@ -7,34 +7,7 @@
     <script src="vue.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="shortcut icon" href="https://mdbootstrap.com/wp-content/themes/mdbootstrap4/favicon.ico">
-    <style>
-    	body, html {
-    	    height: 100%;
-    	}
-
-    	.bg { 
-    	    /* The image used */
-    	    background-image: url("yellow.jpg");
-
-    	    /* Full height */
-    	    height: 100%; 
-
-    	    /* Center and scale the image nicely */
-    	    background-position: center;
-    	    background-repeat: no-repeat;
-    	    background-size: cover;
-    	}
-        .logo {
-            padding-top: 30px;
-            padding-bottom: 30px;
-            margin-bottom: 30px;
-            color: inherit;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        .grow { transition: all .2s ease-in-out; }
-        .grow:hover { transform: scale(1.1); }
-    </style>
+    <link rel="stylesheet" href="style.css">
     
 </head>
 <body>
@@ -137,65 +110,6 @@
             </div>
         </div>        
             
-<script>
-var vm = new Vue({
-    el: "#game",
-    data: {
-        tabNr: 0,
-        theRandomNumber: "",
-        newCode: "",
-        newName: ""
-    },
-    methods: {
-        startGame: function(){
-            var myObject = new Object();
-            myObject.Action = "JoinGame";
-            myObject.Code = document.getElementById("code").value;
-            myObject.Name = document.getElementById("name").value;
-            fetch('http://localhost:8080', {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(myObject)
-            }).then(res=>res.json())
-            .then(res =>
-            {
-                if (res.State == "Error") {
-                    this.tabNr = 4;
-                } else {
-                    this.tabNr = 5;
-                }
-            })
-            ;
-        },
-        playTheGame: function() {
-            this.tabNr = 1;
-        },
-        switchTab: function(a) { 
-            this.tabNr = a;
-        },
-        makeTheGame: function() {
-            this.tabNr = 2;
-            var randomCode = "";
-            var myObject = new Object();
-            myObject.Action = "CreateGame";
-            var dataToBePosted = JSON.stringify(myObject);
-
-            var http = new XMLHttpRequest();
-            var url = "http://localhost:8080/";
-            http.onreadystatechange = function() {
-                if (http.readyState == 4 && http.status == 200) {
-                    document.getElementById("forRandomNumber").innerHTML = JSON.parse(http.responseText).Code;
-                }
-            }
-            http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-            http.send(dataToBePosted);
-        }
-    }
-});
-</script>
+        <script src="main.js"></script>
 </body>
 </html>
