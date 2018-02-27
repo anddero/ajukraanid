@@ -39,7 +39,7 @@ class GameController {
     String findGameWithGameCodeAndAddPlayerToThatGame(int gameCode, String playerName) throws JSONException {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent() && !doesSuchPlayerExist(game.get(), playerName)) {
-            addPlayerToGame(game.get(), playerName);
+            game.get().getPlayers().add(new Player(playerName));
             return fetchState(gameCode);
         } else if (game.isPresent() && doesSuchPlayerExist(game.get(), playerName)) {
             return fetchErrorState(gameCode, "Such username is already taken.");
@@ -47,18 +47,6 @@ class GameController {
         return fetchErrorState(gameCode, "Did not find such game with game code: " + gameCode);
     }
 
-    /**
-     * @param game Game object that WILL NEVER be NULL.
-     * @param playerName the player name that will be converted to player object and added to list of players in
-     *                   game object.
-     */
-    private void addPlayerToGame(Game game, String playerName) {
-        Player player = new Player(playerName);
-        ArrayList<Player> players = new ArrayList<>();
-        players.addAll(game.getPlayers());
-        players.add(player);
-        game.setPlayers(players);
-    }
 
     /**
      * @param gameCode the unique code to each game
