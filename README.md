@@ -1,6 +1,6 @@
 ==========
-Ajukraanid ==========
-
+Ajukraanid
+==========
 
 
 TTÜ Tarkvaratehnika projeckt IDK0071
