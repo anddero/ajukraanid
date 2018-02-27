@@ -6,12 +6,14 @@ import lombok.Setter;
 
 @RequiredArgsConstructor
 public class Player {
+    // accessible
+    @Getter
+    private final String name;
     // inaccessible
     private int id;
-    // accessible
-    @Getter private final String name;
-    @Getter @Setter private int questionNumber = 0;
-
+    @Getter
+    @Setter
+    private int questionNumber = 0;
     @Override
     public String toString() {
         return name;

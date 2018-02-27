@@ -23,11 +23,11 @@ public class RestController {
         if (Objects.equals(action, "CreateGame")) {
             return gameController.createNewGame();
         } else if (Objects.equals(action, "JoinGame")) {
-            return gameController.addPlayerToGame(obj.getInt("Code"), obj.get("Name").toString());
+            return gameController.findGameWithGameCodeAndAddPlayerToThatGame(obj.getInt("Code"), obj.get("Name").toString());
         } else if (Objects.equals(action, "StartGame")) {
             return gameController.startGame(obj.getInt("Code"));
         } else if (Objects.equals(action, "FetchState")) {
-            return gameController.fetchState(obj.getInt("Code"), "No such game found.");
+            return gameController.fetchState(obj.getInt("Code"));
         } else if (Objects.equals(action, "SubmitAnswer")) {
             return gameController.submitAnswer(obj.getInt("Code"), obj.get("Name").toString());
         } else if (Objects.equals(action, "GiveScore")) {

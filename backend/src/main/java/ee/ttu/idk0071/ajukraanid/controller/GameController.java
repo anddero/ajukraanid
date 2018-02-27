@@ -1,13 +1,11 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
 import ee.ttu.idk0071.ajukraanid.database.Game;
+import ee.ttu.idk0071.ajukraanid.database.Player;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class GameController {
@@ -20,7 +18,7 @@ class GameController {
                 .findFirst();
     }
 
-    String fetchState(int gameCode, String errorData) throws JSONException {
+    String fetchErrorState(int gameCode, String errorData) throws JSONException {
         return new JSONObject()
                 .put("Action", "FetchState")
                 .put("State", "Error")
@@ -33,31 +31,53 @@ class GameController {
             return new JSONObject()
                     .put("Action", "FetchState")
                     .put("State", game.get().getGameState())
-                    .put("Data", game.get().getData()).toString();
+                    .put("Data", getData(game.get())).toString();
         }
-        return fetchState(gameCode, "No game found with game code: " + gameCode);
+        return fetchErrorState(gameCode, "No game found with game code: " + gameCode);
     }
 
-    String addPlayerToGame(int gameCode, String playerName) throws JSONException {
+    String findGameWithGameCodeAndAddPlayerToThatGame(int gameCode, String playerName) throws JSONException {
         Optional<Game> game = findActiveGame(gameCode);
-        if (game.isPresent() && !game.get().doesSuchPlayerExist(playerName)) {
-            game.get().addPlayerToGame(playerName);
+        if (game.isPresent() && !doesSuchPlayerExist(game.get(), playerName)) {
+            addPlayerToGame(game.get(), playerName);
             return fetchState(gameCode);
-        } else if (game.isPresent() && game.get().doesSuchPlayerExist(playerName)) {
-            return fetchState(gameCode, "Such username is already taken.");
+        } else if (game.isPresent() && doesSuchPlayerExist(game.get(), playerName)) {
+            return fetchErrorState(gameCode, "Such username is already taken.");
         }
-        return fetchState(gameCode, "Did not find such game with game code: " + gameCode);
+        return fetchErrorState(gameCode, "Did not find such game with game code: " + gameCode);
     }
 
-    String startGame(int gameCode) throws JSONException {
+    /**
+     * @param game Game object that WILL NEVER be NULL.
+     * @param playerName the player name that will be converted to player object and added to list of players in
+     *                   game object.
+     */
+    private void addPlayerToGame(Game game, String playerName) {
+        Player player = new Player(playerName);
+        ArrayList<Player> players = new ArrayList<>();
+        players.addAll(game.getPlayers());
+        players.add(player);
+        game.setPlayers(players);
+    }
+
+    /**
+     * @param gameCode the unique code to each game
+     * @return the game state, if it is in lobby then return the list of player names.
+     */
+    String startGame(int gameCode) {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
             game.get().setGameState("Question");
             return fetchState(gameCode);
         }
-        return fetchState(gameCode, "Was not able to start the game because such game was not found.");
+        return fetchErrorState(gameCode, "Was not able to start the game because such game was not found.");
     }
 
+    /**
+     * @return fetches the game state. It will always be possible to generate a unique game unless there are over
+     * 9999 current games. Will fix it in ETA 5 weeks
+     * @throws JSONException cos i build json here and it generates JSONException.
+     */
     String createNewGame() throws JSONException {
         List<Integer> usedCodes = activeGames.stream()
                 .map(Game::getGameCode)
@@ -75,12 +95,44 @@ class GameController {
                 .put("Code", randomNum).toString();
     }
 
+    /**
+     * @param game gamecode unique to each game.
+     * @param playerName player that submits the asnwer
+     * @return IT IS NOT IMPLEMENTED. ETA 1.5 WEEKS.
+     */
     String submitAnswer(int game, String playerName) {
-
         return null;
     }
 
+    /**
+     * @param game Game code unique to each game.
+     * @param playerName  player that gives score.
+     * @param target player that the first player gives score to.
+     * @return it should return a error if someone already gave score or just fetch the game state.
+     */
     String giveScore(int game, String playerName, String target) {
         return null;
     }
+
+    /**
+     * @param game Game object that is operated with, it will never be NULL.
+     * @return return a list of players OR the current question.
+     */
+    private String getData(Game game) {
+        if (Objects.equals(game.getGameState(), "Lobby")) {
+            return game.getPlayers().toString();
+        } else return "{“Number”:”2”,“Question”:“Que pikk question?”}";
+    }
+
+    /**
+     * @param game Game object that WILL never be NULL.
+     * @param playerName string player name.
+     * @return if such a player exists or not.
+     */
+    private boolean doesSuchPlayerExist(Game game, String playerName) {
+        return game.getPlayers().stream()
+                .anyMatch(t -> t.getName().equals(playerName));
+    }
+
+
 }
