@@ -101,11 +101,10 @@
                 </div>
                                            
                 <div class="log">
-                    <table style="margin:auto; text-align:center">
-                        <tr>
-                            <td>Lobby</td>
-                        </tr>
-                    </table>   
+                    Lobby
+                    <ul>
+                        <li v-for="item in items">{{item.name}}</li>
+                    </ul>
                 </div>
             </div>
         </div>        

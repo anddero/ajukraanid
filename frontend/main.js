@@ -4,7 +4,9 @@ var vm = new Vue({
         tabNr: 0,
         theRandomNumber: "",
         newCode: "",
-        newName: ""
+        newName: "",
+        items: [
+        ],
     },
     methods: {
         startGame: function(){
@@ -22,10 +24,14 @@ var vm = new Vue({
             }).then(res=>res.json())
             .then(res =>
             {
+                console.log(res);
                 if (res.State == "Error") {
                     this.tabNr = 4;
                 } else {
+                    var playerName = document.getElementById("name").value;
+                    this.items.push({name: playerName});
                     this.tabNr = 5;
+                    console.log(playerName);
                 }
             })
             ;
