@@ -85,9 +85,7 @@ Join Existing Game + Insert Name
 
 	- Client: 	{“Action”:”JoinGame”, “Code”:“8712”,“Name”:“blabla”}
 	- Server: 	Fetch State response OR Error
-{“Action”:”FetchState”,
-			“State”:“Error”,
-			“Data”: “Gamecode not found”}
+	- {“Action”:”FetchState”,“State”:“Error”,“Data”: “Gamecode not found”}
 
 Fetch State (Background process)
 
@@ -100,7 +98,8 @@ Question: everyone is answering a question
 
 Grading: everyone is grading answers to the previous question
 
-    - {“Action”:”FetchState”,“State”:“Grading”,“Data”: {“Question”:”hgrwetgqwe?”,“Number”:”3”,“Answers”:[“ans1”,”ans2”,...]}}
+    - {“Action”:”FetchState”,“State”:“Grading”,“Data”:
+                              {“Question”:”hgrwetgqwe?”,“Number”:”3”,“Answers”:[“ans1”,”ans2”,...]}}
 
 Score: inimesed näevad kogu mängu tulemusi
 
