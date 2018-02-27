@@ -11,10 +11,6 @@ Projekti "arendamise" salv.
 Muudatusettepanekute tegemine
 -----------------------------
 
-Vahearuanne I
---------------
-Nils-Emil: backend saab HTTP requestide peale tekitada mänge, nende mängudega saab liituda, kui liituda ei saa, tagastab backend API vastava teada mis on meie documentatsioonis kirjas.
-
 
 Arendamine
 ----------
