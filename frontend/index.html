@@ -13,9 +13,9 @@
 <body>
 
         <div id="game" class="bg" onload="getPlayers()">
-            <div id="hidden"></div>
-            <div id="errorMessages"></div>
-            <div id="gamenumber"></div>
+            <div id="hidden" style="display: none;"></div>
+            <div id="errorMessages" style="display: none;"></div>
+            <div id="gamenumber" style="display: none;"></div>
               
             <div v-if="tabNr==0">
                 <div class="logo">
@@ -38,7 +38,6 @@
             </div>
              
             <div v-if="tabNr==1">
-                1
                 <div class="logo">
                     <input type="image" src="logo.png"/>
                 </div>
@@ -51,7 +50,6 @@
             </div>
                
             <div v-if="tabNr==2">
-                2
                 <div class="logo">
                     <input type="image" src="logo.png"/>
                 </div>
@@ -66,7 +64,6 @@
             </div>        
    
             <div v-if="tabNr==3">
-                3
                 <div class="logo">
                     <input type="image" src="logo.png"/>
                 </div>
@@ -81,7 +78,6 @@
             </div>
 
             <div v-if="tabNr==4">
-                4
                 <div class="logo">
                     <input type="image" src="logo.png"/>
                 </div>
@@ -96,7 +92,6 @@
             </div>
 
             <div v-if="tabNr==5">
-                5
                 <div class="logo">
                     <input type="image" src="logo.png"/>
                 </div>
@@ -106,7 +101,6 @@
                     <ul>
                         <li v-for="item in items">{{item}}</li>
                     </ul>
-                    <button v-on:click="getPlayers()">Get playernames</button>
                 </div>
             </div>
         </div>        

@@ -9,29 +9,44 @@ var vm = new Vue({
         ],
     },
     methods: {
+        withTimeout: function(msecs, promise) {
+            const timeout = new Promise((resolve, reject) => {
+                setInterval(() => {
+                  reject(new Error('timeout'));
+                }, msecs);
+              });
+              return Promise.race([timeout, promise]);
+        },
         addPlayersToList: function(word) {
             this.items = word;
             console.log(this.items);
         },
         getPlayers: function() {
-            var myObject = new Object();
-            myObject.Action = "FetchState";
-            myObject.Code = document.getElementById("gamenumber").innerHTML;
-            console.log(myObject);
-            fetch('http://localhost:8080', {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(myObject)              
-            }).then(res=>res.json())
-            .then(res =>
-            {
-                var word1 = res.Data.substring(1, res.Data.length - 1);
-                this.addPlayersToList(word1.split(" ").join("").split(","));
-            })
-            ;
+            var makeAjaxDos = setInterval(function() {
+                var myObject = new Object();
+                myObject.Action = "FetchState";
+                myObject.Code = document.getElementById("gamenumber").innerHTML;
+                console.log(myObject);
+                fetch('http://localhost:8080', {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(myObject)              
+                }).then(res=>res.json())
+                .then(res =>
+                {
+                    var word1 = res.Data.substring(1, res.Data.length - 1);
+                    vm.addPlayersToList(word1.split(" ").join("").split(","));
+
+                    if (vm.items.length == 5) {
+                        clearInterval(makeAjaxDos);
+                    }
+
+                })
+                ;
+            }, 5000);
         },
         startGame: function(){
             var myObject = new Object();
