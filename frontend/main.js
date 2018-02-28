@@ -16,7 +16,7 @@ var vm = new Vue({
         getPlayers: function() {
             var myObject = new Object();
             myObject.Action = "FetchState";
-            myObject.Code = "8798";
+            myObject.Code = document.getElementById("gamenumber").innerHTML;
             console.log(myObject);
             fetch('http://localhost:8080', {
                 method: 'post',
@@ -38,6 +38,7 @@ var vm = new Vue({
             myObject.Action = "JoinGame";
             myObject.Code = document.getElementById("code").value;
             myObject.Name = document.getElementById("name").value;
+            document.getElementById("gamenumber").innerHTML = document.getElementById("code").value;
             fetch('http://localhost:8080', {
                 method: 'post',
                 headers: {
