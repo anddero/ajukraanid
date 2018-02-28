@@ -9,6 +9,30 @@ var vm = new Vue({
         ],
     },
     methods: {
+        addPlayersToList: function(word) {
+            this.items = word;
+            console.log(this.items);
+        },
+        getPlayers: function() {
+            var myObject = new Object();
+            myObject.Action = "FetchState";
+            myObject.Code = "8798";
+            console.log(myObject);
+            fetch('http://localhost:8080', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(myObject)              
+            }).then(res=>res.json())
+            .then(res =>
+            {
+                var word1 = res.Data.substring(1, res.Data.length - 1);
+                this.addPlayersToList(word1.split(" ").join("").split(","));
+            })
+            ;
+        },
         startGame: function(){
             var myObject = new Object();
             myObject.Action = "JoinGame";
@@ -29,9 +53,9 @@ var vm = new Vue({
                     this.tabNr = 4;
                 } else {
                     var playerName = document.getElementById("name").value;
-                    this.items.push({name: playerName});
                     this.tabNr = 5;
                     console.log(playerName);
+                    this.getPlayers();
                 }
             })
             ;
@@ -53,7 +77,10 @@ var vm = new Vue({
             var url = "http://localhost:8080/";
             http.onreadystatechange = function() {
                 if (http.readyState == 4 && http.status == 200) {
-                    document.getElementById("forRandomNumber").innerHTML = JSON.parse(http.responseText).Code;
+                    var code = JSON.parse(http.responseText).Code;
+                    this.theRandomNumber = code;
+                    document.getElementById("gamenumber").innerHTML = code;
+
                 }
             }
             http.open("POST", url, true);
