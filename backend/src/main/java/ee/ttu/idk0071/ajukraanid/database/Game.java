@@ -6,12 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 public class Game {
     // inaccessible
-    private int id;
+    private int id; // private key
     // accessible
     @Getter private final int gameCode;
     @Getter @Setter private String gameState = "Lobby";

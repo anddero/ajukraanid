@@ -7,6 +7,10 @@ import lombok.Setter;
 
 @RequiredArgsConstructor
 public class Answer {
+    // inaccessible
+    private final int id; // private key
+    // accessible
+    @Getter private final Player player; // foreign key
+    @Getter private final String text;
     @Getter @Setter private int points = 0;
-    @Getter @Setter private Player player;
 }
