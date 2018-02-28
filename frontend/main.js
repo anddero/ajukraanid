@@ -9,14 +9,6 @@ var vm = new Vue({
         ],
     },
     methods: {
-        withTimeout: function(msecs, promise) {
-            const timeout = new Promise((resolve, reject) => {
-                setInterval(() => {
-                  reject(new Error('timeout'));
-                }, msecs);
-              });
-              return Promise.race([timeout, promise]);
-        },
         addPlayersToList: function(word) {
             this.items = word;
             console.log(this.items);
@@ -39,11 +31,9 @@ var vm = new Vue({
                 {
                     var word1 = res.Data.substring(1, res.Data.length - 1);
                     vm.addPlayersToList(word1.split(" ").join("").split(","));
-
                     if (vm.items.length == 5) {
                         clearInterval(makeAjaxDos);
                     }
-
                 })
                 ;
             }, 5000);
@@ -88,7 +78,6 @@ var vm = new Vue({
             var myObject = new Object();
             myObject.Action = "CreateGame";
             var dataToBePosted = JSON.stringify(myObject);
-
             var http = new XMLHttpRequest();
             var url = "http://localhost:8080/";
             http.onreadystatechange = function() {
@@ -96,7 +85,7 @@ var vm = new Vue({
                     var code = JSON.parse(http.responseText).Code;
                     this.theRandomNumber = code;
                     document.getElementById("gamenumber").innerHTML = code;
-
+                    document.getElementById("forRandomNumber").innerHTML = code;
                 }
             }
             http.open("POST", url, true);
