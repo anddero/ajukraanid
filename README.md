@@ -89,7 +89,7 @@ Join Existing Game + Insert Name
 
 Fetch State (Background process)
 
-	- Client: 	{“Action”:”FetchState”, “GameCode”:”1234”} // unustasime ära selle algul
+	- Client: 	{“Action”:”FetchState”, “GameCode”:”1234”}
 	- Server: 	Lobby: {“Action”:”FetchState”,“State”:“Lobby”, “Data”: [“name1”,”name2”,...]}
 
 Question: everyone is answering a question
