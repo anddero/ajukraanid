@@ -1,0 +1,62 @@
+{
+	"info": {
+		"name": "Ajukraanid",
+		"_postman_id": "e737dc04-e071-4288-a878-959b0741cf0e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateGame",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"CreateGame\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Create a new game session."
+			},
+			"response": []
+		},
+		{
+			"name": "JoinGame",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"JoinGame\",\n\t\"Code\": \"6426\",\n\t\"Name\": \"username\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Join an existing game session."
+			},
+			"response": []
+		}
+	]
+}
