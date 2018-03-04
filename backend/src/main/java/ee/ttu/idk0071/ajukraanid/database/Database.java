@@ -2,21 +2,20 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.GamesRepository;
 import ee.ttu.idk0071.ajukraanid.database.internal.PlayersRepository;
+import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.database.sync.Table;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
-public class Database {
+public class Database implements Entry {
     // inaccessible internal repositories
     private final GamesRepository gamesRepository;
     private final PlayersRepository playersRepository;
 
     // accessible members
-    @Getter private final List<Game> games = new ArrayList<>(); // all the game sessions
+    @Getter private final Table<Game> games = new Table<>(); // all the game sessions
 
     @Autowired
     private Database(GamesRepository gamesRepository, PlayersRepository playersRepository) {
@@ -33,12 +32,12 @@ public class Database {
 
     private void loadGames() {
         gamesRepository.findAll()
-                .forEach(game -> games.add(new Game(this, game)));
+                .forEach(game -> games.add(new Game(game)));
         playersRepository.findAll()
                 .forEach(player -> {
                     games.forEach(game -> {
                         if (player.getGame_id().equals(game.getGame().getGame_id())) {
-                            game.getPlayers().add(new Player(game, player));
+                            game.getPlayers().add(new Player(player));
                         }
                     });
                 });
@@ -50,5 +49,10 @@ public class Database {
 
     PlayersRepository getPlayersRepository() {
         return playersRepository;
+    }
+
+    @Override
+    public void setTable(Table table) {
+        throw new UnsupportedOperationException("The database does not belong to any table");
     }
 }
