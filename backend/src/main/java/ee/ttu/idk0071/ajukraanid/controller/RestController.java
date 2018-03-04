@@ -3,6 +3,7 @@ package ee.ttu.idk0071.ajukraanid.controller;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,12 @@ import java.util.Objects;
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
-    private GameController gameController = new GameController();
+    private final GameController gameController;
+
+    @Autowired
+    private RestController(GameController gameController) {
+        this.gameController = gameController;
+    }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST, value = "" )

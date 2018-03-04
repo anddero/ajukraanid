@@ -4,10 +4,12 @@ import ee.ttu.idk0071.ajukraanid.database.Game;
 import ee.ttu.idk0071.ajukraanid.database.Player;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 class GameController {
 
     private ArrayList<Game> activeGames = new ArrayList<>();
