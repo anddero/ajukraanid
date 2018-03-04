@@ -10,7 +10,7 @@ import lombok.Setter;
 public class Game extends Entry {
     // inaccessible
     private final Database database;
-    private final Games game;
+    private Games game;
 
     // accessible
     @Getter private final int gameCode;
@@ -40,7 +40,7 @@ public class Game extends Entry {
         this.gameCode = code;
         game = new Games(Integer.toString(code));
         game.setGame_state(gameState);
-        // TODO Update database.
+        game = database.getGamesRepository().save(game); // TODO Thread?
     }
 
     /**

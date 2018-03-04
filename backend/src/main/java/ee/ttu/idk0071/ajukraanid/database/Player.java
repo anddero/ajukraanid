@@ -9,7 +9,7 @@ import lombok.Setter;
 public class Player extends Entry {
     // inaccessible
     private final Game game;
-    private final Players player;
+    private Players player;
     // accessible
     @Getter private final String name;
     @Getter @Setter private int questionNumber = 0;
@@ -35,7 +35,9 @@ public class Player extends Entry {
         game.getPlayers().add(this);
         this.name = name;
         player = new Players(name);
+        player.setGame_id(game.getGame().getGame_id());
         player.setQuestion_number(questionNumber);
+        player = game.getDatabase().getPlayersRepository().save(player); // TODO Thread?
     }
 
     /**
