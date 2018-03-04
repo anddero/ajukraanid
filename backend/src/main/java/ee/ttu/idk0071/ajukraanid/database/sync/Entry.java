@@ -1,5 +1,7 @@
 package ee.ttu.idk0071.ajukraanid.database.sync;
 
-public interface Entry {
-    void setTable(Table table);
+import lombok.Setter;
+
+public abstract class Entry {
+    @Setter Table table;
 }

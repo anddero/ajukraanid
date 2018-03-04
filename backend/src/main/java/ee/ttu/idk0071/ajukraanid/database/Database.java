@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Database implements Entry {
+public class Database extends Entry {
     // inaccessible internal repositories
     private final GamesRepository gamesRepository;
     private final PlayersRepository playersRepository;

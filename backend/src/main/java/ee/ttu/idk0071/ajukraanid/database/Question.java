@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
-public class Question implements Entry {
+public class Question extends Entry {
     // inaccessible
     private final int id; // private key
     // accessible

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class Answer implements Entry {
+public class Answer extends Entry {
     // inaccessible
     private final int id; // private key
     // accessible

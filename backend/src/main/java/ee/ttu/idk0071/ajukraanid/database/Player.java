@@ -6,9 +6,8 @@ import ee.ttu.idk0071.ajukraanid.database.sync.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Player implements Entry {
+public class Player extends Entry {
     // inaccessible
-    @Setter private Table table;
     private final Players player;
     // accessible
     @Getter private final String name;
