@@ -3,6 +3,7 @@ package ee.ttu.idk0071.ajukraanid.controller;
 import ee.ttu.idk0071.ajukraanid.database.Database;
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import ee.ttu.idk0071.ajukraanid.database.Player;
+import ee.ttu.idk0071.ajukraanid.database.internal.Players;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

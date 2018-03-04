@@ -9,6 +9,7 @@ import lombok.Setter;
 
 public class Game extends Entry {
     // inaccessible
+    private final Database database;
     private final Games game;
 
     // accessible
@@ -22,7 +23,9 @@ public class Game extends Entry {
     /**
      * From an existing database entry.
      */
-    Game(Games game) {
+    Game(Database database, Games game) {
+        this.database = database;
+        database.getGames().add(this);
         this.game = game;
         this.gameCode = Integer.valueOf(game.getGame_code());
         this.gameState = game.getGame_state();
@@ -31,14 +34,32 @@ public class Game extends Entry {
     /**
      * Completely new.
      */
-    public Game(int code) {
+    public Game(Database database, int code) {
+        this.database = database;
+        database.getGames().add(this);
         this.gameCode = code;
         game = new Games(Integer.toString(code));
         game.setGame_state(gameState);
         // TODO Update database.
     }
 
+    /**
+     * Allow creation of unrelated objects temporarily.
+     * @deprecated TODO Remove this constructor.
+     */
+    public Game(int code) {
+        this.database = null;
+        this.gameCode = code;
+        game = new Games(Integer.toString(code));
+        game.setGame_state(gameState);
+    }
+
     Games getGame() {
         return game;
+    }
+
+    @Override
+    protected Database getDatabase() {
+        return database;
     }
 }

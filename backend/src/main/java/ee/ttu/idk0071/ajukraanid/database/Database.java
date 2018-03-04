@@ -32,12 +32,12 @@ public class Database extends Entry {
 
     private void loadGames() {
         gamesRepository.findAll()
-                .forEach(game -> games.add(new Game(game)));
+                .forEach(game -> new Game(this, game));
         playersRepository.findAll()
                 .forEach(player -> {
                     games.forEach(game -> {
                         if (player.getGame_id().equals(game.getGame().getGame_id())) {
-                            game.getPlayers().add(new Player(player));
+                            new Player(game, player);
                         }
                     });
                 });
@@ -52,7 +52,7 @@ public class Database extends Entry {
     }
 
     @Override
-    public void setTable(Table table) {
-        throw new UnsupportedOperationException("The database does not belong to any table");
+    protected Database getDatabase() {
+        return this;
     }
 }

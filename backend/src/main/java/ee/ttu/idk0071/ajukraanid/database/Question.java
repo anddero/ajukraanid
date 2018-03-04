@@ -18,7 +18,7 @@ public class Question extends Entry {
     @Getter private final ArrayList<Answer> answers = new ArrayList<>();
 
     @Override
-    public void setTable(Table table) {
+    protected Database getDatabase() {
         throw new UnsupportedOperationException("Partially implemented class definition");
     }
 }

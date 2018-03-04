@@ -2,12 +2,9 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
-import ee.ttu.idk0071.ajukraanid.database.sync.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
 public class Answer extends Entry {
     // inaccessible
     private final int id; // private key
@@ -16,8 +13,14 @@ public class Answer extends Entry {
     @Getter private final String text;
     @Getter @Setter private int points = 0;
 
+    public Answer(int id, Player player, String text) {
+        this.id = id;
+        this.player = player;
+        this.text = text;
+    }
+
     @Override
-    public void setTable(Table table) {
+    protected Database getDatabase() {
         throw new UnsupportedOperationException("Partially implemented class definition");
     }
 }

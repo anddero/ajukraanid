@@ -8,6 +8,7 @@ import lombok.Setter;
 
 public class Player extends Entry {
     // inaccessible
+    private final Game game;
     private final Players player;
     // accessible
     @Getter private final String name;
@@ -18,7 +19,9 @@ public class Player extends Entry {
     /**
      * From existing database entry.
      */
-    Player(Players player) {
+    Player(Game game, Players player) {
+        this.game = game;
+        game.getPlayers().add(this);
         this.player = player;
         this.name = player.getPlayer_name();
         this.questionNumber = player.getQuestion_number();
@@ -27,7 +30,20 @@ public class Player extends Entry {
     /**
      * New instance.
      */
+    public Player(Game game, String name) {
+        this.game = game;
+        game.getPlayers().add(this);
+        this.name = name;
+        player = new Players(name);
+        player.setQuestion_number(questionNumber);
+    }
+
+    /**
+     * Temporarily allow the creation of unrelated objects.
+     * @deprecated TODO Remove this constructor.
+     */
     public Player(String name) {
+        this.game = null;
         this.name = name;
         player = new Players(name);
         player.setQuestion_number(questionNumber);
@@ -36,5 +52,10 @@ public class Player extends Entry {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    protected Database getDatabase() {
+        return game.getDatabase();
     }
 }
