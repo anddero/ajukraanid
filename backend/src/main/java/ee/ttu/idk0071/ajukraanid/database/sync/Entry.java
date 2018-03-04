@@ -1,5 +1,10 @@
 package ee.ttu.idk0071.ajukraanid.database.sync;
 
-public interface Entry {
-    void setTable(Table table);
+import ee.ttu.idk0071.ajukraanid.database.Database;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public abstract class Entry {
+    protected abstract Database getDatabase();
 }

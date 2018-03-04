@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
-public class Question implements Entry {
+public class Question extends Entry {
     // inaccessible
     private final int id; // private key
     // accessible
@@ -18,7 +18,7 @@ public class Question implements Entry {
     @Getter private final ArrayList<Answer> answers = new ArrayList<>();
 
     @Override
-    public void setTable(Table table) {
+    protected Database getDatabase() {
         throw new UnsupportedOperationException("Partially implemented class definition");
     }
 }
