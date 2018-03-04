@@ -14,17 +14,14 @@ import java.util.stream.Collectors;
 
 @Component
 class GameController {
-    private final Database database; // TODO Use this instead of activeGames.
-
-    private ArrayList<Game> activeGames = new ArrayList<>(); // TODO Use database and remove this list.
+    private final Database database;
 
     @Autowired
     private GameController(Database database) {
         this.database = database;
     }
-
     private Optional<Game> findActiveGame(int gameCode) {
-        return activeGames.stream()
+        return database.getGames().stream()
                 .filter(c -> c.getGameCode() == gameCode)
                 .findFirst();
     }
@@ -50,7 +47,7 @@ class GameController {
     String findGameWithGameCodeAndAddPlayerToThatGame(int gameCode, String playerName) throws JSONException {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent() && !doesSuchPlayerExist(game.get(), playerName)) {
-            game.get().getPlayers().add(new Player(playerName));
+            Player player = new Player(game.get(), playerName);
             return fetchState(gameCode);
         } else if (game.isPresent() && doesSuchPlayerExist(game.get(), playerName)) {
             return fetchErrorState(gameCode, "Such username is already taken.");
@@ -78,17 +75,15 @@ class GameController {
      * @throws JSONException cos i build json here and it generates JSONException.
      */
     String createNewGame() throws JSONException {
-        List<Integer> usedCodes = activeGames.stream()
+        List<Integer> usedCodes = database.getGames().stream()
                 .map(Game::getGameCode)
                 .collect(Collectors.toList());
         Random rand = new Random();
         int randomNum = rand.nextInt(8999) + 1000;
-
         while (usedCodes.contains(randomNum)) {
             randomNum = rand.nextInt(8999) + 1000;
         }
-        Game newGame = new Game(randomNum);
-        activeGames.add(newGame);
+        Game newGame = new Game(database, randomNum);
         return new JSONObject()
                 .put("Action", "NewGame")
                 .put("Code", randomNum).toString();
