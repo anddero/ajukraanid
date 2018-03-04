@@ -27,13 +27,16 @@ repositories {
 
 
 dependencies {
-	compile 'org.json:json:20170516' // TODO Include this thing if you want to use regular JSON library.
+	compile 'org.json:json:20170516'
     compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter')
+	compile('mysql:mysql-connector-java')
     //compile 'org.slf4j:slf4j-api:1.7.25' // for logging activity
     compileOnly 'org.projectlombok:lombok' // TODO 1.16.18?
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
+	runtime('com.h2database:h2')
 
     // JUnit Jupiter API and TestEngine implementation
     //testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")

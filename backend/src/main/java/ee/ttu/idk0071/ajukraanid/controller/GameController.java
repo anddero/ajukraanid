@@ -16,7 +16,7 @@ class GameController {
     private final Database database; // TODO Use this instead of activeGames.
 
     private ArrayList<Game> activeGames = new ArrayList<>(); // TODO Use database and remove this list.
-    
+
     @Autowired
     private GameController(Database database) {
         this.database = database;
