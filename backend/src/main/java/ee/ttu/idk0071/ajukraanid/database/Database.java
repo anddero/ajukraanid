@@ -1,10 +1,12 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class Database {
     @Getter private final List<Game> games = new ArrayList<>();
 
