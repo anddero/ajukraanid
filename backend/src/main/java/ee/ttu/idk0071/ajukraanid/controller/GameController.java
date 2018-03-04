@@ -1,9 +1,11 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
+import ee.ttu.idk0071.ajukraanid.database.Database;
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import ee.ttu.idk0071.ajukraanid.database.Player;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -11,8 +13,14 @@ import java.util.stream.Collectors;
 
 @Component
 class GameController {
+    private final Database database; // TODO Use this instead of activeGames.
 
-    private ArrayList<Game> activeGames = new ArrayList<>();
+    private ArrayList<Game> activeGames = new ArrayList<>(); // TODO Use database and remove this list.
+    
+    @Autowired
+    private GameController(Database database) {
+        this.database = database;
+    }
 
     private Optional<Game> findActiveGame(int gameCode) {
         return activeGames.stream()
