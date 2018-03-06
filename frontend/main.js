@@ -93,6 +93,9 @@ var vm = new Vue({
             http.open("POST", url, true);
             http.setRequestHeader("Content-type", "application/json; charset=utf-8");
             http.send(dataToBePosted);
+        },
+        errorChange: function() {
+            this.tabNr = 1;
         }
     }
 });

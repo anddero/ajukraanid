@@ -57,7 +57,7 @@
                 <div id="forRandomNumber" style="margin:auto; text-align:center">
                         
                 </div>                   
-                <div class="form-group" style="margin:auto; text-align:center">
+                <div class="form-group" style="margin:auto; text-align:center" id="inputPlace">
                     <input type="text" class="form-control" id="name" v-model="newName" placeholder="YOUR NAME" style="width: 200px; text-align:center; margin:auto"/><br>
                     <input type="number" class="form-control" id="code" v-model="newCode" placeholder="GAME CODE" style="width: 200px; text-align:center; margin:auto"/><br>
                     <input class="grow" type="image" src="play.png" value="Submit" v-on:click="startGame()"/>                      
@@ -85,9 +85,9 @@
                 <div id="forRandomNumber" style="margin:auto; text-align:center">
                     
                 </div>                   
-                <div class="form-group" style="margin:auto; text-align:center">
+                <div class="form-group" style="margin:auto; text-align:center" id="inputPlace">
                     <input type="text" class="form-control" id="name" v-model="newName" placeholder="YOUR NAME" style="width: 200px; text-align:center; margin:auto"/><br>
-                    <input type="number" class="form-control" id="code" v-model="newCode" placeholder="WRONG CODE" style="width: 200px; background:brown; text-align:center; margin:auto"/><br>
+                    <input type="number" class="form-control" id="code" v-model="newCode" placeholder="WRONG CODE" style="width: 200px; background:brown; text-align:center; margin:auto" @mouseover="errorChange()"/><br>
                     <input class="grow" type="image" src="play.png" value="Submit" v-on:click="startGame()"/>        
                 </div>
             </div>
