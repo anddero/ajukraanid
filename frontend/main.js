@@ -31,8 +31,9 @@ var vm = new Vue({
                 {
                     var word1 = res.Data.substring(1, res.Data.length - 1);
                     vm.addPlayersToList(word1.split(" ").join("").split(","));
-                    if (vm.items.length == 5) {
+                    if (vm.items.length == 3) {
                         clearInterval(makeAjaxDos);
+                        vm.tabNr = 6;
                     }
                 })
                 ;
@@ -43,6 +44,7 @@ var vm = new Vue({
             myObject.Action = "JoinGame";
             myObject.Code = document.getElementById("code").value;
             myObject.Name = document.getElementById("name").value;
+            document.getElementById("myName").innerHTML = document.getElementById("name").value;
             document.getElementById("gamenumber").innerHTML = document.getElementById("code").value;
             fetch('http://localhost:8080', {
                 method: 'post',
