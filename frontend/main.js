@@ -37,7 +37,7 @@ var vm = new Vue({
                     }
                 })
                 ;
-            }, 2000);
+            }, 1000);
         },
         startGame: function(){
             var myObject = new Object();
