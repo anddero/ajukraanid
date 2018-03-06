@@ -59,6 +59,7 @@ var vm = new Vue({
                 console.log(res);
                 if (res.State == "Error") {
                     this.tabNr = 4;
+                    console.log("some error")
                 } else {
                     var playerName = document.getElementById("name").value;
                     this.tabNr = 5;
