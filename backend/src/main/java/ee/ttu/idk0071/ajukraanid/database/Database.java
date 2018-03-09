@@ -8,6 +8,8 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class Database extends Entry {
     // inaccessible internal repositories
@@ -15,7 +17,7 @@ public class Database extends Entry {
     private final PlayersRepository playersRepository;
 
     // accessible members
-    @Getter private final Table<Game> games = new Table<>(); // all the game sessions
+    @Getter private final ArrayList<Game> games = new ArrayList<>(); // all the game sessions
 
     @Autowired
     private Database(GamesRepository gamesRepository, PlayersRepository playersRepository) {

@@ -11,6 +11,7 @@ public class Player extends Entry {
     private final Game game;
     private Players player;
     // accessible
+
     @Getter private final String name;
     @Getter @Setter private int questionNumber = 0;
 

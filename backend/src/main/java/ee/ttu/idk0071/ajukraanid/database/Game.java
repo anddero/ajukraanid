@@ -6,6 +6,10 @@ import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.database.sync.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.id.IncrementGenerator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game extends Entry {
     // inaccessible
@@ -13,12 +17,18 @@ public class Game extends Entry {
     private Games game;
 
     // accessible
+    @Setter @Getter private int questionNumber = 0;
+    @Getter @Setter private String[] questions = new String[8];
+
+
+    @Getter @Setter ArrayList<HashMap<String, HashMap<String,Integer>>> questionEvaluation =  new ArrayList<>();
+
     @Getter private final int gameCode;
     @Getter @Setter private String gameState = "Lobby"; // TODO Override setter to update database.
 
     // referenced by
-    @Getter private Table<Player> players = new Table<>();
-    @Getter private final Table<Question> questions = new Table<>();
+    @Getter private ArrayList<Player> players = new ArrayList<>();
+//    @Getter private final Table<Question> questions = new Table<>();
 
     /**
      * From an existing database entry.
@@ -35,6 +45,9 @@ public class Game extends Entry {
      * Completely new.
      */
     public Game(Database database, int code) {
+        for (int i = 0; i < 7; i++) {
+            this.questionEvaluation.add(new HashMap<>());
+        }
         this.database = database;
         database.getGames().add(this);
         this.gameCode = code;
