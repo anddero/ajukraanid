@@ -1,8 +1,6 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
-import ee.ttu.idk0071.ajukraanid.database.Database;
-import ee.ttu.idk0071.ajukraanid.database.Game;
-import ee.ttu.idk0071.ajukraanid.database.Player;
+import ee.ttu.idk0071.ajukraanid.database.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,12 @@ class GameController {
     @Autowired
     private GameController(Database database) {
         this.database = database;
+    }
+
+    private Optional<Player> findPlayer(Game game, String name) {
+        return game.getPlayers().stream()
+                .filter(player -> player.getName().equals(name))
+                .findFirst();
     }
 
     private Optional<Game> findActiveGame(int gameCode) {
@@ -42,7 +46,6 @@ class GameController {
                 s.add(new JSONObject()
                         .put("name", player.getName()).toString());
             }
-
             return new JSONObject()
                     .put("Action", "FetchState")
                     .put("State", game.get().getGameState())
@@ -68,6 +71,7 @@ class GameController {
         return game.map(game1 -> game1.getPlayers().stream()
                 .anyMatch(player -> player.getName().equals(playerName))).orElse(false);
     }
+
     /**
      * @param gameCode the unique code to each game
      * @return the game state, if it is in lobby then return the list of player names.
@@ -84,7 +88,6 @@ class GameController {
     /**
      * @return fetches the game state. It will always be possible to generate a unique game unless there are over
      * 9999 current games. Will fix it in ETA 5 weeks
-     * @throws JSONException cos i build json here and it generates JSONException.
      */
     String createNewGame() throws JSONException {
         List<Integer> usedCodes = database.getGames().stream()
@@ -101,14 +104,7 @@ class GameController {
                 .put("Code", randomNum).toString();
     }
 
-    /**
-     * @param game       gamecode unique to each game.
-     * @param playerName player that submits the asnwer
-     * @return IT IS NOT IMPLEMENTED. ETA 1.5 WEEKS.
-     */
-    String submitAnswer(int game, String playerName) {
-        return null;
-    }
+
 
     /**
      * @param game       Game code unique to each game.
@@ -137,53 +133,80 @@ class GameController {
 //                .anyMatch(t -> t.getName().equals(playerName));
 //    }
 
-    public String GivePoints(int gameCode,int questionNumber, String giver, String target) {
-        Optional<Game> game = findActiveGame(gameCode);
 
+
+    String GivePoints(int gameCode, int questionNumber, String giver, String target) {
+        Optional<Game> game = findActiveGame(gameCode);
         if (!suchPlayerExistsInGame(gameCode, giver) && !suchPlayerExistsInGame(gameCode, target)) {
             return fetchErrorState(gameCode, "Error", "Wrong username was given");
-        } if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
+        }
+        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
             return fetchErrorState(gameCode, "Error", "Question number does not match he current games' state");
         }
         if (game.isPresent()) {
             Game gameObj = game.get();
-            if (!(gameObj.getQuestionEvaluation().get(game.get().getQuestionNumber())).containsKey(giver)) {
-                HashMap<String, Integer> targetHashmap = new HashMap<>();
-                targetHashmap.put(target, 100);
-                game.get().getQuestionEvaluation().get(game.get().getQuestionNumber()).put(giver, targetHashmap);
+            Question question = gameObj.getQuestions().get(game.get().getQuestionNumber());
+            ArrayList<Evaluation> evaluations = question.getEvaluations();
+            boolean personHasEvaluated = evaluations.stream()
+                    .anyMatch(evaluation -> evaluation.getGiver().getName().equals(giver));
+            Player player = findPlayer(gameObj, target).get();
+            Player player1 = findPlayer(gameObj, giver).get();
+            if (!personHasEvaluated) {
+                new Evaluation(player1, player, question);
                 return fetchErrorState(gameCode, "Success", "Your points were given to " + target);
-            } else fetchErrorState(gameCode, "Error", "Game with such ");
+            } else return fetchErrorState(gameCode, "Error", "Can not give points, because you already gave points");
+
         }
-        return fetchErrorState(gameCode, "Error", "Can not give points, beacause you allready gave points");
+        return fetchErrorState(gameCode, "Error", "Game with such id was not found");
     }
 
 
-
-    public String getTotalPlayerPointStatistics(int gameCode) {
+    String getTotalPlayerPointStatistics(int gameCode) {
         JSONObject json = new JSONObject();
         HashMap<String, Integer> playerAndPointsThatHeHas = new HashMap<>();
-
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
-            for (int i = 0; i < game.get().getQuestionEvaluation().size(); i++) {
-                HashMap<String, HashMap<String, Integer>> temp = game.get().getQuestionEvaluation().get(i);
-                for (HashMap<String, Integer> o : temp.values()) {
-                    for (String name : o.keySet()) {
-                        if (playerAndPointsThatHeHas.containsKey(name)) {
-                            playerAndPointsThatHeHas.replace(name, playerAndPointsThatHeHas.get(name) + 100);
-                        } else playerAndPointsThatHeHas.put(name, 100);
-                    }
-                }
-            }
             for (Player player : game.get().getPlayers()) {
-                String name = player.getName();
-                if (!playerAndPointsThatHeHas.containsKey(name)) {
-                    playerAndPointsThatHeHas.put(name, 0);
-                }
+                    playerAndPointsThatHeHas.put(player.getName(), player.getPoints());
             }
         }
-        return fetchErrorState(gameCode, "Points", playerAndPointsThatHeHas.toString());
+        return fetchErrorState(gameCode, "Points", new JSONObject(playerAndPointsThatHeHas).toString());
     }
 
+
+
+    String getAnswers(int gameCode, int questionNumber) {
+        Optional<Game> game = findActiveGame(gameCode);
+        if (game.isPresent()) {
+            Question question = game.get().getQuestions().get(questionNumber);
+            JSONObject data = new JSONObject();
+            for (Answer a : question.getAnswers()) {
+                data.put(a.getPlayer().getName(), a.getText());
+            }
+            return fetchErrorState(gameCode, "GetAnswers", data.toString());
+        } return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+    }
+
+
+
+    String submitAnswer(int gameCode, int questionNumber, String answerer, String answer) {
+        Optional<Game> game = findActiveGame(gameCode);
+        if (!suchPlayerExistsInGame(gameCode, answerer)) {
+            return fetchErrorState(gameCode, "Error", "Wrong username was given");
+        }
+        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
+            return fetchErrorState(gameCode, "Error", "Question number does not match he current games' state");
+        }
+        if (game.isPresent()) {
+           boolean hasAnswered = game.get().getQuestions().get(questionNumber).getAnswers().stream()
+                   .anyMatch(answer1 -> answer1.getPlayer().getName().equals(answerer));
+           if (!hasAnswered) {
+               Optional<Player> player = findPlayer(game.get(), answerer);
+               new Answer(1 ,player.get(), answer, game.get().getQuestions().get(questionNumber));
+               return fetchErrorState(gameCode, "Success", "Your answer was submitted.");
+           } else return fetchErrorState(gameCode, "Error", "You already answered the question");
+        }
+        return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+    }
 
 }

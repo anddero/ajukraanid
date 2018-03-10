@@ -17,11 +17,8 @@ public class Game extends Entry {
     private Games game;
 
     // accessible
+    @Setter @Getter private ArrayList<Question> questions = new ArrayList<>();
     @Setter @Getter private int questionNumber = 0;
-    @Getter @Setter private String[] questions = new String[8];
-
-
-    @Getter @Setter ArrayList<HashMap<String, HashMap<String,Integer>>> questionEvaluation =  new ArrayList<>();
 
     @Getter private final int gameCode;
     @Getter @Setter private String gameState = "Lobby"; // TODO Override setter to update database.
@@ -45,11 +42,11 @@ public class Game extends Entry {
      * Completely new.
      */
     public Game(Database database, int code) {
-        for (int i = 0; i < 7; i++) {
-            this.questionEvaluation.add(new HashMap<>());
-        }
+
         this.database = database;
         database.getGames().add(this);
+        this.questions.add(new Question());
+        this.questions.add(new Question());
         this.gameCode = code;
         game = new Games(Integer.toString(code));
         game.setGame_state(gameState);

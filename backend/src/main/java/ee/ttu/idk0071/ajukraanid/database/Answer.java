@@ -13,10 +13,11 @@ public class Answer extends Entry {
     @Getter private final String text;
     @Getter @Setter private int points = 0;
 
-    public Answer(int id, Player player, String text) {
+    public Answer(int id, Player player, String text, Question question) {
         this.id = id;
         this.player = player;
         this.text = text;
+        question.getAnswers().add(this);
     }
 
     @Override

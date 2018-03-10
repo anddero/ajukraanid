@@ -10,12 +10,12 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class Question extends Entry {
     // inaccessible
-    private final int id; // private key
+    private final int id = 0; // private key
     // accessible
-    @Getter private final Player player; // foreign key
-    @Getter private final String text;
+    @Getter private final String text = "LEMME SMASH?"; // ganerate this text in questions constructor??????
     // referenced by
     @Getter private final ArrayList<Answer> answers = new ArrayList<>();
+    @Getter private final ArrayList<Evaluation> evaluations = new ArrayList<>();
 
     @Override
     protected Database getDatabase() {

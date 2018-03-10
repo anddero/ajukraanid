@@ -12,6 +12,7 @@ public class Player extends Entry {
     private Players player;
     // accessible
 
+    @Getter @Setter private int points = 0;     // IS TEMPORARY
     @Getter private final String name;
     @Getter @Setter private int questionNumber = 0;
 
