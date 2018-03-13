@@ -48,15 +48,12 @@ class GameController {
     String fetchState(int gameCode) throws JSONException {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
-            ArrayList<String> s = new ArrayList<>();
-            for (Player player : game.get().getPlayers()) {
-                s.add(new JSONObject()
-                        .put("name", player.getName()).toString());
-            }
+            JSONArray players = new JSONArray();
+            game.get().getPlayers().forEach(player -> players.put(player.toString()));
             return new JSONObject()
                     .put("Action", "FetchState")
                     .put("State", game.get().getGameState())
-                    .put("Data", s.toString()).toString();
+                    .put("Data", players).toString();
         }
         return fetchErrorState(gameCode, "Error", "No game found with game code: " + gameCode);
     }

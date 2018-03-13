@@ -3,13 +3,10 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Games;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
-import ee.ttu.idk0071.ajukraanid.database.sync.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.id.IncrementGenerator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Game extends Entry {
     // inaccessible
@@ -17,15 +14,13 @@ public class Game extends Entry {
     private Games game;
 
     // accessible
-    @Setter @Getter private ArrayList<Question> questions = new ArrayList<>();
-    @Setter @Getter private int questionNumber = 0;
-
     @Getter private final int gameCode;
     @Getter @Setter private String gameState = "Lobby"; // TODO Override setter to update database.
+    @Getter @Setter private int questionNumber = 0;
 
     // referenced by
     @Getter private ArrayList<Player> players = new ArrayList<>();
-//    @Getter private final Table<Question> questions = new Table<>();
+    @Getter private ArrayList<Question> questions = new ArrayList<>();
 
     /**
      * From an existing database entry.
@@ -34,23 +29,24 @@ public class Game extends Entry {
         this.database = database;
         database.getGames().add(this);
         this.game = game;
-        this.gameCode = Integer.valueOf(game.getGame_code());
+        this.gameCode = game.getGame_code();
         this.gameState = game.getGame_state();
+        this.questionNumber = game.getQuestion_number();
     }
 
     /**
      * Completely new.
      */
     public Game(Database database, int code) {
-
         this.database = database;
         database.getGames().add(this);
-        this.questions.add(new Question());
-        this.questions.add(new Question());
+        this.questions.add(new Question(getDatabase(), "LEMME SMASH?")); // TODO Remove
+        this.questions.add(new Question(getDatabase(), "LEMME SMASH?")); // TODO Remove
         this.gameCode = code;
-        game = new Games(Integer.toString(code));
+        game = new Games(code);
         game.setGame_state(gameState);
-        game = database.getGamesRepository().save(game); // TODO Thread?
+        game.setQuestion_number(questionNumber);
+        game = database.getGamesRepository().save(game);
     }
 
     /**
@@ -60,8 +56,9 @@ public class Game extends Entry {
     public Game(int code) {
         this.database = null;
         this.gameCode = code;
-        game = new Games(Integer.toString(code));
+        game = new Games(code);
         game.setGame_state(gameState);
+        game.setQuestion_number(questionNumber);
     }
 
     Games getGame() {

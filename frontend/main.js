@@ -10,8 +10,8 @@ var vm = new Vue({
     },
     methods: {
         addPlayersToList: function(word) {
+            console.log(word);
             this.items = word;
-            console.log(this.items);
         },
         getPlayers: function() {
             var makeAjaxDos = setInterval(function() {
@@ -29,15 +29,15 @@ var vm = new Vue({
                 }).then(res=>res.json())
                 .then(res =>
                 {
-                    var word1 = res.Data.substring(1, res.Data.length - 1);
-                    vm.addPlayersToList(word1.split(" ").join("").split(","));
+                    vm.addPlayersToList(res.Data);
+                    console.log(vm.items);
                     if (vm.items.length == 3) {
                         clearInterval(makeAjaxDos);
                         vm.tabNr = 6;
                     }
                 })
                 ;
-            }, 1000);
+            }, 300);
         },
         startGame: function(){
             var myObject = new Object();
@@ -59,7 +59,6 @@ var vm = new Vue({
                 console.log(res);
                 if (res.State == "Error") {
                     this.tabNr = 4;
-                    console.log("some error")
                 } else {
                     var playerName = document.getElementById("name").value;
                     this.tabNr = 5;

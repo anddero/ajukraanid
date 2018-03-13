@@ -11,10 +11,10 @@ public class Player extends Entry {
     private final Game game;
     private Players player;
     // accessible
-
-    @Getter @Setter private int points = 0;     // IS TEMPORARY
     @Getter private final String name;
     @Getter @Setter private int questionNumber = 0;
+    // temporary
+    @Getter @Setter private int points = 0;     // TODO IS TEMPORARY
 
     // methods
 
@@ -39,7 +39,7 @@ public class Player extends Entry {
         player = new Players(name);
         player.setGame_id(game.getGame().getGame_id());
         player.setQuestion_number(questionNumber);
-        player = game.getDatabase().getPlayersRepository().save(player); // TODO Thread?
+        player = game.getDatabase().getPlayersRepository().save(player);
     }
 
     /**
