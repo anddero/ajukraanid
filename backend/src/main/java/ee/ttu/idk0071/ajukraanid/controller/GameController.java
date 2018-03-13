@@ -167,13 +167,18 @@ class GameController {
     String getTotalPlayerPointStatistics(int gameCode) {
         JSONObject json = new JSONObject();
         HashMap<String, Integer> playerAndPointsThatHeHas = new HashMap<>();
+        JSONArray jsonArray = new JSONArray();
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
             for (Player player : game.get().getPlayers()) {
-                    playerAndPointsThatHeHas.put(player.getName(), player.getPoints());
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("name", player.getName());
+                jsonObject.put("points", player.getPoints());
+                jsonArray.put(jsonObject);
             }
         }
-        return fetchErrorState(gameCode, "Points", new JSONObject(playerAndPointsThatHeHas).toString());
+
+        return fetchErrorState(gameCode, "Points", jsonArray);
     }
 
 
