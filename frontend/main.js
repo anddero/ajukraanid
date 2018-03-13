@@ -10,12 +10,8 @@ var vm = new Vue({
     },
     methods: {
         addPlayersToList: function(word) {
-            for (var i = 0; i < word.length; i++) {
-                var itemsName = JSON.parse(word[i]).name;
-                if (!this.items.includes(itemsName)) {
-                    this.items.push(itemsName);
-                }
-            }
+            console.log(word);
+            this.items = word;
         },
         getPlayers: function() {
             var makeAjaxDos = setInterval(function() {
@@ -33,9 +29,8 @@ var vm = new Vue({
                 }).then(res=>res.json())
                 .then(res =>
                 {
-                    console.log(res);
-                    var word1 = res.Data.substring(1, res.Data.length - 1);
-                    vm.addPlayersToList(word1.split(","));
+                    vm.addPlayersToList(res.Data);
+                    console.log(vm.items);
                     if (vm.items.length == 3) {
                         clearInterval(makeAjaxDos);
                         vm.tabNr = 6;
