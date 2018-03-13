@@ -13,13 +13,14 @@ public class Games {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter private Integer game_id;
-    @Getter private String game_code;
+    @Getter private Integer game_code;
     @Getter @Setter private String game_state;
+    @Getter @Setter private Integer question_number;
 
     private Games() {
     }
 
-    public Games(String code) {
+    public Games(Integer code) {
         game_code = code;
     }
 }
