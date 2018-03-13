@@ -23,7 +23,7 @@ public class RestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST, value = "" )
-    public String getHTTPBody(@RequestBody String request) throws JSONException {
+    public String getHTTPBody(@RequestBody String request) throws JSONException, InterruptedException {
         JSONObject obj = new JSONObject(request);
         String action = obj.get("Action").toString();
         if (Objects.equals(action, "CreateGame")) {

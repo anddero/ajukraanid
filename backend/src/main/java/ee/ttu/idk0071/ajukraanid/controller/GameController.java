@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Component
 class GameController {
     private final Database database;
+    ExecutorService executor = Executors.newFixedThreadPool(10);
 
     @Autowired
     private GameController(Database database) {
@@ -80,10 +83,10 @@ class GameController {
      * @param gameCode the unique code to each game
      * @return the game state, if it is in lobby then return the list of player names.
      */
-    String startGame(int gameCode) {
+    String startGame(int gameCode) throws InterruptedException {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
-            game.get().setGameState("Question");
+            executor.submit(new GameRunner(game.get()));
             return fetchState(gameCode);
         }
         return fetchErrorState(gameCode, "Error", "Was not able to start the game because such game was not found.");
@@ -228,6 +231,10 @@ class GameController {
             Optional<Player> playerOptional = findPlayer(gameOptional.get(), playername);
             playerOptional.ifPresent(player -> gameOptional.get().getPlayers().remove(player));
         } return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+    }
+
+    String getStatus() {
+        return "Question";
     }
 
     String getQuestion(int code) {
