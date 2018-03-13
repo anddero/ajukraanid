@@ -57,8 +57,12 @@ var vm = new Vue({
             .then(res =>
             {
                 console.log(res);
-                if (res.State == "Error") {
+                if (res.State == "Error" && res.Data.substring(0, (res.Data.length - 5)) == "Did not find such game with game code:") {
                     this.tabNr = 4;
+                    console.log("Gamecode error");
+                } else if (res.State == "Error" && res.Data == "Such username is already taken."){
+                    this.tabNr = 7;
+                    console.log("Username error");
                 } else {
                     var playerName = document.getElementById("name").value;
                     this.tabNr = 5;
