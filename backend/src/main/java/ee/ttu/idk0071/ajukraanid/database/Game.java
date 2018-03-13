@@ -40,8 +40,8 @@ public class Game extends Entry {
     public Game(Database database, int code) {
         this.database = database;
         database.getGames().add(this);
-        this.questions.add(new Question()); // TODO Remove
-        this.questions.add(new Question()); // TODO Remove
+        this.questions.add(new Question(getDatabase(), "LEMME SMASH?")); // TODO Remove
+        this.questions.add(new Question(getDatabase(), "LEMME SMASH?")); // TODO Remove
         this.gameCode = code;
         game = new Games(code);
         game.setGame_state(gameState);
