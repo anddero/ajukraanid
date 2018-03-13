@@ -42,6 +42,10 @@ public class RestController {
             return gameController.getTotalPlayerPointStatistics(obj.getInt("Code"));
         } else if (Objects.equals(action, "GetAnswers")) {
             return gameController.getAnswers(obj.getInt("Code"),  obj.getInt("Question number"));
+        } else if (Objects.equals(action, "RemovePlayer")) {
+            return gameController.removePlayerFromGame(obj.getInt("Code"), obj.get("Name").toString());
+        } else if (Objects.equals(action, "GetQuestion")) {
+            return gameController.getQuestion(obj.getInt("Code"));
         }
         return "400 check your body parameters.";
     }

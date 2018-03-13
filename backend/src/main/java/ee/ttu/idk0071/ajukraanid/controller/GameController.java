@@ -1,6 +1,7 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
 import ee.ttu.idk0071.ajukraanid.database.*;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ class GameController {
                 .put("Data", errorData).toString();
     }
 
+    String fetchErrorState(int gameCode, String state, Object json) throws JSONException {
+        return new JSONObject()
+                .put("Action", "FetchState")
+                .put("State", state)
+                .put("Data", json).toString();
+    }
 
     String fetchState(int gameCode) throws JSONException {
         Optional<Game> game = findActiveGame(gameCode);
@@ -116,12 +123,7 @@ class GameController {
     /**
      * @param game Game object that is operated with, it will never be NULL.
      * @return return a list of players OR the current question.
-     */
-    private String getData(Game game) {
-        if (Objects.equals(game.getGameState(), "Lobby")) {
-            return game.getPlayers().toString();
-        } else return "{“Number”:”2”,“Question”:“Que pikk question?”}";
-    }
+
 
 //    /**
 //     * @param game       Game object that WILL never be NULL.
@@ -146,11 +148,15 @@ class GameController {
         if (game.isPresent()) {
             Game gameObj = game.get();
             Question question = gameObj.getQuestions().get(game.get().getQuestionNumber());
+
             ArrayList<Evaluation> evaluations = question.getEvaluations();
+
             boolean personHasEvaluated = evaluations.stream()
                     .anyMatch(evaluation -> evaluation.getGiver().getName().equals(giver));
+
             Player player = findPlayer(gameObj, target).get();
             Player player1 = findPlayer(gameObj, giver).get();
+
             if (!personHasEvaluated) {
                 new Evaluation(player1, player, question);
                 return fetchErrorState(gameCode, "Success", "Your points were given to " + target);
@@ -178,12 +184,17 @@ class GameController {
     String getAnswers(int gameCode, int questionNumber) {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
+            JSONArray questions = new JSONArray();
             Question question = game.get().getQuestions().get(questionNumber);
-            JSONObject data = new JSONObject();
+
             for (Answer a : question.getAnswers()) {
-                data.put(a.getPlayer().getName(), a.getText());
+                JSONObject data = new JSONObject();
+                data.put("name", a.getPlayer().getName());
+                data.put("answer", a.getText());
+                questions.put(data);
             }
-            return fetchErrorState(gameCode, "GetAnswers", data.toString());
+
+            return fetchErrorState(gameCode, "GetAnswers", questions);
         } return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
     }
 
@@ -192,11 +203,11 @@ class GameController {
     String submitAnswer(int gameCode, int questionNumber, String answerer, String answer) {
         Optional<Game> game = findActiveGame(gameCode);
         if (!suchPlayerExistsInGame(gameCode, answerer)) {
-            return fetchErrorState(gameCode, "Error", "Wrong username was given");
+            return fetchErrorState(gameCode, "Error", "Wrong username was given"); // TODO Move conditions checks to a Guardian class
         }
-        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
-            return fetchErrorState(gameCode, "Error", "Question number does not match he current games' state");
-        }
+//        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
+//            return fetchErrorState(gameCode, "Error", "Question number does not match he current games' state");
+//        }
         if (game.isPresent()) {
            boolean hasAnswered = game.get().getQuestions().get(questionNumber).getAnswers().stream()
                    .anyMatch(answer1 -> answer1.getPlayer().getName().equals(answerer));
@@ -209,4 +220,19 @@ class GameController {
         return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
     }
 
+    String removePlayerFromGame(int gameCode, String playername) {
+        Optional<Game> gameOptional = findActiveGame(gameCode);
+        if (gameOptional.isPresent()) {
+            Optional<Player> playerOptional = findPlayer(gameOptional.get(), playername);
+            playerOptional.ifPresent(player -> gameOptional.get().getPlayers().remove(player));
+        } return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+    }
+
+    String getQuestion(int code) {
+        Optional<Game> gameOptional = findActiveGame(code);
+        if (gameOptional.isPresent()) {
+            return fetchErrorState(code, "GetQuestion", gameOptional.get().getQuestions().get(gameOptional.get().getQuestionNumber()).getText());
+        }
+        return fetchErrorState(code, "Error", "Unknown error");
+    }
 }
