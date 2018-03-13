@@ -87,7 +87,7 @@ Join Existing Game + Insert Name
 	- Client: 	
 	    - {"Action":"JoinGame", "Code":"8712","Name":"blabla"}
 	- Server: 	     Fetch State response OR Error
-        - {"Action":"FetchState","State":"Lobby","Data":"[{\"name\":\"Andero\"}]"}
+        - {"Action":"FetchState","State":"Lobby","Data":["Nils","Emil","Aivar","Andero"]}
         - {"Action":"FetchState","State":"Error","Data":"Such username is already taken."}
 	    - {"Action":"FetchState","State":"Error","Data":"Did not find such game with game code: 8712"}
 
@@ -95,19 +95,19 @@ Join Existing Game + Insert Name
 Fetch State (Background process)
 
 	- Client: 	
-	    - {“Action”:”FetchState”, “GameCode”:”1234”}
+	    - {"Action":"FetchState", "GameCode":"1234"}
 	- Server:
-	    - {"Action":"FetchState","State":"Lobby","Data":"[{\"name\":\"Andero\"}, {\"name\":\"Nils\"}, {\"name\":\"Aivar\"}]"}
+	    - {"Action":"FetchState","State":"Lobby","Data":["Nils","Emil"]}
 	    - {"Action":"FetchState","State":"Error","Data":"Did not find such game with game code: 1574"}
 
 
 Grading: everyone is grading answers to the previous question
       
     - Client:
-        - {"Action": "GivePoints", "Code": "1734", "Question number": "1", "Name": "Nils","Target": "Aivar"}
+        - {"Action": "GivePoints", "Code": "1734", "Question number": "1", "Name": "Nils", "Target": "Aivar"}
     - Server: 
+        - {"Action":"FetchState","State":"Success","Data":"Your points were given to Aivar"} 
         - {"Action":"FetchState","State":"Error","Data":"Question number does not match he current games' state"}
-        - {"Action":"FetchState","State":"Success","Data":"Your points were given to Nils"} 
         - {"Action":"FetchState","State":"Error","Data":"Can not give points, beacause you allready gave points"}
         - {"Action":"FetchState","State":"Error","Data":"You can not give points to yourself"}
 
@@ -116,7 +116,8 @@ Score: inimesed näevad kogu mängu tulemusi
     - Client
         - {"Action":"GetPoints", "Code": "1642"}
     - Server
-        - {"Action":"FetchState","State":"Points","Data":"{Andero=0, Nils=0, Aivar=100}"}
+        - {"Action":"FetchState","State":"Points","Data":[{"name":"Nils","points":0},{"name":"Emil","points":0},
+                                           {"name":"Aivar","points":0},{"name":"Andero","points":0}]}
     
 Begin Game
 
@@ -128,9 +129,13 @@ Begin Game
 Insert Answer - player answers a question with a custom answer
 
 	- Client:	
-	    - {"Action":"SubmitAnswer","Name": "Porgand","Question number": “6”,"Answer": "Cuz im black"}
+	    - {"Action":"SubmitAnswer","Name": "Porgand","Question number": "6","Answer": "Cuz im black"}
 	- Server: 
-	    - default OK HTTP response (no message, no json, no no)
+	    - {"Action":"FetchState","State":"Success","Data":"Your answer was submitted."}
 	
-Question: everyone is answering a question
-    - QUESTION LOGIC IS NOT IMPLEMENTED YET.
+Query Answer - get all the answers
+    
+    - Client:
+        - {"Action":"GetAnswers","Code": "1152","Question number": "6"}
+    - Server:
+        - {"Action":"FetchState","State":"GetAnswers","Data":[{"answer":"ABC","name":"Andero"},{"answer":"CDE","name":"Nils"}]}
