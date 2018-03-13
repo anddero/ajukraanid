@@ -2,16 +2,14 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Questions;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
-import ee.ttu.idk0071.ajukraanid.database.sync.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 
 public class Question extends Entry {
     // inaccessible
-    private final Database database;
-    private Questions question;
+    @Getter private final Game game;
+    @Getter private Questions question;
     // accessible
     @Getter private final String text;
     // referenced by
@@ -21,9 +19,9 @@ public class Question extends Entry {
     /**
      * From an existing database entry.
      */
-    Question(Database database, Questions question) {
-        this.database = database;
-        database.getQuestions().add(this);
+    Question(Game game, Questions question) {
+        this.game = game;
+        game.getQuestions().add(this);
         this.question = question;
         this.text = question.getText();
     }
@@ -31,16 +29,16 @@ public class Question extends Entry {
     /**
      * Completely new.
      */
-    public Question(Database database, String text) {
-        this.database = database;
-        database.getQuestions().add(this);
+    public Question(Game game, String text) {
+        this.game = game;
+        game.getQuestions().add(this);
         this.text = text;
         question = new Questions(text);
-        question = database.getQuestionsRepository().save(question);
+        question = getDatabase().getQuestionsRepository().save(question);
     }
 
     @Override
     protected Database getDatabase() {
-        throw new UnsupportedOperationException("Partially implemented class definition");
+        return game.getDatabase();
     }
 }

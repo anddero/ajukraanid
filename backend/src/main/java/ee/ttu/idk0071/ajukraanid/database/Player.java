@@ -2,17 +2,15 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Players;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
-import ee.ttu.idk0071.ajukraanid.database.sync.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Player extends Entry {
     // inaccessible
     private final Game game;
-    private Players player;
+    @Getter private Players player;
     // accessible
     @Getter private final String name;
-    @Getter @Setter private int questionNumber = 0;
     // temporary
     @Getter @Setter private int points = 0;     // TODO IS TEMPORARY
 
@@ -26,7 +24,6 @@ public class Player extends Entry {
         game.getPlayers().add(this);
         this.player = player;
         this.name = player.getPlayer_name();
-        this.questionNumber = player.getQuestion_number();
     }
 
     /**
@@ -38,7 +35,6 @@ public class Player extends Entry {
         this.name = name;
         player = new Players(name);
         player.setGame_id(game.getGame().getGame_id());
-        player.setQuestion_number(questionNumber);
         player = game.getDatabase().getPlayersRepository().save(player);
     }
 
@@ -50,7 +46,6 @@ public class Player extends Entry {
         this.game = null;
         this.name = name;
         player = new Players(name);
-        player.setQuestion_number(questionNumber);
     }
 
     @Override

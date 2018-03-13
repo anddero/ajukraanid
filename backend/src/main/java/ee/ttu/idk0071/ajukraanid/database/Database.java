@@ -1,8 +1,6 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
-import ee.ttu.idk0071.ajukraanid.database.internal.GamesRepository;
-import ee.ttu.idk0071.ajukraanid.database.internal.PlayersRepository;
-import ee.ttu.idk0071.ajukraanid.database.internal.QuestionsRepository;
+import ee.ttu.idk0071.ajukraanid.database.internal.*;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +13,24 @@ public class Database extends Entry {
     // inaccessible internal repositories
     private final GamesRepository gamesRepository;
     private final PlayersRepository playersRepository;
+    private final PlainQuestionsRepository plainQuestionsRepository;
     private final QuestionsRepository questionsRepository;
+    private final AnswersRepository answersRepository;
+    private final EvaluationsRepository evaluationsRepository;
 
     // accessible members
     @Getter private final ArrayList<Game> games = new ArrayList<>(); // all the game sessions
-    @Getter private final ArrayList<Question> questions = new ArrayList<>(); // all questions
+    @Getter private final ArrayList<PlainQuestion> plainQuestions = new ArrayList<>(); // all questions
 
     @Autowired
-    private Database(GamesRepository gamesRepository, PlayersRepository playersRepository, QuestionsRepository questionsRepository) {
+    private Database(GamesRepository gamesRepository, PlayersRepository playersRepository, PlainQuestionsRepository
+            plainQuestionsRepository, QuestionsRepository questionsRepository, AnswersRepository answersRepository, EvaluationsRepository evaluationsRepository) {
         this.gamesRepository = gamesRepository;
         this.playersRepository = playersRepository;
+        this.plainQuestionsRepository = plainQuestionsRepository;
         this.questionsRepository = questionsRepository;
+        this.answersRepository = answersRepository;
+        this.evaluationsRepository = evaluationsRepository;
         loadDatabaseEntries();
         System.out.println("Finished loading database entries...");
         System.out.println(games.size() + " games");
@@ -33,10 +38,10 @@ public class Database extends Entry {
             System.out.println("\t" + game.getGameCode() + " " + game.getGameState() + " (" + game.getPlayers().size
                     () + " players)");
             game.getPlayers()
-                    .forEach(player -> System.out.println("\t\t" + player.getName() + "\t" + player.getQuestionNumber()));
+                    .forEach(player -> System.out.println("\t\t" + player.getName()));
         });
-        System.out.println(questions.size() + " questions");
-        questions.forEach(question -> System.out.println("\t" + question.getText()));
+        System.out.println(plainQuestions.size() + " questions");
+        plainQuestions.forEach(question -> System.out.println("\t" + question.getText()));
     }
 
     private void loadDatabaseEntries() {
@@ -50,8 +55,8 @@ public class Database extends Entry {
                         }
                     });
                 });
-        questionsRepository.findAll()
-                .forEach(question -> new Question(this, question));
+        plainQuestionsRepository.findAll()
+                .forEach(question -> new PlainQuestion(this, question));
     }
 
     GamesRepository getGamesRepository() {
@@ -62,8 +67,20 @@ public class Database extends Entry {
         return playersRepository;
     }
 
+    PlainQuestionsRepository getPlainQuestionsRepository() {
+        return plainQuestionsRepository;
+    }
+
     QuestionsRepository getQuestionsRepository() {
         return questionsRepository;
+    }
+
+    AnswersRepository getAnswersRepository() {
+        return answersRepository;
+    }
+
+    EvaluationsRepository getEvaluationsRepository() {
+        return evaluationsRepository;
     }
 
     @Override

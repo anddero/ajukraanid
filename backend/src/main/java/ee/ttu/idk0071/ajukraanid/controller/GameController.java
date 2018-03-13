@@ -155,7 +155,7 @@ class GameController {
             Player player1 = findPlayer(gameObj, giver).get();
 
             if (!personHasEvaluated) {
-                new Evaluation(player1, player, question);
+                new Evaluation(question, player1, player);
                 return fetchErrorState(gameCode, "Success", "Your points were given to " + target);
             } else return fetchErrorState(gameCode, "Error", "Can not give points, because you already gave points");
 
@@ -210,7 +210,7 @@ class GameController {
                    .anyMatch(answer1 -> answer1.getPlayer().getName().equals(answerer));
            if (!hasAnswered) {
                Optional<Player> player = findPlayer(game.get(), answerer);
-               new Answer(1 ,player.get(), answer, game.get().getQuestions().get(questionNumber));
+               new Answer(game.get().getQuestions().get(questionNumber), player.get(), answer);
                return fetchErrorState(gameCode, "Success", "Your answer was submitted.");
            } else return fetchErrorState(gameCode, "Error", "You already answered the question");
         }
