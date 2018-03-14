@@ -4,13 +4,13 @@ import ee.ttu.idk0071.ajukraanid.database.internal.Evaluations;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import lombok.Getter;
 
-public class Evaluation extends Entry {
+public final class Evaluation extends Entry {
     // inaccessible
     private final Question question;
     private Evaluations evaluation;
     // accessible
     @Getter private final Player giver;
-    @Getter private final Player target; // TODO Fix to answer
+    @Getter private final Player target;
 
     /**
      * From existing database entry.
@@ -37,8 +37,9 @@ public class Evaluation extends Entry {
                 target.getPlayer().getId());
         this.giver = giver;
         this.target = target;
-        target.setPoints(target.getPoints() + 100); // TODO temp stuff
         evaluation = getDatabase().getEvaluationsRepository().save(evaluation);
+
+        target.setPoints(target.getPoints() + 100); // TODO temp stuff
     }
 
     @Override

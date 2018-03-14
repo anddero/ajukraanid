@@ -5,13 +5,13 @@ import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Player extends Entry {
+public final class Player extends Entry {
     // inaccessible
     private final Game game;
-    @Getter private Players player;
+    private Players player;
     // accessible
     @Getter private final String name;
-    // temporary
+
     @Getter @Setter private int points = 0;     // TODO IS TEMPORARY
 
     // methods
@@ -32,9 +32,8 @@ public class Player extends Entry {
     public Player(Game game, String name) {
         this.game = game;
         game.getPlayers().add(this);
+        player = new Players(game.getGame().getId(), name);
         this.name = name;
-        player = new Players(name);
-        player.setGameId(game.getGame().getId());
         player = game.getDatabase().getPlayersRepository().save(player);
     }
 
@@ -44,8 +43,12 @@ public class Player extends Entry {
      */
     public Player(String name) {
         this.game = null;
+        player = new Players((long) -1, name);
         this.name = name;
-        player = new Players(name);
+    }
+
+    Players getPlayer() {
+        return player;
     }
 
     @Override

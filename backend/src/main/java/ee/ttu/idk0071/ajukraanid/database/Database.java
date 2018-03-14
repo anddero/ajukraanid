@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
-public class Database extends Entry {
+public final class Database extends Entry {
     // inaccessible internal repositories
     private final GamesRepository gamesRepository;
     private final PlayersRepository playersRepository;
@@ -23,8 +23,9 @@ public class Database extends Entry {
     @Getter private final ArrayList<PlainQuestion> plainQuestions = new ArrayList<>(); // all questions
 
     @Autowired
-    private Database(GamesRepository gamesRepository, PlayersRepository playersRepository, PlainQuestionsRepository
-            plainQuestionsRepository, QuestionsRepository questionsRepository, AnswersRepository answersRepository, EvaluationsRepository evaluationsRepository) {
+    private Database(GamesRepository gamesRepository, PlayersRepository playersRepository,
+                     PlainQuestionsRepository plainQuestionsRepository, QuestionsRepository questionsRepository,
+                     AnswersRepository answersRepository, EvaluationsRepository evaluationsRepository) {
         this.gamesRepository = gamesRepository;
         this.playersRepository = playersRepository;
         this.plainQuestionsRepository = plainQuestionsRepository;
@@ -33,15 +34,7 @@ public class Database extends Entry {
         this.evaluationsRepository = evaluationsRepository;
         loadDatabaseEntries();
         System.out.println("Finished loading database entries...");
-        System.out.println(games.size() + " games");
-        games.forEach(game -> {
-            System.out.println("\t" + game.getGameCode() + " " + game.getGameState() + " (" + game.getPlayers().size
-                    () + " players)");
-            game.getPlayers()
-                    .forEach(player -> System.out.println("\t\t" + player.getName()));
-        });
-        System.out.println(plainQuestions.size() + " questions");
-        plainQuestions.forEach(question -> System.out.println("\t" + question.getText()));
+        printDatabaseEntries();
     }
 
     private void loadDatabaseEntries() {
@@ -57,6 +50,18 @@ public class Database extends Entry {
                 });
         plainQuestionsRepository.findAll()
                 .forEach(question -> new PlainQuestion(this, question));
+    }
+
+    private void printDatabaseEntries() {
+        System.out.println(games.size() + " games");
+        games.forEach(game -> {
+            System.out.println("\t" + game.getGameCode() + " " + game.getGameState() + " (" + game.getPlayers().size
+                    () + " players)");
+            game.getPlayers()
+                    .forEach(player -> System.out.println("\t\t" + player.getName()));
+        });
+        System.out.println(plainQuestions.size() + " questions");
+        plainQuestions.forEach(question -> System.out.println("\t" + question.getText()));
     }
 
     GamesRepository getGamesRepository() {

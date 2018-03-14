@@ -6,10 +6,10 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-public class Question extends Entry {
+public final class Question extends Entry {
     // inaccessible
-    @Getter private final Game game;
-    @Getter private Questions question;
+    private final Game game;
+    private Questions question;
     // accessible
     @Getter private final String text;
     // referenced by
@@ -32,9 +32,17 @@ public class Question extends Entry {
     public Question(Game game, String text) {
         this.game = game;
         game.getQuestions().add(this);
-        this.text = text;
         question = new Questions(text);
+        this.text = text;
         question = getDatabase().getQuestionsRepository().save(question);
+    }
+
+    Game getGame() {
+        return game;
+    }
+
+    Questions getQuestion() {
+        return question;
     }
 
     @Override

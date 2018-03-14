@@ -6,7 +6,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-public class PlainQuestion extends Entry {
+public final class PlainQuestion extends Entry {
     // inaccessible
     private final Database database;
     private PlainQuestions question;
@@ -29,8 +29,8 @@ public class PlainQuestion extends Entry {
     public PlainQuestion(Database database, String text) {
         this.database = database;
         database.getPlainQuestions().add(this);
-        this.text = text;
         question = new PlainQuestions(text);
+        this.text = text;
         question = database.getPlainQuestionsRepository().save(question);
     }
 

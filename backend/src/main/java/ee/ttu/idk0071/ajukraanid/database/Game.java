@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-public class Game extends Entry {
+public final class Game extends Entry {
     // inaccessible
     private final Database database;
     private Games game;
@@ -40,13 +40,14 @@ public class Game extends Entry {
     public Game(Database database, int code) {
         this.database = database;
         database.getGames().add(this);
-        this.questions.add(new Question(this, "LEMME SMASH?")); // TODO Remove
-        this.questions.add(new Question(this, "LEMME SMASH?")); // TODO Remove
-        this.gameCode = code;
         game = new Games(code);
+        this.gameCode = code;
         game.setState(gameState);
         game.setQuestionNumber(questionNumber);
         game = database.getGamesRepository().save(game);
+
+        this.questions.add(new Question(this, "LEMME SMASH?")); // TODO Remove
+        this.questions.add(new Question(this, "LEMME SMASH?")); // TODO Remove
     }
 
     /**

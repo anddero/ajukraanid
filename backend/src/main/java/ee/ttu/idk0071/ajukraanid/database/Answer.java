@@ -5,9 +5,9 @@ import ee.ttu.idk0071.ajukraanid.database.internal.Answers;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import lombok.Getter;
 
-public class Answer extends Entry {
+public final class Answer extends Entry {
     // inaccessible
-    private Question question;
+    private final Question question;
     private Answers answer;
     // accessible
     @Getter private final Player player;
