@@ -7,8 +7,32 @@ var vm = new Vue({
         newName: "",
         items: [
         ],
+        question: "",
     },
     methods: {
+        getQuestions: function() {
+            var myObject = new Object();
+            myObject.Action = "GetQuestion";
+            myObject.Code = document.getElementById("gamenumber").innerHTML;
+            console.log(myObject);
+            fetch('http://localhost:8080', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(myObject)              
+            }).then(res=>res.json())
+            .then(res =>
+            {
+                vm.setQuestion(res);
+                console.log(res.Data);
+            })
+            ;
+        },
+        setQuestion: function(response) {
+            this.question = response.Data;
+        },
         addPlayersToList: function(word) {
             console.log(word);
             this.items = word;
@@ -34,6 +58,7 @@ var vm = new Vue({
                     if (vm.items.length == 3) {
                         clearInterval(makeAjaxDos);
                         vm.tabNr = 6;
+                        vm.getQuestions();
                     }
                 })
                 ;
