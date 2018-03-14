@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class Game extends Entry {
     // inaccessible
@@ -20,7 +23,7 @@ public final class Game extends Entry {
 
     // referenced by
     @Getter private ArrayList<Player> players = new ArrayList<>();
-    @Getter private ArrayList<Question> questions = new ArrayList<>();
+    @Getter private List<Question> questions = new ArrayList<>();
 
     /**
      * From an existing database entry.
@@ -50,6 +53,8 @@ public final class Game extends Entry {
         this.questions.add(new Question(this, "Name something Donal Trump would say to Vladimr Putin?")); // TODO Remove
         this.questions.add(new Question(this, "On a scale from squirrel to whale, how liberal is Russia?")); // TODO Remove
         this.questions.add(new Question(this, "What did Johns mom tell him after he passed out drunk on the sofa?")); // TODO Remove
+        this.questions = questions.stream().distinct().collect(Collectors.toList());
+        System.out.println(this.questions.toString());
     }
 
     /**

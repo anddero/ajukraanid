@@ -15,11 +15,14 @@ public class GameRunner implements Runnable {
         this.game.setGameState("question");
         Thread.sleep(25000);
         this.game.setGameState("chooseBestAnswer");
+
         Thread.sleep(25000);
+        this.game.setQuestionNumber(game.getQuestionNumber() + 1);
+        System.out.println(this.game.getQuestionNumber());
         this.game.setGameState("awarding");
+
         Thread.sleep(25000);
         if (questionsLeft > 0) {
-            game.setQuestionNumber(game.getQuestionNumber() + 1);
             questionsLeft--;
             runRound();
         } else game.setGameState("ended");
