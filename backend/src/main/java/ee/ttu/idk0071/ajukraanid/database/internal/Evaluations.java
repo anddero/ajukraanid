@@ -8,18 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Evaluations { // TODO All id-s to Long
+public class Evaluations {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter private Integer id;
-    @Getter private Integer questionId;
-    @Getter private Integer giverId;
-    @Getter private Integer targetId;
+    @Getter private Long id;
+    @Getter private Long questionId;
+    @Getter private Long giverId;
+    @Getter private Long targetId;
 
     private Evaluations() {
     }
 
-    public Evaluations(Integer questionId, Integer giverId, Integer targetId) {
+    public Evaluations(Long questionId, Long giverId, Long targetId) {
         this.questionId = questionId;
         this.giverId = giverId;
         this.targetId = targetId;

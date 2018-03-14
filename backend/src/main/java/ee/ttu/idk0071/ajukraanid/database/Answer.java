@@ -20,7 +20,7 @@ public class Answer extends Entry {
         this.question = question;
         question.getAnswers().add(this);
         this.answer = answer;
-        this.player = question.getGame().getPlayers().stream().filter(player -> player.getPlayer().getPlayer_id()
+        this.player = question.getGame().getPlayers().stream().filter(player -> player.getPlayer().getId()
                 .equals(answer.getPlayerId())).findAny().orElseThrow(() -> new RuntimeException("Player with id " +
                 answer.getPlayerId() + " not found, database is broken ;(")); // TODO WTF
         this.text = question.getText();
@@ -32,7 +32,7 @@ public class Answer extends Entry {
     public Answer(Question question, Player player, String text) {
         this.question = question;
         question.getAnswers().add(this);
-        answer = new Answers(question.getQuestion().getId(), player.getPlayer().getPlayer_id(), text);
+        answer = new Answers(question.getQuestion().getId(), player.getPlayer().getId(), text);
         this.player = player;
         this.text = text;
         answer = getDatabase().getAnswersRepository().save(answer);

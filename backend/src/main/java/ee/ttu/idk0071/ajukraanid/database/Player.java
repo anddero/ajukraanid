@@ -23,7 +23,7 @@ public class Player extends Entry {
         this.game = game;
         game.getPlayers().add(this);
         this.player = player;
-        this.name = player.getPlayer_name();
+        this.name = player.getName();
     }
 
     /**
@@ -34,7 +34,7 @@ public class Player extends Entry {
         game.getPlayers().add(this);
         this.name = name;
         player = new Players(name);
-        player.setGame_id(game.getGame().getGame_id());
+        player.setGameId(game.getGame().getId());
         player = game.getDatabase().getPlayersRepository().save(player);
     }
 

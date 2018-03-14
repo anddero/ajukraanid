@@ -12,15 +12,15 @@ import javax.persistence.Id;
 public class Games {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter private Integer game_id;
-    @Getter private Integer game_code;
-    @Getter @Setter private String game_state;
-    @Getter @Setter private Integer question_number;
+    @Getter private Long id;
+    @Getter private Integer code;
+    @Getter @Setter private String state;
+    @Getter @Setter private Integer questionNumber;
 
     private Games() {
     }
 
     public Games(Integer code) {
-        game_code = code;
+        this.code = code;
     }
 }

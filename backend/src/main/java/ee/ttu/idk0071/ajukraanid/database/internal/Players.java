@@ -1,7 +1,6 @@
 package ee.ttu.idk0071.ajukraanid.database.internal;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,14 +11,15 @@ import javax.persistence.Id;
 public class Players {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter private Integer player_id;
-    @Getter private String player_name;
-    @Getter @Setter private Integer game_id;
+    @Getter private Long id;
+    @Getter private Long gameId;
+    @Getter private String name;
 
     private Players() {
     }
 
-    public Players(String name) {
-        player_name = name;
+    public Players(Long gameId, String name) {
+        this.gameId = gameId;
+        this.name = name;
     }
 }

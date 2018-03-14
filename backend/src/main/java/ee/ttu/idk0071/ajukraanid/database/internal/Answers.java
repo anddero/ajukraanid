@@ -11,15 +11,15 @@ import javax.persistence.Id;
 public class Answers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter private Integer id;
-    @Getter private Integer questionId;
-    @Getter private Integer playerId;
+    @Getter private Long id;
+    @Getter private Long questionId;
+    @Getter private Long playerId;
     @Getter private String text;
 
     private Answers() {
     }
 
-    public Answers(Integer questionId, Integer playerId, String text) {
+    public Answers(Long questionId, Long playerId, String text) {
         this.questionId = questionId;
         this.playerId = playerId;
         this.text = text;

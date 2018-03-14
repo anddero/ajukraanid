@@ -50,7 +50,7 @@ public class Database extends Entry {
         playersRepository.findAll()
                 .forEach(player -> {
                     games.forEach(game -> {
-                        if (player.getGame_id().equals(game.getGame().getGame_id())) {
+                        if (player.getGameId().equals(game.getGame().getId())) {
                             new Player(game, player);
                         }
                     });

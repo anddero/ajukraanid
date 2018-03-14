@@ -29,9 +29,9 @@ public class Game extends Entry {
         this.database = database;
         database.getGames().add(this);
         this.game = game;
-        this.gameCode = game.getGame_code();
-        this.gameState = game.getGame_state();
-        this.questionNumber = game.getQuestion_number();
+        this.gameCode = game.getCode();
+        this.gameState = game.getState();
+        this.questionNumber = game.getQuestionNumber();
     }
 
     /**
@@ -44,8 +44,8 @@ public class Game extends Entry {
         this.questions.add(new Question(this, "LEMME SMASH?")); // TODO Remove
         this.gameCode = code;
         game = new Games(code);
-        game.setGame_state(gameState);
-        game.setQuestion_number(questionNumber);
+        game.setState(gameState);
+        game.setQuestionNumber(questionNumber);
         game = database.getGamesRepository().save(game);
     }
 
@@ -57,8 +57,8 @@ public class Game extends Entry {
         this.database = null;
         this.gameCode = code;
         game = new Games(code);
-        game.setGame_state(gameState);
-        game.setQuestion_number(questionNumber);
+        game.setState(gameState);
+        game.setQuestionNumber(questionNumber);
     }
 
     Games getGame() {
