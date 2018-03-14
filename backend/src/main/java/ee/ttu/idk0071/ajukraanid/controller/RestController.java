@@ -35,13 +35,13 @@ public class RestController {
         } else if (Objects.equals(action, "FetchState")) {
             return gameController.fetchState(obj.getInt("Code"));
         } else if (Objects.equals(action, "SubmitAnswer")) {
-            return gameController.submitAnswer(obj.getInt("Code"), obj.getInt("Question number"), obj.get("Name").toString(), obj.get("Answer").toString());
+            return gameController.submitAnswer(obj.getInt("Code"), obj.get("Name").toString(), obj.get("Answer").toString());
         } else if (Objects.equals(action, "GivePoints")) {
-            return gameController.GivePoints(obj.getInt("Code"), obj.getInt("Question number"),  obj.get("Name").toString(), obj.get("Target").toString()) + " ++++";
+            return gameController.GivePoints(obj.getInt("Code"),  obj.get("Name").toString(), obj.get("Target").toString()) + " ++++";
         } else if (Objects.equals(action, "GetPoints")) {
             return gameController.getTotalPlayerPointStatistics(obj.getInt("Code"));
         } else if (Objects.equals(action, "GetAnswers")) {
-            return gameController.getAnswers(obj.getInt("Code"),  obj.getInt("Question number"));
+            return gameController.getAnswers(obj.getInt("Code"));
         } else if (Objects.equals(action, "RemovePlayer")) {
             return gameController.removePlayerFromGame(obj.getInt("Code"), obj.get("Name").toString());
         } else if (Objects.equals(action, "GetQuestion")) {

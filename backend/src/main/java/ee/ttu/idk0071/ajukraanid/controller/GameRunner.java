@@ -13,15 +13,17 @@ public class GameRunner implements Runnable {
 
     void runRound() throws InterruptedException {
         this.game.setGameState("question");
-        Thread.sleep(30000);
+        Thread.sleep(25000);
         this.game.setGameState("chooseBestAnswer");
-        Thread.sleep(30000);
+        Thread.sleep(25000);
         this.game.setGameState("awarding");
+        Thread.sleep(25000);
         if (questionsLeft > 0) {
+            game.setQuestionNumber(game.getQuestionNumber() + 1);
             questionsLeft--;
             runRound();
-        }
-        Thread.sleep(30000);
+        } else game.setGameState("ended");
+
     }
 
     @Override

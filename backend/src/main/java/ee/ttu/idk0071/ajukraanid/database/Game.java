@@ -46,8 +46,10 @@ public final class Game extends Entry {
         game.setQuestionNumber(questionNumber);
         game = database.getGamesRepository().save(game);
 
-        this.questions.add(new Question(this, "LEMME SMASH?")); // TODO Remove
-        this.questions.add(new Question(this, "LEMME SMASH?")); // TODO Remove
+        this.questions.add(new Question(this, "If a horse and a duck would have a child, what would you name it?")); // TODO Remove
+        this.questions.add(new Question(this, "Name something Donal Trump would say to Vladimr Putin?")); // TODO Remove
+        this.questions.add(new Question(this, "On a scale from squirrel to whale, how liberal is Russia?")); // TODO Remove
+        this.questions.add(new Question(this, "What did Johns mom tell him after he passed out drunk on the sofa?")); // TODO Remove
     }
 
     /**

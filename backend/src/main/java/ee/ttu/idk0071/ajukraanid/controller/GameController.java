@@ -137,14 +137,12 @@ class GameController {
 
 
 
-    String GivePoints(int gameCode, int questionNumber, String giver, String target) {
+    String GivePoints(int gameCode, String giver, String target) {
         Optional<Game> game = findActiveGame(gameCode);
         if (!suchPlayerExistsInGame(gameCode, giver) && !suchPlayerExistsInGame(gameCode, target)) {
             return fetchErrorState(gameCode, "Error", "Wrong username was given");
         }
-        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
-            return fetchErrorState(gameCode, "Error", "Question number does not match he current games' state");
-        }
+
         if (game.isPresent()) {
             Game gameObj = game.get();
             Question question = gameObj.getQuestions().get(game.get().getQuestionNumber());
@@ -186,11 +184,11 @@ class GameController {
 
 
 
-    String getAnswers(int gameCode, int questionNumber) {
+    String getAnswers(int gameCode) {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
             JSONArray questions = new JSONArray();
-            Question question = game.get().getQuestions().get(questionNumber);
+            Question question = game.get().getQuestions().get(game.get().getQuestionNumber());
 
             for (Answer a : question.getAnswers()) {
                 JSONObject data = new JSONObject();
@@ -205,7 +203,7 @@ class GameController {
 
 
 
-    String submitAnswer(int gameCode, int questionNumber, String answerer, String answer) {
+    String submitAnswer(int gameCode, String answerer, String answer) {
         Optional<Game> game = findActiveGame(gameCode);
         if (!suchPlayerExistsInGame(gameCode, answerer)) {
             return fetchErrorState(gameCode, "Error", "Wrong username was given"); // TODO Move conditions checks to a Guardian class
@@ -214,11 +212,11 @@ class GameController {
 //            return fetchErrorState(gameCode, "Error", "Question number does not match he current games' state");
 //        }
         if (game.isPresent()) {
-           boolean hasAnswered = game.get().getQuestions().get(questionNumber).getAnswers().stream()
+           boolean hasAnswered = game.get().getQuestions().get(game.get().getQuestionNumber()).getAnswers().stream()
                    .anyMatch(answer1 -> answer1.getPlayer().getName().equals(answerer));
            if (!hasAnswered) {
                Optional<Player> player = findPlayer(game.get(), answerer);
-               new Answer(game.get().getQuestions().get(questionNumber), player.get(), answer);
+               new Answer(game.get().getQuestions().get(game.get().getQuestionNumber()), player.get(), answer);
                return fetchErrorState(gameCode, "Success", "Your answer was submitted.");
            } else return fetchErrorState(gameCode, "Error", "You already answered the question");
         }
