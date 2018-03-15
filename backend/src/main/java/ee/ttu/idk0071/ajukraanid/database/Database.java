@@ -39,24 +39,36 @@ public final class Database extends Entry {
 
     private void loadDatabaseEntries() {
         loadGames();
-        loadPlayers();
         loadPlainQuestions();
     }
 
     private void loadGames() {
         gamesRepository.findAll()
                 .forEach(game -> new Game(this, game));
+        games.forEach(this::loadPlayers);
+        games.forEach(this::loadQuestions);
     }
 
-    private void loadPlayers() {
-        playersRepository.findAll()
-                .forEach(player ->
-                        games.forEach(game -> {
-                            if (player.getGameId().equals(game.getGame().getId())) {
-                                new Player(game, player);
-                            }
-                        })
-                );
+    private void loadPlayers(Game game) {
+        playersRepository.findByGameId(game.getGame().getId())
+                .forEach(player -> new Player(game, player));
+    }
+
+    private void loadQuestions(Game game) {
+        questionsRepository.findByGameId(game.getGame().getId())
+                .forEach(question -> new Question(game, question));
+        game.getQuestions().forEach(this::loadAnswers);
+        game.getQuestions().forEach(this::loadEvaluations);
+    }
+
+    private void loadAnswers(Question question) {
+        answersRepository.findByQuestionId(question.getQuestion().getId())
+                .forEach(answer -> new Answer(question, answer));
+    }
+
+    private void loadEvaluations(Question question) {
+        evaluationsRepository.findByQuestionId(question.getQuestion().getId())
+                .forEach(evaluation -> new Evaluation(question, evaluation));
     }
 
     private void loadPlainQuestions() {
