@@ -2,6 +2,7 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Questions;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -48,6 +49,23 @@ public final class Question extends Entry {
     @Override
     public String toString() {
         return text;
+    }
+
+    @Override
+    protected void appendTo(StringBuilder stringBuilder, int indentSize) {
+        // the question
+        StringUtilities.addIndent(indentSize, stringBuilder);
+        stringBuilder.append(text).append("\n");
+
+        // all answers
+        StringUtilities.addIndent(indentSize + 1, stringBuilder);
+        stringBuilder.append("Answers (").append(answers.size()).append(")").append("\n");
+        answers.forEach(answer -> answer.appendTo(stringBuilder, indentSize + 2));
+
+        // all evaluations
+        StringUtilities.addIndent(indentSize + 1, stringBuilder);
+        stringBuilder.append("Evaluations (").append(evaluations.size()).append(")").append("\n");
+        evaluations.forEach(evaluation -> evaluation.appendTo(stringBuilder, indentSize + 2));
     }
 
     @Override

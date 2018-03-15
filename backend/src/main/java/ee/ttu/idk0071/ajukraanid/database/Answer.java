@@ -3,6 +3,7 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Answers;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 
 public final class Answer extends Entry {
@@ -36,6 +37,12 @@ public final class Answer extends Entry {
         this.player = player;
         this.text = text;
         answer = getDatabase().getAnswersRepository().save(answer);
+    }
+
+    @Override
+    protected void appendTo(StringBuilder stringBuilder, int indentSize) {
+        StringUtilities.addIndent(indentSize, stringBuilder);
+        stringBuilder.append(player.getName()).append(" -> ").append(text).append("\n");
     }
 
     @Override

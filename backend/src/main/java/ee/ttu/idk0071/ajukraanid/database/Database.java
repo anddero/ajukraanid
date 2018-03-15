@@ -2,6 +2,7 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.*;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,6 @@ public final class Database extends Entry {
         this.answersRepository = answersRepository;
         this.evaluationsRepository = evaluationsRepository;
         loadDatabaseEntries();
-        System.out.println("Finished loading database entries...");
         printDatabaseEntries();
     }
 
@@ -77,15 +77,9 @@ public final class Database extends Entry {
     }
 
     private void printDatabaseEntries() {
-        System.out.println(games.size() + " games");
-        games.forEach(game -> {
-            System.out.println("\t" + game.getGameCode() + " " + game.getGameState() + " (" + game.getPlayers().size
-                    () + " players)");
-            game.getPlayers()
-                    .forEach(player -> System.out.println("\t\t" + player.getName()));
-        });
-        System.out.println(plainQuestions.size() + " questions");
-        plainQuestions.forEach(question -> System.out.println("\t" + question.getText()));
+        StringBuilder stringBuilder = new StringBuilder("All loaded database entries in memory:\n");
+        appendTo(stringBuilder, 1);
+        System.out.println(stringBuilder.toString());
     }
 
     GamesRepository getGamesRepository() {
@@ -110,6 +104,17 @@ public final class Database extends Entry {
 
     EvaluationsRepository getEvaluationsRepository() {
         return evaluationsRepository;
+    }
+
+    @Override
+    protected void appendTo(StringBuilder stringBuilder, int indentSize) {
+        StringUtilities.addIndent(indentSize + 1, stringBuilder);
+        stringBuilder.append("Plain Questions (").append(plainQuestions.size()).append(")").append("\n");
+        plainQuestions.forEach(question -> question.appendTo(stringBuilder, indentSize + 2));
+
+        StringUtilities.addIndent(indentSize + 1, stringBuilder);
+        stringBuilder.append("Games (").append(games.size()).append(")").append("\n");
+        games.forEach(game -> game.appendTo(stringBuilder, indentSize + 2));
     }
 
     @Override

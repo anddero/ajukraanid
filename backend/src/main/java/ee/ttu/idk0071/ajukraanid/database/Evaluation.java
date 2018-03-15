@@ -2,6 +2,7 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Evaluations;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 
 public final class Evaluation extends Entry {
@@ -40,6 +41,12 @@ public final class Evaluation extends Entry {
         evaluation = getDatabase().getEvaluationsRepository().save(evaluation);
 
         target.setPoints(target.getPoints() + 100); // TODO temp stuff
+    }
+
+    @Override
+    protected void appendTo(StringBuilder stringBuilder, int indentSize) {
+        StringUtilities.addIndent(indentSize, stringBuilder);
+        stringBuilder.append(giver.getName()).append(" -> ").append(target.getName()).append("\n");
     }
 
     @Override

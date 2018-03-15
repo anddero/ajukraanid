@@ -7,4 +7,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class Entry {
     protected abstract Database getDatabase();
+    protected abstract void appendTo(StringBuilder stringBuilder, int indentSize);
 }

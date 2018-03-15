@@ -2,6 +2,7 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.PlainQuestions;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -32,6 +33,12 @@ public final class PlainQuestion extends Entry {
         question = new PlainQuestions(text);
         this.text = text;
         question = database.getPlainQuestionsRepository().save(question);
+    }
+
+    @Override
+    public void appendTo(StringBuilder stringBuilder, int indentSize) {
+        StringUtilities.addIndent(indentSize, stringBuilder);
+        stringBuilder.append(text).append("\n");
     }
 
     @Override
