@@ -4,12 +4,9 @@ package ee.ttu.idk0071.ajukraanid.database;
 import ee.ttu.idk0071.ajukraanid.database.internal.Games;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Game extends Entry {
     // inaccessible
@@ -18,8 +15,8 @@ public final class Game extends Entry {
 
     // accessible
     @Getter private final int gameCode;
-    @Getter @Setter private String gameState = "Lobby"; // TODO Override setter to update database.
-    @Getter @Setter private int questionNumber = 0;
+    @Getter private String gameState = "Lobby"; // TODO Override setter to update database.
+    @Getter private int questionNumber = 0;
 
     // referenced by
     @Getter private ArrayList<Player> players = new ArrayList<>();
@@ -43,11 +40,11 @@ public final class Game extends Entry {
     public Game(Database database, int code) {
         this.database = database;
         database.getGames().add(this);
-        game = new Games(code);
+        game = new Games(code); // create a transient entity
         this.gameCode = code;
         game.setState(gameState);
         game.setQuestionNumber(questionNumber);
-        game = database.getGamesRepository().save(game);
+        game = database.getGamesRepository().save(game); // replace with persistent entity (ends up detached?)
     }
 
     /**
@@ -64,6 +61,18 @@ public final class Game extends Entry {
 
     Games getGame() {
         return game;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+        game.setState(gameState);
+        game = getDatabase().getGamesRepository().save(game);
+    }
+
+    public void setQuestionNumber(int questionNumber) {
+        this.questionNumber = questionNumber;
+        game.setQuestionNumber(questionNumber);
+        game = getDatabase().getGamesRepository().save(game);
     }
 
     @Override
