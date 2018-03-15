@@ -47,18 +47,6 @@ public final class Game extends Entry {
         game = database.getGamesRepository().save(game); // replace with persistent entity (ends up detached?)
     }
 
-    /**
-     * Allow creation of unrelated objects temporarily.
-     * @deprecated TODO Remove this constructor.
-     */
-    public Game(int code) {
-        this.database = null;
-        this.gameCode = code;
-        game = new Games(code);
-        game.setState(gameState);
-        game.setQuestionNumber(questionNumber);
-    }
-
     Games getGame() {
         return game;
     }

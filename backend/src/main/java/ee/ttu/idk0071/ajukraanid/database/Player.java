@@ -37,16 +37,6 @@ public final class Player extends Entry {
         player = game.getDatabase().getPlayersRepository().save(player);
     }
 
-    /**
-     * Temporarily allow the creation of unrelated objects.
-     * @deprecated TODO Remove this constructor.
-     */
-    public Player(String name) {
-        this.game = null;
-        player = new Players((long) -1, name);
-        this.name = name;
-    }
-
     Players getPlayer() {
         return player;
     }
