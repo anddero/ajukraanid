@@ -12,12 +12,14 @@ public class Questions {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter private Long id;
+    @Getter private Long gameId;
     @Getter private String text;
 
     private Questions() {
     }
 
-    public Questions(String text) {
+    public Questions(Long gameId, String text) {
+        this.gameId = gameId;
         this.text = text;
     }
 }

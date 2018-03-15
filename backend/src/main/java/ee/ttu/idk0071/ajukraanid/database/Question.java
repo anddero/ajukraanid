@@ -32,7 +32,7 @@ public final class Question extends Entry {
     public Question(Game game, String text) {
         this.game = game;
         game.getQuestions().add(this);
-        question = new Questions(text);
+        question = new Questions(game.getGame().getId(), text);
         this.text = text;
         question = getDatabase().getQuestionsRepository().save(question);
     }

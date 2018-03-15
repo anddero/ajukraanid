@@ -38,16 +38,28 @@ public final class Database extends Entry {
     }
 
     private void loadDatabaseEntries() {
+        loadGames();
+        loadPlayers();
+        loadPlainQuestions();
+    }
+
+    private void loadGames() {
         gamesRepository.findAll()
                 .forEach(game -> new Game(this, game));
+    }
+
+    private void loadPlayers() {
         playersRepository.findAll()
-                .forEach(player -> {
-                    games.forEach(game -> {
-                        if (player.getGameId().equals(game.getGame().getId())) {
-                            new Player(game, player);
-                        }
-                    });
-                });
+                .forEach(player ->
+                        games.forEach(game -> {
+                            if (player.getGameId().equals(game.getGame().getId())) {
+                                new Player(game, player);
+                            }
+                        })
+                );
+    }
+
+    private void loadPlainQuestions() {
         plainQuestionsRepository.findAll()
                 .forEach(question -> new PlainQuestion(this, question));
     }
