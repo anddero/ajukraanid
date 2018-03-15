@@ -106,6 +106,13 @@ class GameController {
             randomNum = rand.nextInt(8999) + 1000;
         }
         Game newGame = new Game(database, randomNum);
+        // TODO Temporary below
+        new Question(newGame, "If a horse and a duck would have a child, what would you name it?");
+        new Question(newGame, "Name something Donal Trump would say to Vladimr Putin?");
+        new Question(newGame, "On a scale from squirrel to whale, how liberal is Russia?");
+        new Question(newGame, "What did Johns mom tell him after he passed out drunk on the sofa?");
+        newGame.getQuestions().forEach(q -> System.out.println(q.toString()));
+        // TODO Temporary above
         return new JSONObject()
                 .put("Action", "NewGame")
                 .put("Code", randomNum).toString();

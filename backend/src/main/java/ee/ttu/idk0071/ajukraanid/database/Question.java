@@ -46,6 +46,11 @@ public final class Question extends Entry {
     }
 
     @Override
+    public String toString() {
+        return text;
+    }
+
+    @Override
     protected Database getDatabase() {
         return game.getDatabase();
     }
