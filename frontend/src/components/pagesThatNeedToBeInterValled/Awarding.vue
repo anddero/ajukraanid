@@ -1,0 +1,88 @@
+<template>
+  <div id="summary">
+    <div class="summary">
+      <h3>Results</h3>
+      <h5></h5>
+    </div>
+    <hr>
+    <div v-for="playerData in this.points">
+      <h3 style="text-align: center">{{playerData.name}} has {{playerData.points}} points</h3>
+    </div>
+    <br>
+    <br/>
+  </div>
+
+</template>
+
+<script>
+  import {mapGetters} from 'vuex';
+
+  export default {
+    data() {
+      return {
+        interval: "",
+        points: ""
+      }
+    },
+
+    methods: {
+      checkGameState() {
+        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          if (response.body.State === "question") {
+            window.clearInterval(window.interval);
+            console.log("Moving to " + "/question" + " from /awarding");
+            this.$router.replace({path: "/question"})
+          }
+        });
+      },
+
+      setIntervalThatChecksGameState() {
+        window.interval = setInterval(this.checkGameState, 1000)
+      },
+    },
+
+    computed: {
+      registrations() {
+        return this.$store.state.registrations
+      },
+      gameCode() {
+        return this.$store.state.gameCode
+      }
+    },
+
+    created: function () {
+      this.setIntervalThatChecksGameState();
+      let requestData = {Action: "GetPoints", "Code": this.gameCode};
+      this.$http.post(this.$store.state.requestDestination, requestData)
+        .then(function (response) {
+          this.points = response.body.Data;
+        });
+    }
+  }
+</script>
+
+<style scoped>
+
+  .summary {
+    text-align: center;
+  }
+
+  .row h4 {
+    display: inline-block;
+    width: 30%;
+    margin: 0 0 10px 0;
+    box-sizing: border-box;
+  }
+
+  .row span {
+    width: 30%;
+    color: red;
+    cursor: pointer;
+  }
+
+  .row span:hover {
+    color: darkred;
+  }
+
+</style>
