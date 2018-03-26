@@ -14,8 +14,9 @@ import WaitingForOtherPlayersAfterChoosingBestAnswer from "./components/pagesTha
 import WaitingForOtherPlayersAfterQuestion from "./components/pagesThatNeedToBeInterValled/WaitingForOtherPlayersAfterQuestion.vue"
 
 
-
 import {store} from './store/store';
+import './assets/css/style.css'
+
 
 Vue.use(vueResource);
 Vue.use(VueRouter);
@@ -35,14 +36,14 @@ const router = new VueRouter({
     {path: '/awarding', component: Awarding},
     {path: '/chooseBestAnswer', component: ChooseBestAnswer},
     {path: '/waitingScreen1', component: WaitingForOtherPlayersAfterChoosingBestAnswer},
-    {path: '/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion}
+    {path: '/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion},
   ]
 })
 
 new Vue({
   router,
   template: `
-    <div id="app" class="container">
+    <div id="app">
     <router-view></router-view>
     </div id>  
   `,

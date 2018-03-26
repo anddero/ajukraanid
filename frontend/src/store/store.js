@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    requestDestination: "http://localhost:8080",
+    requestDestination: "http://localhost:8000",
     username: "",
     gameCode: 0,
     questionNumber: 0,

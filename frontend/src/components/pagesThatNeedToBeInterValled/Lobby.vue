@@ -1,21 +1,51 @@
 <template>
+
   <div id="summary">
-    <div class="summary">
-      <h3>Enter game {{this.gameCode}}</h3>
+
+    <div>
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3"> Gamecode <b>{{this.gameCode}}</b></h1>
+        </div>
+      </div>
     </div>
-    <hr>
-    <div class="row" v-for="registration in registrations">
-      <h4 style="margin-top: 6px">{{ registration }}</h4>
-      <button v-if="username === 'host'" @click="unregister(registration)" class="btn pull-right btn-danger">
-        Unregister
-      </button>
-      <div style="background-color: black; height: 1px"></div>
+    <div v-if="username === 'host'">
+
+      <div class="container">
+        <transition-group class="ui horizontal list" name="list" tag="p">
+          <div v-for="registration in items" :key="registration" class="row">
+
+            <div class="row">
+              <div class="col-sm-3 col-md-6">
+                <div class="col">{{ registration }}</div>
+              </div>
+              <div class="col-sm-9 col-md-6">
+                <button v-if="username === 'host'" @click="unregister(registration)" class="btn pull-right btn-danger">
+                  Unregister
+                </button>
+              </div>
+            </div>
+            <div style="background-color: black; height: 1px; margin-top: 10px; margin-bottom: 10px"></div>
+          </div>
+        </transition-group>
+      </div>
+      <br>
+      <button v-if="username === 'host'" @click="startGame()" class="btn btn-primary center-block">Start game</button>
     </div>
 
-    <br/>
-    <button v-if="username === 'host'" @click="startGame()" class="btn btn-primary center-block">Start game</button>
-    <br>
-    <button @click="routeTo('/')" type="button" class="btn btn-secondary center-block">Back to main menu</button>
+
+    <div v-if="username !== 'host'">
+      <div class="container">
+        <transition-group class="ui horizontal list" name="list" tag="p">
+          <div v-for="registration in items" :key="registration" class="row">
+            <div class="center-block"><b><h3 align="center">{{ registration }}</h3></b></div>
+            <div align="center" style="width: 150px; background-color: black; height: 1px; margin-top: 10px; margin-bottom: 10px" class="center-block"></div>
+          </div>
+        </transition-group>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -26,6 +56,7 @@
 
     data() {
       return {
+        items: [],
         loadPlayerInterval: "",
         gameStatusInterval: ""
       }
@@ -61,7 +92,11 @@
         let requestData = {Action: "FetchState", "Code": this.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
-            this.$store.dispatch('updatePlayers', response.body.Data);
+            if (this.items !== response.body.Data.length) {
+              this.items = this.$store.state.registrations;
+              this.$store.dispatch('updatePlayers', response.body.Data);
+            }
+
           });
       },
 
@@ -72,6 +107,7 @@
       unregister(registration) {
         let requestData = {Action: "RemovePlayer", "Code": this.gameCode, "Name": registration.name};
         this.$http.post(this.$store.state.requestDestination, requestData);
+
         this.$store.commit({
           type: 'unregister',
           name: registration.name
@@ -90,6 +126,7 @@
 
     computed: {
       registrations() {
+        this.items = this.$store.state.registrations;
         return this.$store.state.registrations
       },
 
@@ -110,32 +147,37 @@
 </script>
 
 <style scoped>
-  #registrations {
-    box-shadow: 1px 1px 2px 1px #ccc;
-    margin: 20px;
-    padding: 20px;
-    display: inline-block;
-    width: 500px;
-    vertical-align: top;
-    text-align: left;
-  }
-  .summary {
-    text-align: center;
-  }
-  .row h4 {
-    display: inline-block;
-    width: 30%;
-    margin: 0 0 10px 0;
-    box-sizing: border-box;
-  }
-  .row span {
-    width: 30%;
-    color: red;
-    cursor: pointer;
-  }
-  .row span:hover {
-    color: darkred;
+
+  /* Enter and leave animations can use different */
+  /* durations and timing functions.              */
+  .slide-fade-enter-active {
+    transition: all .3s ease;
   }
 
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */
+  {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+
+  .list-item {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition: all 1s;
+  }
+
+  .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */
+  {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 
 </style>

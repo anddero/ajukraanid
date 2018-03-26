@@ -1,24 +1,40 @@
 <template>
   <div id="menu" class="container">
 
-      <img src="../../assets/logo.png" class="center-block">
 
-    <button @click="routeTo('/newGameConfirmation')" class="btn btn-primary center-block">Create a new game.</button>
+
+
+    <img src="../../assets/logo.png" class="center-block">
+
+    <button @click="routeTo('/newGameConfirmation')" class="btn btn-primary center-block .btn-lg">Create a new game.
+    </button>
     <br/>
-    <button @click="routeTo('/registration')" class="btn btn-primary center-block">Join a game</button>
+    <button @click="routeTo('/registration')" class="btn btn-primary center-block .btn-lg">Join a game</button>
     <br/>
-    <button @click="routeTo('/about')" class="btn btn-primary center-block">About</button>
+    <button @click="routeTo('/about')" class="btn btn-primary center-block .btn-lg">About</button>
   </div>
 </template>
 
 <script>
   import Alert from './Alert'
+
   export default {
     methods: {
       routeTo(state) {
         console.log("Moving to " + state + " from /menu");
-        this.$router.replace({ path: state })
+        this.$router.replace({path: state})
       }
     },
+    watch: {
+      '$route'(to, from) {
+        const toDepth = to.path.split('/').length
+        const fromDepth = from.path.split('/').length
+        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+      }
+    }
   }
 </script>
+<style scoped>
+
+
+</style>
