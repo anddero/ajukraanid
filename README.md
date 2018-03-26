@@ -20,9 +20,8 @@ Or through Intellij
 
     # Edit Configurations
     # Add
-    # NPM
-    # Command: run
-    # Script: dev
+    # NPM Command: install
+    # NPM Command: run  Script: dev
     # Enjoy
 
 
@@ -40,9 +39,8 @@ Or through Intellij
 
     # Edit Configurations
     # Add
-    # NPM
-    # Command: run
-    # Script: build
+    # NPM  Command: install
+    # NPM  Command: run  Script: build
     # Copy content of dist folder to server
     # Enjoy
 
