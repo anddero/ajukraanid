@@ -7,6 +7,9 @@
       <button type="submit" class="btn btn-primary center-block">Yes</button>
     </form>
     <br>
+    <button @click="routeToIndex()" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
+    </button>
+    <br>
 
   </div>
 </template>
@@ -23,9 +26,8 @@
       }
     },
     methods: {
-      routeTo (state) {
-        console.log("Moving to " + state + " from /newGameConfirmation");
-        this.$router.replace({ path: state })
+      routeToIndex() {
+        this.$router.replace({path: this.$store.state.paths.index})
       },
 
       createGame (e) {
@@ -34,8 +36,7 @@
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
             this.$store.dispatch('setGameCode', response.body.Code)
-            console.log('Moving to ' + '/lobby' + ' from /newGameConfirmation');
-            this.$router.replace({path: '/lobby'})
+            this.$router.replace({path: this.$store.state.paths.lobby})
           })
         e.preventDefault()
       }

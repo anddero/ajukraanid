@@ -1,29 +1,28 @@
 /* eslint-disable */
 <template>
+
   <div id="menu" class="container">
     <img src="../../assets/logo.png" class="center-block">
-    <button @click="routeTo('/newGameConfirmation')" class="btn btn-primary center-block .btn-lg">Create a new game.
+    <button @click="routeToGameConfirmation" class="btn btn-primary center-block .btn-lg">Create a new game.
     </button>
     <br/>
-    <button @click="routeTo('/registration')" class="btn btn-primary center-block .btn-lg">Join a game</button>
+    <button @click="routeToRegistration" class="btn btn-primary center-block .btn-lg">Join a game</button>
     <br/>
-    <button @click="routeTo('/about')" class="btn btn-primary center-block .btn-lg">About</button>
+    <button @click="routeToAbout" class="btn btn-primary center-block .btn-lg">About</button>
   </div>
 </template>
 <script>
 
   export default {
     methods: {
-      routeTo(state) {
-        console.log("Moving to " + state + " from /menu");
-        this.$router.replace({path: state})
-      }
-    },
-    watch: {
-      '$route'(to, from) {
-        const toDepth = to.path.split('/').length
-        const fromDepth = from.path.split('/').length
-        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+      routeToGameConfirmation() {
+        this.$router.replace({path: this.$store.state.paths.confirmation})
+      },
+      routeToAbout() {
+        this.$router.replace({path: this.$store.state.paths.about})
+      },
+      routeToRegistration() {
+        this.$router.replace({path: this.$store.state.paths.registration})
       }
     }
   }

@@ -12,7 +12,7 @@
     </div>
     <div class="container">
       <br>
-      <button @click="routeTo('/')" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
+      <button @click="routeToIndex()" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
       </button>
     </div>
   </div>
@@ -27,9 +27,8 @@
       }
     },
     methods: {
-      routeTo(state) {
-        console.log("Moving to " + state + " from /about");
-        this.$router.replace({path: state})
+      routeToIndex() {
+        this.$router.replace({path: this.$store.state.paths.index})
       }
     }
   }

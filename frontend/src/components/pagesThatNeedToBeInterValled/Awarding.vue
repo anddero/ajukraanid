@@ -32,7 +32,7 @@
           if (response.body.State === 'question') {
             window.clearInterval(window.interval)
             console.log('Moving to ' + '/question' + ' from /awarding')
-            this.$router.replace({path: '/question'})
+            this.$router.replace({path: this.$store.state.paths.question})
           }
         })
       },

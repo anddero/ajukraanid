@@ -19,7 +19,7 @@
         </div>
         <button type="submit" class="btn btn-primary center-block .btn-lg">Join</button>
         <br>
-        <button @click="routeTo('/')" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
+        <button @click="routeToIndex()" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
         </button>
       </form>
     </div>
@@ -39,15 +39,13 @@
       }
     },
     methods: {
-      routeTo(state) {
-        console.log("Moving to " + state + " from /joinGame");
-        this.$router.replace({path: state})
+      routeToIndex() {
+        this.$router.replace({path: this.$store.state.paths.index})
       },
       registerUser() {
         let myuser = {name: 'Max', gameCode: "gameCode"};
         myuser.name = this.$data.name;
         myuser.gameCode = this.$data.gameCode;
-
         let requestData = {Action: "JoinGame", "Code": this.$data.gameCode, "Name": this.$data.name};
         if (!this.$data.name || !this.$data.gameCode) {
           this.alert = 'Please fill in all required fields';
@@ -59,11 +57,9 @@
               } else if (response.body.Data === "Such username is already taken.") {
                 this.alert = "Such username is already taken.";
               } else {
-
                 this.$store.dispatch('setGameCode', this.$data.gameCode);
                 this.$store.dispatch('setMyUsername', this.$data.name);
-                console.log("Moving to " + "/lobby" + " from /joinGame");
-                this.$router.replace({path: '/lobby'})
+                this.$router.replace({path: this.$store.state.paths.lobby})
               }
             });
         }

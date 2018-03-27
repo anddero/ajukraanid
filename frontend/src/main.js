@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import App from './App.vue'
 import VueRouter from 'vue-router'
 import vueResource from 'vue-resource'
 import About from "./components/staticPages/About.vue"
@@ -12,12 +11,8 @@ import Awarding from "./components/pagesThatNeedToBeInterValled/Awarding.vue"
 import ChooseBestAnswer from "./components/pagesThatNeedToBeInterValled/ChooseBestAnswer.vue"
 import WaitingForOtherPlayersAfterChoosingBestAnswer from "./components/pagesThatNeedToBeInterValled/WaitingForOtherPlayersAfterChoosingBestAnswer.vue"
 import WaitingForOtherPlayersAfterQuestion from "./components/pagesThatNeedToBeInterValled/WaitingForOtherPlayersAfterQuestion.vue"
-
-
 import {store} from './store/store';
 import './assets/css/style.css'
-
-
 Vue.use(vueResource);
 Vue.use(VueRouter);
 
@@ -25,18 +20,18 @@ const router = new VueRouter({
   mode: 'history',
   base: __dirname,
   routes: [
-    {path: '/', component: Menu},
-    {path: '/about', component: About},
-    {path: '/registration', component: JoinGame},
-    {path: '/menu', component: Menu},
-    {path: '/question', component: Question},
-    {path: '/about', component: About},
-    {path: '/newGameConfirmation', component: NewGameConfirmation},
-    {path: '/lobby', component: Lobby},
-    {path: '/awarding', component: Awarding},
-    {path: '/chooseBestAnswer', component: ChooseBestAnswer},
-    {path: '/waitingScreen1', component: WaitingForOtherPlayersAfterChoosingBestAnswer},
-    {path: '/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion},
+    {path: '/~nilill/tarkvaratehnika/', component: Menu},
+    {path: '/~nilill/tarkvaratehnika/about', component: About},
+    {path: '/~nilill/tarkvaratehnika/registration', component: JoinGame},
+    {path: '/~nilill/tarkvaratehnika/menu', component: Menu},
+    {path: '/~nilill/tarkvaratehnika/question', component: Question},
+    {path: '/~nilill/tarkvaratehnika/about', component: About},
+    {path: '/~nilill/tarkvaratehnika/newGameConfirmation', component: NewGameConfirmation},
+    {path: '/~nilill/tarkvaratehnika/lobby', component: Lobby},
+    {path: '/~nilill/tarkvaratehnika/awarding', component: Awarding},
+    {path: '/~nilill/tarkvaratehnika/chooseBestAnswer', component: ChooseBestAnswer},
+    {path: '/~nilill/tarkvaratehnika/waitingScreen1', component: WaitingForOtherPlayersAfterChoosingBestAnswer},
+    {path: '/~nilill/tarkvaratehnika/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion},
   ]
 })
 

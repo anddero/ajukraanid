@@ -72,7 +72,7 @@
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);
             console.log("Moving to /question from /lobby vol 2");
-            this.$router.replace({path: "/question"})
+            this.$router.replace({path: this.$store.state.paths.question})
           }
         });
       },
@@ -110,8 +110,7 @@
       startGame () {
         window.clearInterval(window.gameStatusInterval)
         window.clearInterval(window.loadPlayerInterval)
-        console.log('Moving to ' + '/question' + ' from /question vol 3')
-        this.$router.replace({path: '/question'})
+        this.$router.replace({path: this.$store.state.paths.question})
         let requestData = {Action: 'StartGame', 'Code': this.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData)
       }

@@ -4,7 +4,7 @@
     <h3 v-if="username === 'host'"> {{ question }}</h3>
     <Alert v-if="alert" v-bind:message="alert"/>
     <hr>
-    <form v-on:submit.prevent="routeTo('/waitingScreen1')">
+    <form v-on:submit.prevent="routeToWaitingScreen()">
       <div  v-if="username !== 'host'" class="well">
         <br/>
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
@@ -36,12 +36,12 @@
           if (response.body.State === "awarding") {
             window.clearInterval(window.interval);
             console.log("Moving to " + "/awarding" + " from /question");
-            this.$router.replace({path: "/awarding"})
+            this.$router.replace({path: this.$store.state.paths.awarding})
           }
           if (response.body.State === "chooseBestAnswer") {
             window.clearInterval(window.interval);
             console.log("Moving to " + "/chooseBestAnwer" + " from /question");
-            this.$router.replace({path: "/chooseBestAnswer"})
+            this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
           }
         });
       },
@@ -50,7 +50,7 @@
         window.interval = setInterval(this.checkGameState, 1000)
       },
 
-      routeTo(state) {
+      routeToWaitingScreen() {
         let requestData = {
           Action: "SubmitAnswer",
           "Code": this.$store.state.gameCode,
@@ -62,8 +62,8 @@
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
         });
         window.clearInterval(window.interval);
-        console.log("Moving to " + state + " from /question");
-        this.$router.replace({path: state})
+
+        this.$router.replace({path: this.$store.state.paths.waitingScreen1})
       }
     },
 

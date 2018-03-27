@@ -15,12 +15,18 @@
           <br/>
         </div>
       </form>
-      <button @click="routeTo('/')" type="button" class="btn btn-secondary center-block">Back to main menu</button>
       <br/>
     </div>
     <div v-if="username === 'host'">
       <h3>Choose best answer for the question:</h3>
       <h3>{{this.question}}</h3>
+      <br>
+      <div v-for="item in this.questions">
+        <button @click="awardPlayer(item.name)" type="button" class="btn btn-success center-block">
+          {{item.answer}}
+        </button>
+        <br/>
+      </div>
     </div>
   </div>
 </template>
@@ -28,7 +34,7 @@
 <script>
 
   export default {
-    data () {
+    data() {
       return {
         question: '',
         questions: '',
@@ -37,7 +43,7 @@
     },
 
     methods: {
-      awardPlayer (Awardee) {
+      awardPlayer(Awardee) {
         let requestData = {
           Action: 'GivePoints',
           'Code': this.gameCode,
@@ -46,35 +52,35 @@
         }
         this.$http.post(this.$store.state.requestDestination, requestData)
         console.log('Moving to ' + '/waitingScreen1' + ' from /choosebestAnswer')
-        this.$router.replace({path: '/waitingScreen2'})
+        this.$router.replace({path: this.$store.state.paths.waitingScreen2})
       },
 
-      checkIfGameShouldStart () {
+      checkIfGameShouldStart() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === 'awarding') {
             window.clearInterval(window.intervalForState)
             console.log('Moving to /awarding from /choose best answer')
-            this.$router.replace({path: '/awarding'})
+            this.$router.replace({path: this.$store.state.paths.awarding})
           }
         })
       },
 
-      setIntervalThatChecksIfGameShouldStart () {
+      setIntervalThatChecksIfGameShouldStart() {
         window.intervalForState = setInterval(this.checkIfGameShouldStart, 1000)
       }
     },
 
     computed: {
-      registrations () {
+      registrations() {
         return this.$store.state.registrations
       },
 
-      username () {
+      username() {
         return this.$store.state.username
       },
 
-      gameCode () {
+      gameCode() {
         return this.$store.state.gameCode
       }
     },
