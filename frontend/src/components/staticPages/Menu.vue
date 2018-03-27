@@ -1,11 +1,7 @@
+/* eslint-disable */
 <template>
   <div id="menu" class="container">
-
-
-
-
     <img src="../../assets/logo.png" class="center-block">
-
     <button @click="routeTo('/newGameConfirmation')" class="btn btn-primary center-block .btn-lg">Create a new game.
     </button>
     <br/>
@@ -14,9 +10,7 @@
     <button @click="routeTo('/about')" class="btn btn-primary center-block .btn-lg">About</button>
   </div>
 </template>
-
 <script>
-  import Alert from './Alert'
 
   export default {
     methods: {

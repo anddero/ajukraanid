@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div class="add container">
     <Alert v-if="alert" v-bind:message="alert"/>
@@ -16,38 +17,38 @@
   export default {
     props: ['gameCode'],
     name: 'newGame',
-    data() {
+    data () {
       return {
         alert: ""
       }
     },
     methods: {
-      routeTo(state) {
+      routeTo (state) {
         console.log("Moving to " + state + " from /newGameConfirmation");
         this.$router.replace({ path: state })
       },
 
-      createGame(e) {
-        this.$store.dispatch('setMyUsername', "host");
-        let requestData = {Action: "CreateGame",};
+      createGame (e) {
+        this.$store.dispatch('setMyUsername', 'host')
+        let requestData = {Action: "CreateGame"}
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
-            this.$store.dispatch('setGameCode', response.body.Code);
-            console.log("Moving to " + "/lobby" + " from /newGameConfirmation");
-            this.$router.replace({path: "/lobby"})
-          });
-        e.preventDefault();
+            this.$store.dispatch('setGameCode', response.body.Code)
+            console.log('Moving to ' + '/lobby' + ' from /newGameConfirmation');
+            this.$router.replace({path: '/lobby'})
+          })
+        e.preventDefault()
       }
     },
 
     components: {
-      Alert,
+      Alert
     },
 
     created: function () {
-      let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode};
+      let requestData = {Action: 'GetQuestion', 'Code': this.$store.state.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-        this.question = response.body.Data;
+        this.question = response.body.Data
       })
     }
   }
@@ -57,4 +58,3 @@
 <style scoped>
 
 </style>
-

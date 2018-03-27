@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div id="registration">
     <h3 v-if="username === 'host'"> {{ question }}</h3>
@@ -78,11 +79,10 @@
 
     created: function () {
       this.setIntervalThatChecksGameState();
-      let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode};
-      let q = "";
+      let requestData = {Action: "GetQuestion", 'Code': this.$store.state.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
         this.question = response.body.Data
-      });
+      })
     }
   }
 </script>

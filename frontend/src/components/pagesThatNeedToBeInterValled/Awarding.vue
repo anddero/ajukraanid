@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div id="summary">
     <div class="summary">
@@ -15,49 +16,48 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
 
   export default {
-    data() {
+    data () {
       return {
-        interval: "",
-        points: ""
+        interval: '',
+        points: ''
       }
     },
 
     methods: {
-      checkGameState() {
-        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+      checkGameState () {
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          if (response.body.State === "question") {
-            window.clearInterval(window.interval);
-            console.log("Moving to " + "/question" + " from /awarding");
-            this.$router.replace({path: "/question"})
+          if (response.body.State === 'question') {
+            window.clearInterval(window.interval)
+            console.log('Moving to ' + '/question' + ' from /awarding')
+            this.$router.replace({path: '/question'})
           }
-        });
+        })
       },
 
-      setIntervalThatChecksGameState() {
+      setIntervalThatChecksGameState () {
         window.interval = setInterval(this.checkGameState, 1000)
-      },
+      }
     },
 
     computed: {
-      registrations() {
+      registrations () {
         return this.$store.state.registrations
       },
-      gameCode() {
+      gameCode () {
         return this.$store.state.gameCode
       }
     },
 
     created: function () {
-      this.setIntervalThatChecksGameState();
-      let requestData = {Action: "GetPoints", "Code": this.gameCode};
+      this.setIntervalThatChecksGameState()
+      let requestData = {Action: 'GetPoints', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
-          this.points = response.body.Data;
-        });
+          this.points = response.body.Data
+        })
     }
   }
 </script>

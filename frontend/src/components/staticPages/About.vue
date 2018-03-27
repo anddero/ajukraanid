@@ -1,6 +1,5 @@
+/* eslint-disable */
 <template>
-
-
   <div>
     <div class="jumbotron">
       <div class="container">
@@ -11,15 +10,11 @@
           rohkem saab ta punkte.</p>
       </div>
     </div>
-
-
     <div class="container">
-
       <br>
       <button @click="routeTo('/')" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
       </button>
     </div>
-
   </div>
 </template>
 

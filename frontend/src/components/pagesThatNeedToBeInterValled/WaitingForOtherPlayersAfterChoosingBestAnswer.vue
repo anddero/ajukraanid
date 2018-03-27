@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div class="about container">
     <h1 class="page-header text-center">Please wait till all players have answered</h1>
@@ -10,44 +11,41 @@
 <script>
   export default {
     name: 'about',
-    data() {
+    data () {
       return {
-        intervalForWaitingScreen: ""
+        intervalForWaitingScreen: ''
       }
     },
 
     methods: {
-      routeTo(state) {
-        console.log("Moving to " + state + " from waitingForOtherPlayers1")
-        window.clearInterval(window.intervalForWaitingScreen);
+      routeTo (state) {
+        console.log('Moving to ' + state + ' from waitingForOtherPlayers1')
+        window.clearInterval(window.intervalForWaitingScreen)
         this.$router.replace({path: state})
       },
 
-      checkGameState() {
-        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
-        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-
-          if (response.body.State === "chooseBestAnswer") {
-            window.clearInterval(window.intervalForWaitingScreen);
-            console.log("Moving to " + "/chooseBestAnswer" + " from /waitingForOtherPlayers1");
-            this.$router.replace({path: "/chooseBestAnswer"})
+      checkGameState () {
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
+        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response){
+          if (response.body.State === 'chooseBestAnswer') {
+            window.clearInterval(window.intervalForWaitingScreen)
+            console.log('Moving to ' + '/chooseBestAnswer' + ' from /waitingForOtherPlayers1')
+            this.$router.replace({path: '/chooseBestAnswer'})
           }
-
-        });
+        })
       },
 
-      setIntervalThatChecksGameState() {
+      setIntervalThatChecksGameState () {
         window.intervalForWaitingScreen = setInterval(this.checkGameState, 1000)
       },
     },
 
     created: function () {
-      let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode};
-      let q = "";
+      let requestData = {Action: 'GetQuestion', 'Code': this.$store.state.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
         this.question = response.body.Data
-      });
-      this.setIntervalThatChecksGameState();
+      })
+      this.setIntervalThatChecksGameState()
     }
   }
 </script>

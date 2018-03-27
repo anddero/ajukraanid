@@ -1,7 +1,6 @@
+/* eslint-disable */
 <template>
-
   <div id="summary">
-
     <div>
       <div class="jumbotron">
         <div class="container">
@@ -10,7 +9,6 @@
       </div>
     </div>
     <div v-if="username === 'host'">
-
       <div class="container">
         <transition-group class="ui horizontal list" name="list" tag="p">
           <div v-for="registration in items" :key="registration" class="row">
@@ -32,8 +30,6 @@
       <br>
       <button v-if="username === 'host'" @click="startGame()" class="btn btn-primary center-block">Start game</button>
     </div>
-
-
     <div v-if="username !== 'host'">
       <div class="container">
         <transition-group class="ui horizontal list" name="list" tag="p">
@@ -44,13 +40,10 @@
         </transition-group>
       </div>
     </div>
-
-
   </div>
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
 
   export default {
 
@@ -63,16 +56,16 @@
     },
 
     methods: {
-      routeTo(state) {
+      routeTo (state) {
         let requestData = {Action: "StartGame", "Code": this.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData);
-        console.log("Moving to " + state + " from /lobby vol 1");
-        window.clearInterval(window.gameStatusInterval);
-        window.clearInterval(window.loadPlayerInterval);
+        console.log("Moving to " + state + " from /lobby vol 1")
+        window.clearInterval(window.gameStatusInterval)
+        window.clearInterval(window.loadPlayerInterval)
         this.$router.replace({path: state})
       },
 
-      checkIfGameShouldStart() {
+      checkIfGameShouldStart () {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === "question") {
@@ -84,11 +77,11 @@
         });
       },
 
-      setIntervalThatChecksIfGameShouldStart() {
+      setIntervalThatChecksIfGameShouldStart () {
         window.gameStatusInterval = setInterval(this.checkIfGameShouldStart, 1000)
       },
 
-      loadPlayers() {
+      loadPlayers () {
         let requestData = {Action: "FetchState", "Code": this.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
@@ -100,11 +93,11 @@
           });
       },
 
-      setIntervalThatLoadsPlayersEverySecond() {
+      setIntervalThatLoadsPlayersEverySecond () {
         window.loadPlayerInterval = setInterval(this.loadPlayers, 1000)
       },
 
-      unregister(registration) {
+      unregister (registration) {
         let requestData = {Action: "RemovePlayer", "Code": this.gameCode, "Name": registration.name};
         this.$http.post(this.$store.state.requestDestination, requestData);
 
@@ -114,34 +107,34 @@
         });
       },
 
-      startGame() {
-        window.clearInterval(window.gameStatusInterval);
-        window.clearInterval(window.loadPlayerInterval);
-        console.log("Moving to " + "/question" + " from /question vol 3");
-        this.$router.replace({path: "/question"})
-        let requestData = {Action: "StartGame", "Code": this.gameCode};
-        this.$http.post(this.$store.state.requestDestination, requestData);
+      startGame () {
+        window.clearInterval(window.gameStatusInterval)
+        window.clearInterval(window.loadPlayerInterval)
+        console.log('Moving to ' + '/question' + ' from /question vol 3')
+        this.$router.replace({path: '/question'})
+        let requestData = {Action: 'StartGame', 'Code': this.gameCode}
+        this.$http.post(this.$store.state.requestDestination, requestData)
       }
     },
 
     computed: {
-      registrations() {
-        this.items = this.$store.state.registrations;
+      registrations () {
+        this.items = this.$store.state.registrations
         return this.$store.state.registrations
       },
 
-      gameCode() {
+      gameCode () {
         return this.$store.state.gameCode
       },
 
-      username() {
+      username () {
         return this.$store.state.username
       }
     },
 
     created: function () {
-      this.setIntervalThatChecksIfGameShouldStart();
-      this.setIntervalThatLoadsPlayersEverySecond();
+      this.setIntervalThatChecksIfGameShouldStart()
+      this.setIntervalThatLoadsPlayersEverySecond()
     }
   }
 </script>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div id="summary">
     <div v-if="username !== 'host'">
@@ -26,72 +27,70 @@
 
 <script>
 
-  import {mapGetters} from 'vuex';
-
   export default {
-    data() {
+    data () {
       return {
-        question: "",
-        questions: "",
-        intervalForState: ""
+        question: '',
+        questions: '',
+        intervalForState: ''
       }
     },
 
     methods: {
-      awardPlayer(Awardee) {
+      awardPlayer (Awardee) {
         let requestData = {
-          Action: "GivePoints",
-          "Code": this.gameCode,
+          Action: 'GivePoints',
+          'Code': this.gameCode,
           Name: this.$store.state.username,
           Target: Awardee
-        };
-        this.$http.post(this.$store.state.requestDestination, requestData);
-        console.log("Moving to " + "/waitingScreen1" + " from /choosebestAnswer");
-        this.$router.replace({path: "/waitingScreen2"})
+        }
+        this.$http.post(this.$store.state.requestDestination, requestData)
+        console.log('Moving to ' + '/waitingScreen1' + ' from /choosebestAnswer')
+        this.$router.replace({path: '/waitingScreen2'})
       },
 
-      checkIfGameShouldStart() {
-        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+      checkIfGameShouldStart () {
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          if (response.body.State === "awarding") {
-            window.clearInterval(window.intervalForState);
-            console.log("Moving to /awarding from /choose best answer");
-            this.$router.replace({path: "/awarding"})
+          if (response.body.State === 'awarding') {
+            window.clearInterval(window.intervalForState)
+            console.log('Moving to /awarding from /choose best answer')
+            this.$router.replace({path: '/awarding'})
           }
-        });
+        })
       },
 
-      setIntervalThatChecksIfGameShouldStart() {
+      setIntervalThatChecksIfGameShouldStart () {
         window.intervalForState = setInterval(this.checkIfGameShouldStart, 1000)
       }
     },
 
     computed: {
-      registrations() {
+      registrations () {
         return this.$store.state.registrations
       },
 
-      username() {
+      username () {
         return this.$store.state.username
       },
 
-      gameCode() {
+      gameCode () {
         return this.$store.state.gameCode
       }
     },
 
     created: function () {
-      this.setIntervalThatChecksIfGameShouldStart();
-      let requestData = {Action: "GetAnswers", "Code": this.gameCode};
+      this.setIntervalThatChecksIfGameShouldStart()
+      let requestData = {Action: 'GetAnswers', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
           this.questions = response.body.Data
-        });
-      let data = {Action: "GetQuestion", "Code": this.gameCode};
+        })
+      let data = {Action: 'GetQuestion', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, data)
         .then(function (response) {
           this.question = response.body.Data
-        });
+        })
     }
   }
 </script>

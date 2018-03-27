@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div class="about container">
     <h1 class="page-header text-center">Please wait till all players have answered (15 sec)</h1>
@@ -12,26 +13,26 @@
     name: 'about',
     data() {
       return {
-        intervalForWaitingScreen: ""
+        intervalForWaitingScreen: ''
       }
     },
 
     methods: {
       routeTo(state) {
-        console.log("Moving to " + state + " from /waitingForOtherPlayers2")
+        console.log('Moving to ' + state + ' from /waitingForOtherPlayers2')
         this.$router.replace({path: state})
       },
 
       checkGameState() {
-        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
 
-          if (response.body.State === "awarding") {
+          if (response.body.State === 'awarding') {
             window.clearInterval(window.intervalForWaitingScreen);
-            console.log("Moving to " + "/awarding" + " from /waitingForOtherPlayers2");
-            this.$router.replace({path: "/awarding"})
+            console.log('Moving to ' + '/awarding' + ' from /waitingForOtherPlayers2')
+            this.$router.replace({path: '/awarding'})
           }
-        });
+        })
       },
 
       setIntervalThatChecksGameState() {
@@ -40,12 +41,11 @@
     },
 
     created: function () {
-      let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode};
-      let q = "";
+      let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
         this.question = response.body.Data
-      });
-      this.setIntervalThatChecksGameState();
+      })
+      this.setIntervalThatChecksGameState()
     }
   }
 
