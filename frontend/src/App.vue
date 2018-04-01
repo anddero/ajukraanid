@@ -1,23 +1,41 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <router-view></router-view>
   </div>
+
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  export default {
+    name: 'App'
+
+  };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body {
+
+  }
+
+  .btn {
+    background-color: #321180;
+    border-color: Transparent;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .btn:hover {
+    transform: scale(1.25);
+    -webkit-transition: transform .35s ease-in-out;
+    border-color: Transparent;
+    background-color: #321180;
+  }
+  p, .display-3 {
+    font-family: 'Roboto', sans-serif;
+  }
+  body {
+    width: 100%;
+  }
+
+
+
 </style>

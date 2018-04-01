@@ -3,6 +3,7 @@
 
   <div id="menu" class="container">
     <img src="../../assets/logo.png" class="center-block">
+
     <button @click="routeToGameConfirmation" class="btn btn-primary center-block .btn-lg">Create a new game.
     </button>
     <br/>

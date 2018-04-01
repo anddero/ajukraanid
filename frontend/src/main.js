@@ -12,7 +12,7 @@ import ChooseBestAnswer from "./components/pagesThatNeedToBeInterValled/ChooseBe
 import WaitingForOtherPlayersAfterChoosingBestAnswer from "./components/pagesThatNeedToBeInterValled/WaitingForOtherPlayersAfterChoosingBestAnswer.vue"
 import WaitingForOtherPlayersAfterQuestion from "./components/pagesThatNeedToBeInterValled/WaitingForOtherPlayersAfterQuestion.vue"
 import {store} from './store/store';
-import './assets/css/style.css'
+import App from './App';
 Vue.use(vueResource);
 Vue.use(VueRouter);
 
@@ -35,12 +35,18 @@ const router = new VueRouter({
   ]
 })
 
+Vue.config.errorHandler = (err, vm, info) => {
+  console.error({err, vm, info});
+};
+
+Vue.config.warnHandler = (err, vm, info) => {
+  console.warn({err, vm, info});
+};
+
 new Vue({
   router,
-  template: `
-    <div id="app">
-    <router-view></router-view>
-    </div id>  
-  `,
+  el: '#app',
+  components: {App},
+  template: '<App/>',
   store,
-}).$mount('#app');
+});
