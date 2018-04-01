@@ -13,6 +13,7 @@ import WaitingForOtherPlayersAfterChoosingBestAnswer from "./components/pagesTha
 import WaitingForOtherPlayersAfterQuestion from "./components/pagesThatNeedToBeInterValled/WaitingForOtherPlayersAfterQuestion.vue"
 import {store} from './store/store';
 import App from './App';
+
 Vue.use(vueResource);
 Vue.use(VueRouter);
 
@@ -34,15 +35,6 @@ const router = new VueRouter({
     {path: '/~nilill/tarkvaratehnika/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion},
   ]
 })
-
-Vue.config.errorHandler = (err, vm, info) => {
-  console.error({err, vm, info});
-};
-
-Vue.config.warnHandler = (err, vm, info) => {
-  console.warn({err, vm, info});
-};
-
 new Vue({
   router,
   el: '#app',

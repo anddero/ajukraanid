@@ -16,8 +16,10 @@
             <div class="row">
               <div class="col-sm-3 col-md-6">
                 <div class="col">{{ registration }}</div>
+
               </div>
               <div class="col-sm-9 col-md-6">
+
                 <button v-if="username === 'host'" @click="unregister(registration)" class="btn pull-right btn-danger">
                   Unregister
                 </button>
@@ -34,6 +36,7 @@
       <div class="container">
         <transition-group class="ui horizontal list" name="list" tag="p">
           <div v-for="registration in items" :key="registration" class="row">
+
             <div class="center-block"><b><h3 align="center">{{ registration }}</h3></b></div>
             <div align="center" style="width: 150px; background-color: black; height: 1px; margin-top: 10px; margin-bottom: 10px" class="center-block"></div>
           </div>
@@ -97,13 +100,14 @@
         window.loadPlayerInterval = setInterval(this.loadPlayers, 1000)
       },
 
-      unregister (registration) {
-        let requestData = {Action: "RemovePlayer", "Code": this.gameCode, "Name": registration.name};
+      unregister (userName) {
+        let requestData = {Action: "RemovePlayer", "Code": this.gameCode, "Name": userName};
+        console.log(requestData)
         this.$http.post(this.$store.state.requestDestination, requestData);
 
         this.$store.commit({
           type: 'unregister',
-          name: registration.name
+          name: userName
         });
       },
 
