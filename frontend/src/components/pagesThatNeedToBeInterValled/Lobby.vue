@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
 
     data() {
@@ -143,7 +143,6 @@
 </script>
 
 <style scoped>
-  @import "../../assets/css/main.css";
   /* Enter and leave animations can use different */
   /* durations and timing functions.              */
   .slide-fade-enter-active {

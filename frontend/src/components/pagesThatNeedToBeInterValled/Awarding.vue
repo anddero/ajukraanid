@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
     data() {
       return {
@@ -63,7 +63,6 @@
 </script>
 
 <style scoped>
-  @import "../../assets/css/main.css";
   .summary {
     text-align: center;
   }

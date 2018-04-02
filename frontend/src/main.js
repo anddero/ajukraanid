@@ -14,6 +14,10 @@ import WaitingForOtherPlayersAfterQuestion from "./components/pagesThatNeedToBeI
 import {store} from './store/store';
 import App from './App';
 
+
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import "./assets/css/main.scss"
+
 Vue.use(vueResource);
 Vue.use(VueRouter);
 
@@ -36,8 +40,8 @@ const router = new VueRouter({
     {path: '/~nilill/tarkvaratehnika/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion},
   ]
 })
-new Vue({
 
+new Vue({
   router,
   el: '#app',
   components: {App},
