@@ -12,6 +12,7 @@ public final class Player extends Entry {
     private Players player;
     // accessible
     @Getter private final String name;
+    @Getter private boolean valid = true;
 
     @Getter @Setter private int points = 0;     // TODO IS TEMPORARY
 
@@ -25,6 +26,7 @@ public final class Player extends Entry {
         game.getPlayers().add(this);
         this.player = player;
         this.name = player.getName();
+        this.valid = player.isValid();
     }
 
     /**
@@ -33,13 +35,19 @@ public final class Player extends Entry {
     public Player(Game game, String name) {
         this.game = game;
         game.getPlayers().add(this);
-        player = new Players(game.getGame().getId(), name);
+        player = new Players(game.getGame().getId(), name, valid);
         this.name = name;
-        player = game.getDatabase().getPlayersRepository().save(player);
+        player = getDatabase().getPlayersRepository().save(player);
     }
 
     Players getPlayer() {
         return player;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+        player.setValid(valid);
+        player = getDatabase().getPlayersRepository().save(player);
     }
 
     @Override

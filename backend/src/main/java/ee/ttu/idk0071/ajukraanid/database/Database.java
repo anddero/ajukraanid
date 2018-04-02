@@ -51,7 +51,11 @@ public final class Database extends Entry {
 
     private void loadPlayers(Game game) {
         playersRepository.findByGameId(game.getGame().getId())
-                .forEach(player -> new Player(game, player));
+                .forEach(player -> {
+                    if (player.isValid()) {
+                        new Player(game, player);
+                    }
+                });
     }
 
     private void loadQuestions(Game game) {
