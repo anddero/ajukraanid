@@ -28,6 +28,7 @@
 </template>
 
 <script>
+  import('../../assets/css/main.css');
   import Alert from './Alert';
 
   export default {
@@ -72,5 +73,5 @@
 </script>
 
 <style scoped>
-
+  @import "../../assets/css/main.css";
 </style>

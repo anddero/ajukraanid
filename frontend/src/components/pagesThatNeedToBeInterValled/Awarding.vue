@@ -16,9 +16,9 @@
 </template>
 
 <script>
-
+  import('../../assets/css/main.css');
   export default {
-    data () {
+    data() {
       return {
         interval: '',
         points: ''
@@ -26,7 +26,7 @@
     },
 
     methods: {
-      checkGameState () {
+      checkGameState() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === 'question') {
@@ -37,16 +37,16 @@
         })
       },
 
-      setIntervalThatChecksGameState () {
+      setIntervalThatChecksGameState() {
         window.interval = setInterval(this.checkGameState, 1000)
       }
     },
 
     computed: {
-      registrations () {
+      registrations() {
         return this.$store.state.registrations
       },
-      gameCode () {
+      gameCode() {
         return this.$store.state.gameCode
       }
     },
@@ -63,7 +63,7 @@
 </script>
 
 <style scoped>
-
+  @import "../../assets/css/main.css";
   .summary {
     text-align: center;
   }

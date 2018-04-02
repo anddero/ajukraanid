@@ -9,11 +9,10 @@
     <br/>
     <button @click="routeToRegistration" class="btn btn-primary center-block .btn-lg">Join a game</button>
     <br/>
-    <button @click="routeToAbout" class="btn btn-primary center-block .btn-lg">About</button>
+    <button @click="routeToAbout" class="btn btn-primary center-block .btn-lg btn">About</button>
   </div>
 </template>
 <script>
-
   export default {
     methods: {
       routeToGameConfirmation() {
@@ -29,6 +28,5 @@
   }
 </script>
 <style scoped>
-
-
+ @import "../../assets/css/main.css";
 </style>

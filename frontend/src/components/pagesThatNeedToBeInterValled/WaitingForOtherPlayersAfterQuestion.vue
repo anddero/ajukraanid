@@ -9,6 +9,7 @@
 </template>
 
 <script>
+  import('../../assets/css/main.css');
   export default {
     name: 'about',
     data() {
@@ -52,5 +53,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  @import "../../assets/css/main.css";
 </style>
+

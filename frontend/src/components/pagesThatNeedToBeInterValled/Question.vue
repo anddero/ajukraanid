@@ -17,6 +17,7 @@
 
 <script>
   import Alert from '../staticPages/Alert';
+  import('../../assets/css/main.css');
   export default {
     data() {
       return {
@@ -88,4 +89,6 @@
 </script>
 
 <style scoped>
+  @import "../../assets/css/main.css";
 </style>
+

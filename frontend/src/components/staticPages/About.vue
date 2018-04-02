@@ -19,6 +19,7 @@
 </template>
 
 <script>
+
   export default {
     name: 'about',
     data() {
@@ -35,4 +36,5 @@
 </script>
 
 <style scoped>
+  @import "../../assets/css/main.css";
 </style>

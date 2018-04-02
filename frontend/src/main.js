@@ -17,6 +17,7 @@ import App from './App';
 Vue.use(vueResource);
 Vue.use(VueRouter);
 
+
 const router = new VueRouter({
   mode: 'history',
   base: __dirname,
@@ -36,6 +37,7 @@ const router = new VueRouter({
   ]
 })
 new Vue({
+
   router,
   el: '#app',
   components: {App},
