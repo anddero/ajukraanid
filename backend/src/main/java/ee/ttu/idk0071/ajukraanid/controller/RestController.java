@@ -22,35 +22,43 @@ public class RestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.POST, value = "" )
-    public String getHTTPBody(@RequestBody String request) throws JSONException, InterruptedException {
-        JSONObject obj = new JSONObject(request);
-        String action = obj.get("Action").toString();
-        if (Objects.equals(action, "CreateGame")) {
-            return gameController.createNewGame();
-        } else if (Objects.equals(action, "JoinGame")) {
-            return gameController.findGameWithGameCodeAndAddPlayerToThatGame(obj.getInt("Code"), obj.get("Name").toString());
-        } else if (Objects.equals(action, "StartGame")) {
-            return gameController.startGame(obj.getInt("Code"));
-        } else if (Objects.equals(action, "FetchState")) {
-            return gameController.fetchState(obj.getInt("Code"));
-        } else if (Objects.equals(action, "SubmitAnswer")) {
-            return gameController.submitAnswer(obj.getInt("Code"), obj.get("Name").toString(), obj.get("Answer").toString());
-        } else if (Objects.equals(action, "GivePoints")) {
-            return gameController.GivePoints(obj.getInt("Code"),  obj.get("Name").toString(), obj.get("Target").toString()) + " ++++";
-        } else if (Objects.equals(action, "GetPoints")) {
-            return gameController.getTotalPlayerPointStatistics(obj.getInt("Code"));
-        } else if (Objects.equals(action, "GetAnswers")) {
-            return gameController.getAnswers(obj.getInt("Code"));
-        } else if (Objects.equals(action, "RemovePlayer")) {
-            return gameController.removePlayerFromGame(obj.getInt("Code"), obj.get("Name").toString());
-        } else if (Objects.equals(action, "GetQuestion")) {
-            return gameController.getQuestion(obj.getInt("Code"));
+    @RequestMapping(method = RequestMethod.POST, value = "")
+    public String getHTTPBody(@RequestBody String request) throws InterruptedException {
+        JSONObject data;
+        String action;
+        try {
+            data = new JSONObject(request);
+            action = data.get("Action").toString();
+        } catch (JSONException e) {
+            return "400 check your body parameters."; // TODO something better
         }
-        return "400 check your body parameters.";
+
+        try {
+            if (Objects.equals(action, "CreateGame")) {
+                return gameController.createNewGame();
+            } else if (Objects.equals(action, "JoinGame")) {
+                return gameController.joinGame(data.getInt("Code"), data.getString("Name"));
+            } else if (Objects.equals(action, "StartGame")) {
+                return gameController.startGame(data.getInt("Code"));
+            } else if (Objects.equals(action, "FetchState")) {
+                return gameController.fetchState(data.getInt("Code"));
+            } else if (Objects.equals(action, "SubmitAnswer")) {
+                return gameController.submitAnswer(data.getInt("Code"), data.getString("Name"), data.getString("Answer"));
+            } else if (Objects.equals(action, "GivePoints")) {
+                return gameController.GivePoints(data.getInt("Code"), data.getString("Name"), data.getString("Target")) +
+                        " ++++"; // TODO What is this?
+            } else if (Objects.equals(action, "GetPoints")) {
+                return gameController.getTotalPlayerPointStatistics(data.getInt("Code"));
+            } else if (Objects.equals(action, "GetAnswers")) {
+                return gameController.getAnswers(data.getInt("Code"));
+            } else if (Objects.equals(action, "RemovePlayer")) {
+                return gameController.removePlayerFromGame(data.getInt("Code"), data.getString("Name"));
+            } else if (Objects.equals(action, "GetQuestion")) {
+                return gameController.getQuestion(data.getInt("Code"));
+            }
+        } catch (JSONException e) {
+            return "400 check your body parameters."; // TODO something better
+        }
+        return "400 check your body parameters."; // TODO Something better
     }
-
-
 }
-
-

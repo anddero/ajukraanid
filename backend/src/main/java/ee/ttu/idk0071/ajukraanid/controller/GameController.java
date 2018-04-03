@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 class GameController {
     private final Database database;
-    ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final ExecutorService executor = Executors.newCachedThreadPool();
 
     @Autowired
     private GameController(Database database) {
@@ -61,7 +61,7 @@ class GameController {
         return fetchErrorState(gameCode, "Error", "No game found with game code: " + gameCode);
     }
 
-    String findGameWithGameCodeAndAddPlayerToThatGame(int gameCode, String playerName) throws JSONException {
+    String joinGame(int gameCode, String playerName) throws JSONException {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent() && !suchPlayerExistsInGame(gameCode, playerName)) {
             Player player = new Player(game.get(), playerName);
@@ -234,7 +234,10 @@ class GameController {
         Optional<Game> gameOptional = findActiveGame(gameCode);
         if (gameOptional.isPresent()) {
             Optional<Player> playerOptional = findPlayer(gameOptional.get(), playername);
-            playerOptional.ifPresent(player -> gameOptional.get().getPlayers().remove(player));
+            playerOptional.ifPresent(player -> {
+                gameOptional.get().getPlayers().remove(player);
+                player.setValid(false);
+            });
         } return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
     }
 
