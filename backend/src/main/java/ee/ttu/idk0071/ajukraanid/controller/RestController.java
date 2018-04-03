@@ -45,8 +45,7 @@ public class RestController {
             } else if (Objects.equals(action, "SubmitAnswer")) {
                 return gameController.submitAnswer(data.getInt("Code"), data.getString("Name"), data.getString("Answer"));
             } else if (Objects.equals(action, "GivePoints")) {
-                return gameController.GivePoints(data.getInt("Code"), data.getString("Name"), data.getString("Target")) +
-                        " ++++"; // TODO What is this?
+                return gameController.GivePoints(data.getInt("Code"), data.getString("Name"), data.getString("Target"));
             } else if (Objects.equals(action, "GetPoints")) {
                 return gameController.getTotalPlayerPointStatistics(data.getInt("Code"));
             } else if (Objects.equals(action, "GetAnswers")) {
