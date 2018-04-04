@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.util.Objects;
 
+import static ee.ttu.idk0071.ajukraanid.message.Message.createErrorResponse;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
-
     private final GameController gameController;
 
     @Autowired
@@ -23,41 +22,45 @@ public class RestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST, value = "")
-    public String getHTTPBody(@RequestBody String request) throws InterruptedException {
+    public String getHTTPBody(@RequestBody String request) {
         JSONObject data;
         String action;
         try {
             data = new JSONObject(request);
-            action = data.get("Action").toString();
+            action = data.getString("Action");
         } catch (JSONException e) {
-            return "400 check your body parameters."; // TODO something better
+            return createErrorResponse(e.getMessage());
         }
 
         try {
-            if (Objects.equals(action, "CreateGame")) {
-                return gameController.createNewGame();
-            } else if (Objects.equals(action, "JoinGame")) {
-                return gameController.joinGame(data.getInt("Code"), data.getString("Name"));
-            } else if (Objects.equals(action, "StartGame")) {
-                return gameController.startGame(data.getInt("Code"));
-            } else if (Objects.equals(action, "FetchState")) {
-                return gameController.fetchState(data.getInt("Code"));
-            } else if (Objects.equals(action, "SubmitAnswer")) {
-                return gameController.submitAnswer(data.getInt("Code"), data.getString("Name"), data.getString("Answer"));
-            } else if (Objects.equals(action, "GivePoints")) {
-                return gameController.GivePoints(data.getInt("Code"), data.getString("Name"), data.getString("Target"));
-            } else if (Objects.equals(action, "GetPoints")) {
-                return gameController.getTotalPlayerPointStatistics(data.getInt("Code"));
-            } else if (Objects.equals(action, "GetAnswers")) {
-                return gameController.getAnswers(data.getInt("Code"));
-            } else if (Objects.equals(action, "RemovePlayer")) {
-                return gameController.removePlayerFromGame(data.getInt("Code"), data.getString("Name"));
-            } else if (Objects.equals(action, "GetQuestion")) {
-                return gameController.getQuestion(data.getInt("Code"));
+            switch (action) {
+                case "CreateGame":
+                    return gameController.createNewGame();
+                case "JoinGame":
+                    return gameController.joinGame(data.getInt("Code"), data.getString("Name"));
+                case "StartGame":
+                    return gameController.startGame(data.getInt("Code"));
+                case "FetchState":
+                    return gameController.fetchState(data.getInt("Code"));
+                case "SubmitAnswer":
+                    return gameController.submitAnswer(data.getInt("Code"), data.getString("Name"),
+                            data.getString("Answer"));
+                case "GivePoints":
+                    return gameController.GivePoints(data.getInt("Code"), data.getString("Name"),
+                            data.getString("Target"));
+                case "GetPoints":
+                    return gameController.getTotalPlayerPointStatistics(data.getInt("Code"));
+                case "GetAnswers":
+                    return gameController.getAnswers(data.getInt("Code"));
+                case "RemovePlayer":
+                    return gameController.removePlayerFromGame(data.getInt("Code"), data.getString("Name"));
+                case "GetQuestion":
+                    return gameController.getQuestion(data.getInt("Code"));
+                default:
+                    return createErrorResponse("Invalid Action.");
             }
         } catch (JSONException e) {
-            return "400 check your body parameters."; // TODO something better
+            return createErrorResponse(e.getMessage());
         }
-        return "400 check your body parameters."; // TODO Something better
     }
 }

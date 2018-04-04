@@ -12,6 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+import static ee.ttu.idk0071.ajukraanid.message.Message.createErrorResponse;
+import static ee.ttu.idk0071.ajukraanid.message.Message.createFetchStateResponse;
+
 @Component
 class GameController {
     private final Database database;
@@ -34,20 +37,6 @@ class GameController {
                 .findFirst();
     }
 
-    String fetchErrorState(int gameCode, String state, String errorData) throws JSONException {
-        return new JSONObject()
-                .put("Action", "FetchState")
-                .put("State", state)
-                .put("Data", errorData).toString();
-    }
-
-    String fetchErrorState(int gameCode, String state, Object json) throws JSONException {
-        return new JSONObject()
-                .put("Action", "FetchState")
-                .put("State", state)
-                .put("Data", json).toString();
-    }
-
     String fetchState(int gameCode) throws JSONException {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
@@ -58,7 +47,7 @@ class GameController {
                     .put("State", game.get().getGameState())
                     .put("Data", players).toString();
         }
-        return fetchErrorState(gameCode, "Error", "No game found with game code: " + gameCode);
+        return createErrorResponse("No game found with game code: " + gameCode);
     }
 
     String joinGame(int gameCode, String playerName) throws JSONException {
@@ -67,9 +56,9 @@ class GameController {
             Player player = new Player(game.get(), playerName);
             return fetchState(gameCode);
         } else if (game.isPresent() && suchPlayerExistsInGame(gameCode, playerName)) {
-            return fetchErrorState(gameCode, "Error", "Such username is already taken.");
+            return createErrorResponse("Such username is already taken.");
         }
-        return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+        return createErrorResponse("Did not find such game with game code: " + gameCode);
     }
 
 
@@ -83,13 +72,13 @@ class GameController {
      * @param gameCode the unique code to each game
      * @return the game state, if it is in lobby then return the list of player names.
      */
-    String startGame(int gameCode) throws InterruptedException {
+    String startGame(int gameCode) {
         Optional<Game> game = findActiveGame(gameCode);
         if (game.isPresent()) {
             executor.submit(new GameRunner(game.get()));
             return fetchState(gameCode);
         }
-        return fetchErrorState(gameCode, "Error", "Was not able to start the game because such game was not found.");
+        return createErrorResponse("Was not able to start the game because such game was not found.");
     }
 
     /**
@@ -147,7 +136,7 @@ class GameController {
     String GivePoints(int gameCode, String giver, String target) {
         Optional<Game> game = findActiveGame(gameCode);
         if (!suchPlayerExistsInGame(gameCode, giver) && !suchPlayerExistsInGame(gameCode, target)) {
-            return fetchErrorState(gameCode, "Error", "Wrong username was given");
+            return createErrorResponse("Wrong username was given");
         }
 
         if (game.isPresent()) {
@@ -164,11 +153,11 @@ class GameController {
 
             if (!personHasEvaluated) {
                 new Evaluation(question, player1, player);
-                return fetchErrorState(gameCode, "Success", "Your points were given to " + target);
-            } else return fetchErrorState(gameCode, "Error", "Can not give points, because you already gave points");
+                return createFetchStateResponse("Success", "Your points were given to " + target);
+            } else return createErrorResponse("Can not give points, because you already gave points");
 
         }
-        return fetchErrorState(gameCode, "Error", "Game with such id was not found");
+        return createErrorResponse("Game with such id was not found");
     }
 
 
@@ -186,7 +175,7 @@ class GameController {
             }
         }
 
-        return fetchErrorState(gameCode, "Points", jsonArray);
+        return createFetchStateResponse("Points", jsonArray);
     }
 
 
@@ -204,8 +193,8 @@ class GameController {
                 questions.put(data);
             }
 
-            return fetchErrorState(gameCode, "GetAnswers", questions);
-        } return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+            return createFetchStateResponse("GetAnswers", questions);
+        } return createErrorResponse("Did not find such game with game code: " + gameCode);
     }
 
 
@@ -213,10 +202,10 @@ class GameController {
     String submitAnswer(int gameCode, String answerer, String answer) {
         Optional<Game> game = findActiveGame(gameCode);
         if (!suchPlayerExistsInGame(gameCode, answerer)) {
-            return fetchErrorState(gameCode, "Error", "Wrong username was given"); // TODO Move conditions checks to a Guardian class
+            return createErrorResponse("Wrong username was given"); // TODO Move conditions checks to a Guardian class
         }
 //        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
-//            return fetchErrorState(gameCode, "Error", "Question number does not match he current games' state");
+//            return createErrorResponse("Question number does not match he current games' state");
 //        }
         if (game.isPresent()) {
            boolean hasAnswered = game.get().getQuestions().get(game.get().getQuestionNumber()).getAnswers().stream()
@@ -224,10 +213,10 @@ class GameController {
            if (!hasAnswered) {
                Optional<Player> player = findPlayer(game.get(), answerer);
                new Answer(game.get().getQuestions().get(game.get().getQuestionNumber()), player.get(), answer);
-               return fetchErrorState(gameCode, "Success", "Your answer was submitted.");
-           } else return fetchErrorState(gameCode, "Error", "You already answered the question");
+               return createFetchStateResponse("Success", "Your answer was submitted.");
+           } else return createErrorResponse("You already answered the question");
         }
-        return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+        return createErrorResponse("Did not find such game with game code: " + gameCode);
     }
 
     String removePlayerFromGame(int gameCode, String playername) {
@@ -238,7 +227,7 @@ class GameController {
                 gameOptional.get().getPlayers().remove(player);
                 player.setValid(false);
             });
-        } return fetchErrorState(gameCode, "Error", "Did not find such game with game code: " + gameCode);
+        } return createErrorResponse("Did not find such game with game code: " + gameCode);
     }
 
     String getStatus() {
@@ -248,8 +237,8 @@ class GameController {
     String getQuestion(int code) {
         Optional<Game> gameOptional = findActiveGame(code);
         if (gameOptional.isPresent()) {
-            return fetchErrorState(code, "GetQuestion", gameOptional.get().getQuestions().get(gameOptional.get().getQuestionNumber()).getText());
+            return createFetchStateResponse("GetQuestion", gameOptional.get().getQuestions().get(gameOptional.get().getQuestionNumber()).getText());
         }
-        return fetchErrorState(code, "Error", "Unknown error");
+        return createErrorResponse("Unknown error");
     }
 }
