@@ -60,14 +60,17 @@ class GameController {
 
     String joinGame(int gameCode, String playerName) {
         Optional<Game> game = findActiveGame(gameCode);
-        if (game.isPresent()) {
-            if (playerExists(gameCode, playerName)) {
-                return createErrorResponse("Such username is already taken.");
-            }
-            new Player(game.get(), playerName);
-            return fetchState(gameCode);
+
+        if (!game.isPresent()) {
+            return createErrorResponse("Did not find such game with game code: " + gameCode); // TODO Exception
         }
-        return createErrorResponse("Did not find such game with game code: " + gameCode);
+
+        if (findPlayer(game.get(), playerName).isPresent()) { // TODO Ignore case check
+            return createErrorResponse("Such username is already taken.");
+        }
+
+        new Player(game.get(), playerName);
+        return fetchState(gameCode);
     }
 
     /**
@@ -76,27 +79,32 @@ class GameController {
      */
     String startGame(int gameCode) {
         Optional<Game> game = findActiveGame(gameCode);
-        if (game.isPresent()) {
-            executor.submit(new GameRunner(game.get()));
-            return fetchState(gameCode);
+
+        if (!game.isPresent()) {
+            return createErrorResponse("Was not able to start the game because such game was not found.");
         }
-        return createErrorResponse("Was not able to start the game because such game was not found.");
+
+        executor.submit(new GameRunner(game.get()));
+        return fetchState(gameCode);
     }
 
     String fetchState(int gameCode) {
         Optional<Game> game = findActiveGame(gameCode);
-        if (game.isPresent()) {
-            JSONArray players = new JSONArray();
-            game.get().getPlayers().forEach(player -> players.put(player.toString()));
-            return new JSONObject()
-                    .put("Action", "FetchState")
-                    .put("State", game.get().getGameState())
-                    .put("Data", players).toString();
+
+        if (!game.isPresent()) {
+            return createErrorResponse("No game found with game code: " + gameCode);
         }
-        return createErrorResponse("No game found with game code: " + gameCode);
+
+        JSONArray players = new JSONArray();
+        game.get().getPlayers().forEach(player -> players.put(player.toString()));
+        return new JSONObject()
+                .put("Action", "FetchState")
+                .put("State", game.get().getGameState()) // TODO Enum
+                .put("Data", players).toString();
     }
 
     String submitAnswer(int gameCode, String playerName, String answer) {
+        // TODO Need Question Number
         Optional<Game> game = findActiveGame(gameCode);
         if (!game.isPresent()) {
             return createErrorResponse("Did not find such game with game code: " + gameCode);
@@ -118,6 +126,7 @@ class GameController {
     }
 
     String givePoints(int gameCode, String giverName, String targetName) {
+        // TODO Need Question Number
         Optional<Game> optGame = findActiveGame(gameCode);
 
         if (!optGame.isPresent()) {
@@ -170,6 +179,7 @@ class GameController {
     }
 
     String getAnswers(int gameCode) {
+        // TODO Need Question Number
         Optional<Game> game = findActiveGame(gameCode);
 
         if (!game.isPresent()) {
@@ -207,6 +217,7 @@ class GameController {
     }
 
     String getQuestion(int gameCode) {
+        // TODO Need Q number?
         Optional<Game> optGame = findActiveGame(gameCode);
 
         if (!optGame.isPresent()) {
@@ -228,12 +239,6 @@ class GameController {
         return database.getGames().stream()
                 .filter(game -> game.getGameCode() == gameCode)
                 .findAny();
-    }
-
-    private boolean playerExists(int gameCode, String playerName) {
-        return findActiveGame(gameCode)
-                .filter(game -> findPlayer(game, playerName).isPresent())
-                .isPresent();
     }
 
     private Question getCurrentQuestion(Game game) {
