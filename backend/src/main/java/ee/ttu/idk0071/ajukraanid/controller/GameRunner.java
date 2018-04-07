@@ -24,7 +24,7 @@ public class GameRunner implements Runnable {
         Thread.sleep(25000);
         if (questionsLeft > 0) {
             questionsLeft--;
-            runRound();
+            runRound(); // TODO make iterative
         } else game.setGameState("ended");
 
     }

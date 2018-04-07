@@ -7,6 +7,10 @@ public abstract class Message {
         return createFetchStateResponse("Error", errorMessage);
     }
 
+    public static String createSuccessResponse(String successMessage) {
+        return createFetchStateResponse("Success", successMessage);
+    }
+
     public static String createFetchStateResponse(String state, Object data) {
         return new JSONObject()
                 .put("Action", "FetchState")

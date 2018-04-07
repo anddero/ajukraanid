@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static ee.ttu.idk0071.ajukraanid.message.Message.createErrorResponse;
 import static ee.ttu.idk0071.ajukraanid.message.Message.createFetchStateResponse;
+import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 
 @Component
 class GameController {
@@ -153,7 +154,7 @@ class GameController {
 
             if (!personHasEvaluated) {
                 new Evaluation(question, player1, player);
-                return createFetchStateResponse("Success", "Your points were given to " + target);
+                return createSuccessResponse("Your points were given to " + target);
             } else return createErrorResponse("Can not give points, because you already gave points");
 
         }
@@ -213,7 +214,7 @@ class GameController {
            if (!hasAnswered) {
                Optional<Player> player = findPlayer(game.get(), answerer);
                new Answer(game.get().getQuestions().get(game.get().getQuestionNumber()), player.get(), answer);
-               return createFetchStateResponse("Success", "Your answer was submitted.");
+               return createSuccessResponse("Your answer was submitted.");
            } else return createErrorResponse("You already answered the question");
         }
         return createErrorResponse("Did not find such game with game code: " + gameCode);
