@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,6 +35,7 @@ class GameController {
      * 9999 current games. TODO Will fix it in ETA 5 weeks (check db for old games, add timestamps)
      */
     String createGame() {
+        archiveExpiredGames();
         List<Integer> usedCodes = database.getGames().stream()
                 .map(Game::getGameCode)
                 .collect(Collectors.toList());
@@ -277,5 +279,23 @@ class GameController {
                 .map(Evaluation::getTarget)
                 .filter(target -> player == target)
                 .count() * 100;
+    }
+
+    private void archiveExpiredGames() {
+        database.getGames().forEach(game -> {
+            switch (game.getGameState()) {
+                case INACTIVE:
+                    break;
+                case ERROR:
+                    System.err.println(LocalDateTime.now().toString() + " [TRACE] Archive task: Game with ID " +
+                            game.getGameCode() + " in Error state");
+                default:
+                    if (new Date().getTime() - game.getTimestamp().getTime() > 1000 * 60 * 60) {
+                        game.setGameState(Game.State.INACTIVE);
+                        System.out.println(LocalDateTime.now().toString() + " [LOG] Archive task: Game with ID " +
+                                game.getGameCode() + " has expired and has been archived");
+                    }
+            }
+        });
     }
 }
