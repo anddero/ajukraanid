@@ -37,6 +37,7 @@ class GameController {
     String createGame() {
         archiveExpiredGames();
         List<Integer> usedCodes = database.getGames().stream()
+                .filter(game -> game.getGameState() != Game.State.INACTIVE)
                 .map(Game::getGameCode)
                 .collect(Collectors.toList());
         int[] availableCodes = IntStream.range(1_000, 10_000)
