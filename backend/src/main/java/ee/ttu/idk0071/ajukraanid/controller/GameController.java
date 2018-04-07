@@ -20,14 +20,13 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 @Component
 class GameController {
     private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final Guard guard = new Guard();
     private final Random random = new Random();
     private final Database database;
-    private final Guard guard;
 
     @Autowired
     private GameController(Database database) {
         this.database = database;
-        guard = new Guard(database);
     }
 
     /**
