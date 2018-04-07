@@ -8,25 +8,39 @@ public class Guard {
     private static final int MINIMUM_PLAYERS = 2;
     private static final int MAXIMUM_PLAYERS = 8;
 
-    public boolean canJoinGame(Game game) {
-        return game.getGameState() == Game.State.LOBBY
-                && game.getPlayers().size() < MAXIMUM_PLAYERS;
+    public void checkJoinGame(Game game) {
+        if (game.getGameState() != Game.State.LOBBY) {
+            throw new GuardException("Cannot join the game at this point");
+        }
+        if (game.getPlayers().size() >= MAXIMUM_PLAYERS) {
+            throw new GuardException("The game is full: " + MAXIMUM_PLAYERS + " players");
+        }
     }
 
-    public boolean canStartGame(Game game) {
-        return game.getGameState() == Game.State.LOBBY
-                && game.getPlayers().size() >= MINIMUM_PLAYERS;
+    public void checkStartGame(Game game) {
+        if (game.getGameState() != Game.State.LOBBY) {
+            throw new GuardException("Cannot start the game at this point");
+        }
+        if (game.getPlayers().size() < MINIMUM_PLAYERS) {
+            throw new GuardException("Not enough players to start the game, need at least " + MINIMUM_PLAYERS);
+        }
     }
 
-    public boolean canSubmitAnswer(Game game) {
-        return game.getGameState() == Game.State.ANSWERING;
+    public void checkSubmitAnswer(Game game) {
+        if (game.getGameState() != Game.State.ANSWERING) {
+            throw new GuardException("Cannot submit an answer at this point");
+        }
     }
 
-    public boolean canGivePoints(Game game) {
-        return game.getGameState() == Game.State.GRADING;
+    public void checkGivePoints(Game game) {
+        if (game.getGameState() != Game.State.GRADING) {
+            throw new GuardException("Cannot give points at the current moment");
+        }
     }
 
-    public boolean canRemovePlayer(Game game) {
-        return game.getGameState() == Game.State.LOBBY;
+    public void checkRemovePlayer(Game game) {
+        if (game.getGameState() != Game.State.LOBBY) {
+            throw new GuardException("Cannot remove players at this point");
+        }
     }
 }

@@ -1,6 +1,7 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
 
+import ee.ttu.idk0071.ajukraanid.guard.GuardException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,8 @@ public class RestController {
             }
         } catch (JSONException e) {
             return createErrorResponse("JSONException: " + e.getMessage());
+        } catch (GuardException e) {
+            return createErrorResponse(e.getMessage());
         }
     }
 }

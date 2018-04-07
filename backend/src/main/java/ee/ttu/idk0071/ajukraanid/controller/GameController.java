@@ -2,6 +2,7 @@ package ee.ttu.idk0071.ajukraanid.controller;
 
 import ee.ttu.idk0071.ajukraanid.database.*;
 import ee.ttu.idk0071.ajukraanid.guard.Guard;
+import ee.ttu.idk0071.ajukraanid.guard.GuardException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static ee.ttu.idk0071.ajukraanid.message.Message.createErrorResponse;
 import static ee.ttu.idk0071.ajukraanid.message.Message.createFetchStateResponse;
 import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 
@@ -41,7 +41,7 @@ class GameController {
                 .filter(code -> !usedCodes.contains(code))
                 .toArray();
         if (availableCodes.length == 0) {
-            return createErrorResponse("Too many active games, could not create a new instance");
+            throw new GuardException("Too many active games, could not create a new instance");
         }
         int randomIndex = random.nextInt(availableCodes.length);
         int gameCode = availableCodes[randomIndex];
@@ -61,15 +61,13 @@ class GameController {
         Optional<Game> optionalGame = findActiveGame(gameCode);
 
         if (!optionalGame.isPresent()) {
-            return createErrorResponse("Did not find such game with game code: " + gameCode); // TODO Exception
+            throw new GuardException("Did not find such game with game code: " + gameCode);
         }
 
-        if (!guard.canJoinGame(optionalGame.get())) {
-            return createErrorResponse("The game is not accepting any more players");
-        }
+        guard.checkJoinGame(optionalGame.get());
 
         if (findPlayerIgnoreCase(optionalGame.get(), playerName).isPresent()) {
-            return createErrorResponse("Such username is already taken.");
+            throw new GuardException("Such username is already taken.");
         }
 
         new Player(optionalGame.get(), playerName);
@@ -84,12 +82,10 @@ class GameController {
         Optional<Game> optionalGame = findActiveGame(gameCode);
 
         if (!optionalGame.isPresent()) {
-            return createErrorResponse("Was not able to start the game because such game was not found.");
+            throw new GuardException("Was not able to start the game because such game was not found.");
         }
 
-        if (!guard.canStartGame(optionalGame.get())) {
-            return createErrorResponse("The game cannot be started at this point");
-        }
+        guard.checkStartGame(optionalGame.get());
 
         executor.submit(new GameRunner(optionalGame.get()));
         return fetchState(gameCode);
@@ -99,7 +95,7 @@ class GameController {
         Optional<Game> optionalGame = findActiveGame(gameCode);
 
         if (!optionalGame.isPresent()) {
-            return createErrorResponse("No game found with game code: " + gameCode);
+            throw new GuardException("No game found with game code: " + gameCode);
         }
 
         Game game = optionalGame.get();
@@ -146,16 +142,14 @@ class GameController {
         // TODO Need Question Number
         Optional<Game> optionalGame = findActiveGame(gameCode);
         if (!optionalGame.isPresent()) {
-            return createErrorResponse("Did not find such game with game code: " + gameCode);
+            throw new GuardException("Did not find such game with game code: " + gameCode);
         }
 
-        if (!guard.canSubmitAnswer(optionalGame.get())) {
-            return createErrorResponse("Cannot submit answer at this point");
-        }
+        guard.checkSubmitAnswer(optionalGame.get());
 
         Optional<Player> optionalPlayer = findPlayer(optionalGame.get(), playerName);
         if (!optionalPlayer.isPresent()) {
-            return createErrorResponse("Wrong username was given");
+            throw new GuardException("Wrong username was given");
         }
 
         Question currentQuestion = getCurrentQuestion(optionalGame.get());
@@ -163,7 +157,7 @@ class GameController {
         boolean hasAnswered = currentQuestion.getAnswers().stream()
                 .anyMatch(ans -> ans.getPlayer().getName().equals(playerName));
         if (hasAnswered) {
-            return createErrorResponse("You already answered the question");
+            throw new GuardException("You already answered the question");
         }
         new Answer(currentQuestion, optionalPlayer.get(), answer);
         return createSuccessResponse("Your answer was submitted.");
@@ -174,20 +168,18 @@ class GameController {
         Optional<Game> optionalGame = findActiveGame(gameCode);
 
         if (!optionalGame.isPresent()) {
-            return createErrorResponse("Game with such id was not found");
+            throw new GuardException("Game with such id was not found");
         }
 
         Game game = optionalGame.get();
 
-        if (!guard.canGivePoints(game)) {
-            return createErrorResponse("Cannot give points right now");
-        }
+        guard.checkGivePoints(game);
 
         Optional<Player> optionalGiver = findPlayer(game, giverName);
         Optional<Player> optionalTarget = findPlayer(game, targetName);
 
         if (!optionalGiver.isPresent() || !optionalTarget.isPresent()) {
-            return createErrorResponse("Wrong username was given");
+            throw new GuardException("Wrong username was given");
         }
 
         Player giver = optionalGiver.get();
@@ -201,7 +193,7 @@ class GameController {
                 .anyMatch(player -> player == giver);
 
         if (hasAlreadyGiven) {
-            return createErrorResponse("Can not give points, because you already gave points");
+            throw new GuardException("Can not give points, because you already gave points");
         }
 
         new Evaluation(currentQuestion, giver, target);
@@ -214,7 +206,7 @@ class GameController {
      * @return The response JSON message.
      */
     String getPoints(int gameCode) {
-        return createErrorResponse("GetPoints request is deprecated, use FetchState instead");
+        throw new GuardException("GetPoints request is deprecated, use FetchState instead");
     }
 
     /**
@@ -223,24 +215,22 @@ class GameController {
      * @return The response JSON message.
      */
     String getAnswers(int gameCode) {
-        return createErrorResponse("GetAnswers request is deprecated, use FetchState instead");
+        throw new GuardException("GetAnswers request is deprecated, use FetchState instead");
     }
 
     String removePlayer(int gameCode, String playerName) {
         Optional<Game> optionalGame = findActiveGame(gameCode);
 
         if (!optionalGame.isPresent()) {
-            return createErrorResponse("Did not find such game with game code: " + gameCode);
+            throw new GuardException("Did not find such game with game code: " + gameCode);
         }
 
-        if (!guard.canRemovePlayer(optionalGame.get())) {
-            return createErrorResponse("Cannot remove players from the game right now");
-        }
+        guard.checkRemovePlayer(optionalGame.get());
 
         Optional<Player> optionalPlayer = findPlayer(optionalGame.get(), playerName);
 
         if (!optionalPlayer.isPresent()) {
-            return createErrorResponse("Invalid player name: " + playerName);
+            throw new GuardException("Invalid player name: " + playerName);
         }
 
         optionalGame.get().getPlayers().remove(optionalPlayer.get());
@@ -254,7 +244,7 @@ class GameController {
      * @return The response JSON message.
      */
     String getQuestion(int gameCode) {
-        return createErrorResponse("GetQuestion request is deprecated, use FetchState instead");
+        throw new GuardException("GetQuestion request is deprecated, use FetchState instead");
     }
 
     // private methods
