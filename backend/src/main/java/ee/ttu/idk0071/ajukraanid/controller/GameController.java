@@ -20,6 +20,7 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 
 @Component
 class GameController {
+    private static final int QUESTIONS_PER_GAME = 3;
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Guard guard = new Guard();
     private final Random random = new Random();
@@ -28,11 +29,16 @@ class GameController {
     @Autowired
     private GameController(Database database) {
         this.database = database;
+        // TODO Questions created once only not on every launch.
+        new PlainQuestion(database, "If a horse and a duck would have a child, what would you name it?");
+        new PlainQuestion(database, "Name something Donal Trump would say to Vladimr Putin?");
+        new PlainQuestion(database, "On a scale from squirrel to whale, how liberal is Russia?");
+        new PlainQuestion(database, "What did Johns mom tell him after he passed out drunk on the sofa?");
     }
 
     /**
      * @return fetches the game state. It will always be possible to generate a unique game unless there are over
-     * 9999 current games. TODO Will fix it in ETA 5 weeks (check db for old games, add timestamps)
+     * 9999 current games.
      */
     String createGame() {
         archiveExpiredGames();
@@ -49,12 +55,7 @@ class GameController {
         int randomIndex = random.nextInt(availableCodes.length);
         int gameCode = availableCodes[randomIndex];
         Game game = new Game(database, gameCode);
-        // TODO Temporary below
-        new Question(game, "If a horse and a duck would have a child, what would you name it?");
-        new Question(game, "Name something Donal Trump would say to Vladimr Putin?");
-        new Question(game, "On a scale from squirrel to whale, how liberal is Russia?");
-        new Question(game, "What did Johns mom tell him after he passed out drunk on the sofa?");
-        // TODO Temporary above
+        selectRandomQuestions().forEach(question -> new Question(game, question.getText()));
         return new JSONObject()
                 .put("Action", "CreateGame")
                 .put("Code", gameCode).toString();
@@ -298,5 +299,30 @@ class GameController {
                     }
             }
         });
+    }
+
+    private List<PlainQuestion> selectRandomQuestions() {
+        int questionAmount = database.getPlainQuestions().size();
+
+        if (questionAmount < QUESTIONS_PER_GAME) {
+            throw new GuardException("Not enough questions in database to choose from, found " + questionAmount +
+                    ", required " + QUESTIONS_PER_GAME);
+        }
+
+        List<Integer> allIndices = IntStream.range(0, database.getPlainQuestions().size())
+                .boxed()
+                .collect(Collectors.toList());
+
+        List<Integer> selectedIndices = new ArrayList<>();
+
+        for (int i = 0; i != QUESTIONS_PER_GAME; ++i) {
+            int randomIndex = random.nextInt(allIndices.size());
+            selectedIndices.add(randomIndex);
+            allIndices.remove(randomIndex);
+        }
+
+        return selectedIndices.stream()
+                .map(i -> database.getPlainQuestions().get(i))
+                .collect(Collectors.toList());
     }
 }
