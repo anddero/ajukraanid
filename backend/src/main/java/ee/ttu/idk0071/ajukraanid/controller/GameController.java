@@ -29,7 +29,7 @@ class GameController {
      * @return fetches the game state. It will always be possible to generate a unique game unless there are over
      * 9999 current games. TODO Will fix it in ETA 5 weeks
      */
-    String createNewGame() {
+    String createGame() {
         List<Integer> usedCodes = database.getGames().stream()
                 .map(Game::getGameCode)
                 .collect(Collectors.toList());
@@ -135,7 +135,7 @@ class GameController {
         return createErrorResponse("Game with such id was not found");
     }
 
-    String getTotalPlayerPointStatistics(int gameCode) {
+    String getPoints(int gameCode) {
         JSONObject json = new JSONObject();
         HashMap<String, Integer> playerAndPointsThatHeHas = new HashMap<>();
         JSONArray jsonArray = new JSONArray();
@@ -169,7 +169,7 @@ class GameController {
         } return createErrorResponse("Did not find such game with game code: " + gameCode);
     }
 
-    String removePlayerFromGame(int gameCode, String playername) {
+    String removePlayer(int gameCode, String playername) {
         Optional<Game> gameOptional = findActiveGame(gameCode);
         if (gameOptional.isPresent()) {
             Optional<Player> playerOptional = findPlayer(gameOptional.get(), playername);

@@ -29,13 +29,13 @@ public class RestController {
             data = new JSONObject(request);
             action = data.getString("Action");
         } catch (JSONException e) {
-            return createErrorResponse(e.getMessage());
+            return createErrorResponse("JSONException: " + e.getMessage());
         }
 
         try {
             switch (action) {
                 case "CreateGame":
-                    return gameController.createNewGame();
+                    return gameController.createGame();
                 case "JoinGame":
                     return gameController.joinGame(data.getInt("Code"), data.getString("Name"));
                 case "StartGame":
@@ -49,18 +49,18 @@ public class RestController {
                     return gameController.givePoints(data.getInt("Code"), data.getString("Name"),
                             data.getString("Target"));
                 case "GetPoints":
-                    return gameController.getTotalPlayerPointStatistics(data.getInt("Code"));
+                    return gameController.getPoints(data.getInt("Code"));
                 case "GetAnswers":
                     return gameController.getAnswers(data.getInt("Code"));
                 case "RemovePlayer":
-                    return gameController.removePlayerFromGame(data.getInt("Code"), data.getString("Name"));
+                    return gameController.removePlayer(data.getInt("Code"), data.getString("Name"));
                 case "GetQuestion":
                     return gameController.getQuestion(data.getInt("Code"));
                 default:
-                    return createErrorResponse("Invalid Action.");
+                    return createErrorResponse("Invalid Action: " + action);
             }
         } catch (JSONException e) {
-            return createErrorResponse(e.getMessage());
+            return createErrorResponse("JSONException: " + e.getMessage());
         }
     }
 }
