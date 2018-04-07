@@ -118,15 +118,15 @@ class GameController {
             case GRADING:
                 JSONArray answers = new JSONArray();
                 getCurrentQuestion(game).getAnswers().forEach(answer -> answers.put(new JSONObject()
-                        .put("name", answer.getPlayer().getName())
-                        .put("answer", answer.getText())));
+                        .put("Name", answer.getPlayer().getName())
+                        .put("Answer", answer.getText())));
                 data = answers;
                 break;
             case RESULTS:
                 JSONArray points = new JSONArray();
                 game.getPlayers().forEach(player -> points.put(new JSONObject()
-                        .put("name", player.getName())
-                        .put("points", getPoints(game, player)))); // TODO Clean Code with JSON keys
+                        .put("Name", player.getName())
+                        .put("Points", getPoints(game, player))));
                 data = points;
                 break;
             case INACTIVE:

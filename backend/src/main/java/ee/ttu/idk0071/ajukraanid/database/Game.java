@@ -15,10 +15,10 @@ public final class Game extends Entry {
     @RequiredArgsConstructor
     public enum State {
         LOBBY("Lobby"),
-        ANSWERING("question"),
-        GRADING("chooseBestAnswer"),
-        RESULTS("awarding"),
-        INACTIVE("ended"),
+        ANSWERING("Answering"),
+        GRADING("Grading"),
+        RESULTS("Results"),
+        INACTIVE("Inactive"),
         ERROR("Error");
         private final String text;
         private static State fromString(String state) {
