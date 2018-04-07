@@ -1,6 +1,7 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
 import ee.ttu.idk0071.ajukraanid.database.*;
+import ee.ttu.idk0071.ajukraanid.guard.Guard;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,12 @@ class GameController {
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Random random = new Random();
     private final Database database;
+    private final Guard guard;
 
     @Autowired
     private GameController(Database database) {
         this.database = database;
+        guard = new Guard(database);
     }
 
     /**
