@@ -261,7 +261,7 @@ class GameController {
 
     private Optional<Player> findPlayerIgnoreCase(Game game, String name) {
         return game.getPlayers().stream()
-                .filter(player -> player.getName().equals(name)) // TODO equalsIgnoreCase
+                .filter(player -> player.getName().equalsIgnoreCase(name))
                 .findAny();
     }
 
