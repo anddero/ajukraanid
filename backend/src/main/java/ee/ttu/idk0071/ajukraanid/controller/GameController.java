@@ -75,7 +75,7 @@ class GameController {
         }
 
         new Player(optionalGame.get(), playerName);
-        return fetchState(gameCode);
+        return createSuccessResponse("You have successfully joined the game");
     }
 
     /**
@@ -92,7 +92,7 @@ class GameController {
         guard.checkStartGame(optionalGame.get());
 
         executor.submit(new GameRunner(optionalGame.get()));
-        return fetchState(gameCode);
+        return createSuccessResponse("Game successfully started");
     }
 
     String fetchState(int gameCode) {
@@ -130,10 +130,10 @@ class GameController {
                 data = points;
                 break;
             case INACTIVE:
-                data = "";
+                data = null;
                 break;
             case ERROR:
-                data = "The game with ID " + gameCode + " is in erroneous state";
+                data = "The game with ID " + gameCode + " is in Error state";
                 break;
             default:
                 data = "The game with ID " + gameCode + " is in an unrecognized state";
@@ -182,12 +182,16 @@ class GameController {
         Optional<Player> optionalGiver = findPlayer(game, giverName);
         Optional<Player> optionalTarget = findPlayer(game, targetName);
 
-        if (!optionalGiver.isPresent() || !optionalTarget.isPresent()) {
+        if (!optionalGiver.isPresent() || !optionalTarget.isPresent()) { // TODO Different exceptions for giver/target
             throw new GuardException("Wrong username was given");
         }
 
         Player giver = optionalGiver.get();
         Player target = optionalTarget.get();
+
+        if (giver == target) {
+            throw new GuardException("You cannot give points to yourself");
+        }
 
         Question currentQuestion = getCurrentQuestion(game);
         ArrayList<Evaluation> evaluations = currentQuestion.getEvaluations();
