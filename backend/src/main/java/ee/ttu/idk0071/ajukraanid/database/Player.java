@@ -14,8 +14,6 @@ public final class Player extends Entry {
     @Getter private final String name;
     @Getter private boolean valid = true;
 
-    @Getter @Setter private int points = 0;     // TODO IS TEMPORARY
-
     // methods
 
     /**

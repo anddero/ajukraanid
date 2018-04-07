@@ -22,10 +22,10 @@ public final class Evaluation extends Entry {
         this.evaluation = evaluation;
         giver = question.getGame().getPlayers().stream().filter(player -> player.getPlayer().getId().equals
                 (evaluation.getGiverId())).findAny().orElseThrow(() -> new RuntimeException("Player with id " +
-                evaluation.getGiverId() + " not found, database is broken ;(")); // TODO OMG
+                evaluation.getGiverId() + " not found, database is broken ;(")); // TODO Review
         target = question.getGame().getPlayers().stream().filter(player -> player.getPlayer().getId().equals
                 (evaluation.getTargetId())).findAny().orElseThrow(() -> new RuntimeException("Player with id " +
-                evaluation.getTargetId() + " not found, database is broken ;(")); // TODO FIX!!
+                evaluation.getTargetId() + " not found, database is broken ;(")); // TODO Review
     }
 
     /**
@@ -39,8 +39,6 @@ public final class Evaluation extends Entry {
         this.giver = giver;
         this.target = target;
         evaluation = getDatabase().getEvaluationsRepository().save(evaluation);
-
-        target.setPoints(target.getPoints() + 100); // TODO temp stuff
     }
 
     @Override

@@ -23,7 +23,7 @@ public final class Answer extends Entry {
         this.answer = answer;
         this.player = question.getGame().getPlayers().stream().filter(player -> player.getPlayer().getId()
                 .equals(answer.getPlayerId())).findAny().orElseThrow(() -> new RuntimeException("Player with id " +
-                answer.getPlayerId() + " not found, database is broken ;(")); // TODO WTF IS THIS
+                answer.getPlayerId() + " not found, database is broken ;(")); // TODO Review
         this.text = question.getText();
     }
 

@@ -32,7 +32,7 @@ class GameController {
 
     /**
      * @return fetches the game state. It will always be possible to generate a unique game unless there are over
-     * 9999 current games. TODO Will fix it in ETA 5 weeks
+     * 9999 current games. TODO Will fix it in ETA 5 weeks (check db for old games, add timestamps)
      */
     String createGame() {
         List<Integer> usedCodes = database.getGames().stream()
@@ -65,7 +65,7 @@ class GameController {
             return createErrorResponse("Did not find such game with game code: " + gameCode); // TODO Exception
         }
 
-        if (findPlayer(optionalGame.get(), playerName).isPresent()) { // TODO Ignore case check
+        if (findPlayerIgnoreCase(optionalGame.get(), playerName).isPresent()) { // TODO Ignore case check
             return createErrorResponse("Such username is already taken.");
         }
 
@@ -119,7 +119,7 @@ class GameController {
                 JSONArray points = new JSONArray();
                 game.getPlayers().forEach(player -> points.put(new JSONObject()
                         .put("name", player.getName())
-                        .put("points", player.getPoints()))); // TODO Clean Code with JSON keys
+                        .put("points", getPoints(game, player)))); // TODO Clean Code with JSON keys
                 data = points;
                 break;
             case INACTIVE:
@@ -239,6 +239,12 @@ class GameController {
 
     // private methods
 
+    private Optional<Player> findPlayerIgnoreCase(Game game, String name) {
+        return game.getPlayers().stream()
+                .filter(player -> player.getName().equals(name)) // TODO equalsIgnoreCase
+                .findAny();
+    }
+
     private Optional<Player> findPlayer(Game game, String name) {
         return game.getPlayers().stream()
                 .filter(player -> player.getName().equals(name))
@@ -253,5 +259,12 @@ class GameController {
 
     private Question getCurrentQuestion(Game game) {
         return game.getQuestions().get(game.getQuestionNumber());
+    }
+
+    private int getPoints(Game game, Player player) {
+        return (int) getCurrentQuestion(game).getEvaluations().stream()
+                .map(Evaluation::getTarget)
+                .filter(target -> player == target)
+                .count() * 100;
     }
 }
