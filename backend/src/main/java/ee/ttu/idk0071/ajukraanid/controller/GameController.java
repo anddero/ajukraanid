@@ -2,7 +2,6 @@ package ee.ttu.idk0071.ajukraanid.controller;
 
 import ee.ttu.idk0071.ajukraanid.database.*;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,67 +25,11 @@ class GameController {
         this.database = database;
     }
 
-    private Optional<Player> findPlayer(Game game, String name) {
-        return game.getPlayers().stream()
-                .filter(player -> player.getName().equals(name))
-                .findFirst();
-    }
-
-    private Optional<Game> findActiveGame(int gameCode) {
-        return database.getGames().stream()
-                .filter(c -> c.getGameCode() == gameCode)
-                .findFirst();
-    }
-
-    String fetchState(int gameCode) throws JSONException {
-        Optional<Game> game = findActiveGame(gameCode);
-        if (game.isPresent()) {
-            JSONArray players = new JSONArray();
-            game.get().getPlayers().forEach(player -> players.put(player.toString()));
-            return new JSONObject()
-                    .put("Action", "FetchState")
-                    .put("State", game.get().getGameState())
-                    .put("Data", players).toString();
-        }
-        return createErrorResponse("No game found with game code: " + gameCode);
-    }
-
-    String joinGame(int gameCode, String playerName) throws JSONException {
-        Optional<Game> game = findActiveGame(gameCode);
-        if (game.isPresent() && !suchPlayerExistsInGame(gameCode, playerName)) {
-            Player player = new Player(game.get(), playerName);
-            return fetchState(gameCode);
-        } else if (game.isPresent() && suchPlayerExistsInGame(gameCode, playerName)) {
-            return createErrorResponse("Such username is already taken.");
-        }
-        return createErrorResponse("Did not find such game with game code: " + gameCode);
-    }
-
-
-    private boolean suchPlayerExistsInGame(int gameCode, String playerName) {
-        Optional<Game> game = findActiveGame(gameCode);
-        return game.map(game1 -> game1.getPlayers().stream()
-                .anyMatch(player -> player.getName().equals(playerName))).orElse(false);
-    }
-
-    /**
-     * @param gameCode the unique code to each game
-     * @return the game state, if it is in lobby then return the list of player names.
-     */
-    String startGame(int gameCode) {
-        Optional<Game> game = findActiveGame(gameCode);
-        if (game.isPresent()) {
-            executor.submit(new GameRunner(game.get()));
-            return fetchState(gameCode);
-        }
-        return createErrorResponse("Was not able to start the game because such game was not found.");
-    }
-
     /**
      * @return fetches the game state. It will always be possible to generate a unique game unless there are over
-     * 9999 current games. Will fix it in ETA 5 weeks
+     * 9999 current games. TODO Will fix it in ETA 5 weeks
      */
-    String createNewGame() throws JSONException {
+    String createNewGame() {
         List<Integer> usedCodes = database.getGames().stream()
                 .map(Game::getGameCode)
                 .collect(Collectors.toList());
@@ -108,35 +51,66 @@ class GameController {
                 .put("Code", randomNum).toString();
     }
 
-
-
-    /**
-     * @param game       Game code unique to each game.
-     * @param playerName player that gives score.
-     * @param target     player that the first player gives score to.
-     * @return it should return a error if someone already gave score or just fetch the game state.
-     */
-
-    /**
-     * @param game Game object that is operated with, it will never be NULL.
-     * @return return a list of players OR the current question.
-
-
-//    /**
-//     * @param game       Game object that WILL never be NULL.
-//     * @param playerName string player name.
-//     * @return if such a player exists or not.
-//     */
-//    private boolean doesSuchPlayerExist(Game game, String playerName) {
-//        return game.getPlayers().stream()
-//                .anyMatch(t -> t.getName().equals(playerName));
-//    }
-
-
-
-    String GivePoints(int gameCode, String giver, String target) {
+    String joinGame(int gameCode, String playerName) {
         Optional<Game> game = findActiveGame(gameCode);
-        if (!suchPlayerExistsInGame(gameCode, giver) && !suchPlayerExistsInGame(gameCode, target)) {
+        if (game.isPresent() && !playerExists(gameCode, playerName)) {
+            Player player = new Player(game.get(), playerName);
+            return fetchState(gameCode);
+        } else if (game.isPresent() && playerExists(gameCode, playerName)) {
+            return createErrorResponse("Such username is already taken.");
+        }
+        return createErrorResponse("Did not find such game with game code: " + gameCode);
+    }
+
+    /**
+     * @param gameCode the unique code to each game
+     * @return the game state, if it is in lobby then return the list of player names.
+     */
+    String startGame(int gameCode) {
+        Optional<Game> game = findActiveGame(gameCode);
+        if (game.isPresent()) {
+            executor.submit(new GameRunner(game.get()));
+            return fetchState(gameCode);
+        }
+        return createErrorResponse("Was not able to start the game because such game was not found.");
+    }
+
+    String fetchState(int gameCode) {
+        Optional<Game> game = findActiveGame(gameCode);
+        if (game.isPresent()) {
+            JSONArray players = new JSONArray();
+            game.get().getPlayers().forEach(player -> players.put(player.toString()));
+            return new JSONObject()
+                    .put("Action", "FetchState")
+                    .put("State", game.get().getGameState())
+                    .put("Data", players).toString();
+        }
+        return createErrorResponse("No game found with game code: " + gameCode);
+    }
+
+    String submitAnswer(int gameCode, String answerer, String answer) {
+        Optional<Game> game = findActiveGame(gameCode);
+        if (!playerExists(gameCode, answerer)) {
+            return createErrorResponse("Wrong username was given"); // TODO Move conditions checks to a Guardian class
+        }
+//        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
+//            return createErrorResponse("Question number does not match he current games' state");
+//        }
+        if (game.isPresent()) {
+            boolean hasAnswered = game.get().getQuestions().get(game.get().getQuestionNumber()).getAnswers().stream()
+                    .anyMatch(answer1 -> answer1.getPlayer().getName().equals(answerer));
+            if (!hasAnswered) {
+                Optional<Player> player = findPlayer(game.get(), answerer);
+                new Answer(game.get().getQuestions().get(game.get().getQuestionNumber()), player.get(), answer);
+                return createSuccessResponse("Your answer was submitted.");
+            } else return createErrorResponse("You already answered the question");
+        }
+        return createErrorResponse("Did not find such game with game code: " + gameCode);
+    }
+
+    String givePoints(int gameCode, String giver, String target) {
+        Optional<Game> game = findActiveGame(gameCode);
+        if (!playerExists(gameCode, giver) && !playerExists(gameCode, target)) {
             return createErrorResponse("Wrong username was given");
         }
 
@@ -161,7 +135,6 @@ class GameController {
         return createErrorResponse("Game with such id was not found");
     }
 
-
     String getTotalPlayerPointStatistics(int gameCode) {
         JSONObject json = new JSONObject();
         HashMap<String, Integer> playerAndPointsThatHeHas = new HashMap<>();
@@ -178,8 +151,6 @@ class GameController {
 
         return createFetchStateResponse("Points", jsonArray);
     }
-
-
 
     String getAnswers(int gameCode) {
         Optional<Game> game = findActiveGame(gameCode);
@@ -198,28 +169,6 @@ class GameController {
         } return createErrorResponse("Did not find such game with game code: " + gameCode);
     }
 
-
-
-    String submitAnswer(int gameCode, String answerer, String answer) {
-        Optional<Game> game = findActiveGame(gameCode);
-        if (!suchPlayerExistsInGame(gameCode, answerer)) {
-            return createErrorResponse("Wrong username was given"); // TODO Move conditions checks to a Guardian class
-        }
-//        if (game.isPresent() && questionNumber != game.get().getQuestionNumber()) {
-//            return createErrorResponse("Question number does not match he current games' state");
-//        }
-        if (game.isPresent()) {
-           boolean hasAnswered = game.get().getQuestions().get(game.get().getQuestionNumber()).getAnswers().stream()
-                   .anyMatch(answer1 -> answer1.getPlayer().getName().equals(answerer));
-           if (!hasAnswered) {
-               Optional<Player> player = findPlayer(game.get(), answerer);
-               new Answer(game.get().getQuestions().get(game.get().getQuestionNumber()), player.get(), answer);
-               return createSuccessResponse("Your answer was submitted.");
-           } else return createErrorResponse("You already answered the question");
-        }
-        return createErrorResponse("Did not find such game with game code: " + gameCode);
-    }
-
     String removePlayerFromGame(int gameCode, String playername) {
         Optional<Game> gameOptional = findActiveGame(gameCode);
         if (gameOptional.isPresent()) {
@@ -231,15 +180,31 @@ class GameController {
         } return createErrorResponse("Did not find such game with game code: " + gameCode);
     }
 
-    String getStatus() {
-        return "Question";
-    }
-
     String getQuestion(int code) {
         Optional<Game> gameOptional = findActiveGame(code);
         if (gameOptional.isPresent()) {
             return createFetchStateResponse("GetQuestion", gameOptional.get().getQuestions().get(gameOptional.get().getQuestionNumber()).getText());
         }
         return createErrorResponse("Unknown error");
+    }
+
+    // private methods
+
+    private Optional<Player> findPlayer(Game game, String name) {
+        return game.getPlayers().stream()
+                .filter(player -> player.getName().equals(name))
+                .findAny();
+    }
+
+    private Optional<Game> findActiveGame(int gameCode) {
+        return database.getGames().stream()
+                .filter(game -> game.getGameCode() == gameCode)
+                .findAny();
+    }
+
+    private boolean playerExists(int gameCode, String playerName) {
+        return findActiveGame(gameCode)
+                .filter(game -> findPlayer(game, playerName).isPresent())
+                .isPresent();
     }
 }

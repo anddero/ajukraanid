@@ -46,7 +46,7 @@ public class RestController {
                     return gameController.submitAnswer(data.getInt("Code"), data.getString("Name"),
                             data.getString("Answer"));
                 case "GivePoints":
-                    return gameController.GivePoints(data.getInt("Code"), data.getString("Name"),
+                    return gameController.givePoints(data.getInt("Code"), data.getString("Name"),
                             data.getString("Target"));
                 case "GetPoints":
                     return gameController.getTotalPlayerPointStatistics(data.getInt("Code"));
