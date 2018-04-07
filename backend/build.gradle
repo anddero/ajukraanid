@@ -30,6 +30,25 @@ repositories {
 	mavenCentral()
 }
 
+task makeFolder {
+	doLast {
+		println("Making diretory...")
+	}
+}
+
+task copyFiles {
+	doLast {
+		println("Copying your files...")
+	}
+}
+
+task archive {
+	doLast {
+		tasks.makeFolder.execute()
+		tasks.copyFiles.execute()
+		println("Success!")
+	}
+}
 
 dependencies {
 	compile 'org.json:json:20170516'
