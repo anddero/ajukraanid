@@ -263,6 +263,7 @@ class GameController {
 
     private Optional<Game> findActiveGame(int gameCode) {
         return database.getGames().stream()
+                .filter(game -> game.getGameState() != Game.State.INACTIVE)
                 .filter(game -> game.getGameCode() == gameCode)
                 .findAny();
     }
