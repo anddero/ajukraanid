@@ -5,18 +5,42 @@ import ee.ttu.idk0071.ajukraanid.database.internal.Games;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Game extends Entry {
+    @RequiredArgsConstructor
+    public enum State {
+        LOBBY("Lobby"),
+        ANSWERING("Answering"),
+        GRADING("Grading"),
+        RESULTS("Results"),
+        INACTIVE("Inactive"),
+        ERROR("Error");
+        private final String text;
+        private static State fromString(String state) {
+            for (State s : State.values()) {
+                if (s.text.equalsIgnoreCase(state)) {
+                    return s;
+                }
+            }
+            return ERROR;
+        }
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
     // inaccessible
     private final Database database;
     private Games game;
 
     // accessible
     @Getter private final int gameCode;
-    @Getter private String gameState = "Lobby"; // TODO Override setter to update database.
+    @Getter private State gameState = State.LOBBY;
     @Getter private int questionNumber = 0;
 
     // referenced by
@@ -31,7 +55,7 @@ public final class Game extends Entry {
         database.getGames().add(this);
         this.game = game;
         this.gameCode = game.getCode();
-        this.gameState = game.getState();
+        this.gameState = State.fromString(game.getState());
         this.questionNumber = game.getQuestionNumber();
     }
 
@@ -43,7 +67,7 @@ public final class Game extends Entry {
         database.getGames().add(this);
         game = new Games(code); // create a transient entity
         this.gameCode = code;
-        game.setState(gameState);
+        game.setState(gameState.text);
         game.setQuestionNumber(questionNumber);
         game = database.getGamesRepository().save(game); // replace with persistent entity (ends up detached?)
     }
@@ -52,9 +76,9 @@ public final class Game extends Entry {
         return game;
     }
 
-    public void setGameState(String gameState) {
+    public void setGameState(State gameState) {
         this.gameState = gameState;
-        game.setState(gameState);
+        game.setState(gameState.text);
         game = getDatabase().getGamesRepository().save(game);
     }
 
@@ -67,8 +91,8 @@ public final class Game extends Entry {
     @Override
     protected void appendTo(StringBuilder stringBuilder, int indentSize) {
         StringUtilities.addIndent(indentSize, stringBuilder);
-        stringBuilder.append(gameCode).append(" ").append(gameState).append(" questionNumber: ").append(questionNumber)
-                .append("\n");
+        stringBuilder.append(gameCode).append(" ").append(gameState.text).append(" questionNumber: ")
+                .append(questionNumber).append("\n");
 
         StringUtilities.addIndent(indentSize + 1, stringBuilder);
         stringBuilder.append("Players (").append(players.size()).append(")").append("\n");

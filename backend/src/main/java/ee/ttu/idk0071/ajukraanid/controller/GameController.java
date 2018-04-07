@@ -89,15 +89,50 @@ class GameController {
     }
 
     String fetchState(int gameCode) {
-        Optional<Game> game = findActiveGame(gameCode);
+        Optional<Game> optGame = findActiveGame(gameCode);
 
-        if (!game.isPresent()) {
+        if (!optGame.isPresent()) {
             return createErrorResponse("No game found with game code: " + gameCode);
         }
 
-        JSONArray players = new JSONArray();
-        game.get().getPlayers().forEach(player -> players.put(player.toString()));
-        return createFetchStateResponse(game.get().getGameState(), players); // TODO Enum for game state
+        Game game = optGame.get();
+        Game.State gameState = optGame.get().getGameState();
+
+        Object data;
+        switch (gameState) {
+            case LOBBY:
+                JSONArray players = new JSONArray();
+                game.getPlayers().forEach(player -> players.put(player.toString()));
+                data = players;
+                break;
+            case ANSWERING:
+                data = getCurrentQuestion(game).getText();
+                break;
+            case GRADING:
+                JSONArray answers = new JSONArray();
+                getCurrentQuestion(game).getAnswers().forEach(answer -> answers.put(new JSONObject()
+                        .put("name", answer.getPlayer().getName())
+                        .put("answer", answer.getText())));
+                data = answers;
+                break;
+            case RESULTS:
+                JSONArray points = new JSONArray();
+                game.getPlayers().forEach(player -> points.put(new JSONObject()
+                        .put("name", player.getName())
+                        .put("points", player.getPoints()))); // TODO Clean Code with JSON keys
+                data = points;
+                break;
+            case INACTIVE:
+                data = "";
+                break;
+            case ERROR:
+                data = "The game with ID " + gameCode + " is in erroneous state";
+                break;
+            default:
+                data = "The game with ID " + gameCode + " is in an unrecognized state";
+                break;
+        }
+        return createFetchStateResponse(gameState.toString(), data);
     }
 
     String submitAnswer(int gameCode, String playerName, String answer) {
@@ -157,44 +192,22 @@ class GameController {
         return createSuccessResponse("Your points were given to " + targetName);
     }
 
+    /**
+     * @deprecated Do not handle this type of requests.
+     * @param gameCode The unique game code.
+     * @return The response JSON message.
+     */
     String getPoints(int gameCode) {
         return createErrorResponse("GetPoints request is deprecated, use FetchState instead");
-        /*JSONArray jsonArray = new JSONArray();
-        Optional<Game> game = findActiveGame(gameCode);
-
-        if (!game.isPresent()) {
-            return createErrorResponse("Game with id " + gameCode + " does not exist");
-        }
-
-        for (Player player : game.get().getPlayers()) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", player.getName());
-            jsonObject.put("points", player.getPoints());
-            jsonArray.put(jsonObject);
-        }
-
-        return createFetchStateResponse("Points", jsonArray);*/
     }
 
+    /**
+     * @deprecated Do not handle this type of requests.
+     * @param gameCode The unique game code.
+     * @return The response JSON message.
+     */
     String getAnswers(int gameCode) {
         return createErrorResponse("GetAnswers request is deprecated, use FetchState instead");
-        /*
-        Optional<Game> game = findActiveGame(gameCode);
-
-        if (!game.isPresent()) {
-            return createErrorResponse("Did not find such game with game code: " + gameCode);
-        }
-
-        JSONArray questions = new JSONArray();
-
-        for (Answer answer : getCurrentQuestion(game.get()).getAnswers()) {
-            JSONObject data = new JSONObject();
-            data.put("name", answer.getPlayer().getName());
-            data.put("answer", answer.getText());
-            questions.put(data);
-        }
-
-        return createFetchStateResponse("GetAnswers", questions);*/
     }
 
     String removePlayer(int gameCode, String playerName) {
@@ -215,16 +228,13 @@ class GameController {
         return createSuccessResponse("Player successfully removed: " + playerName);
     }
 
+    /**
+     * @deprecated Do not handle this type of requests.
+     * @param gameCode The unique game code.
+     * @return The response JSON message.
+     */
     String getQuestion(int gameCode) {
         return createErrorResponse("GetQuestion request is deprecated, use FetchState instead");
-        /*
-        Optional<Game> optGame = findActiveGame(gameCode);
-
-        if (!optGame.isPresent()) {
-            return createErrorResponse("Invalid game id: " + gameCode);
-        }
-
-        return createFetchStateResponse("GetQuestion", getCurrentQuestion(optGame.get()).getText());*/
     }
 
     // private methods
