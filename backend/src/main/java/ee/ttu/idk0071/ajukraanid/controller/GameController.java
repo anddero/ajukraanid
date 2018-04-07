@@ -65,7 +65,11 @@ class GameController {
             return createErrorResponse("Did not find such game with game code: " + gameCode); // TODO Exception
         }
 
-        if (findPlayerIgnoreCase(optionalGame.get(), playerName).isPresent()) { // TODO Ignore case check
+        if (!guard.canJoinGame(optionalGame.get())) {
+            return createErrorResponse("The game is not accepting any more players");
+        }
+
+        if (findPlayerIgnoreCase(optionalGame.get(), playerName).isPresent()) {
             return createErrorResponse("Such username is already taken.");
         }
 
@@ -82,6 +86,10 @@ class GameController {
 
         if (!optionalGame.isPresent()) {
             return createErrorResponse("Was not able to start the game because such game was not found.");
+        }
+
+        if (!guard.canStartGame(optionalGame.get())) {
+            return createErrorResponse("The game cannot be started at this point");
         }
 
         executor.submit(new GameRunner(optionalGame.get()));
@@ -141,6 +149,11 @@ class GameController {
         if (!optionalGame.isPresent()) {
             return createErrorResponse("Did not find such game with game code: " + gameCode);
         }
+
+        if (!guard.canSubmitAnswer(optionalGame.get())) {
+            return createErrorResponse("Cannot submit answer at this point");
+        }
+
         Optional<Player> optionalPlayer = findPlayer(optionalGame.get(), playerName);
         if (!optionalPlayer.isPresent()) {
             return createErrorResponse("Wrong username was given");
@@ -166,6 +179,10 @@ class GameController {
         }
 
         Game game = optionalGame.get();
+
+        if (!guard.canGivePoints(game)) {
+            return createErrorResponse("Cannot give points right now");
+        }
 
         Optional<Player> optionalGiver = findPlayer(game, giverName);
         Optional<Player> optionalTarget = findPlayer(game, targetName);
@@ -215,6 +232,10 @@ class GameController {
 
         if (!optionalGame.isPresent()) {
             return createErrorResponse("Did not find such game with game code: " + gameCode);
+        }
+
+        if (!guard.canRemovePlayer(optionalGame.get())) {
+            return createErrorResponse("Cannot remove players from the game right now");
         }
 
         Optional<Player> optionalPlayer = findPlayer(optionalGame.get(), playerName);
