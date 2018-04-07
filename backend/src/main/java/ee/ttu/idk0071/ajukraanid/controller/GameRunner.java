@@ -12,20 +12,20 @@ public class GameRunner implements Runnable {
     }
 
     void runRound() throws InterruptedException {
-        this.game.setGameState("question");
-        Thread.sleep(25000);
-        this.game.setGameState("chooseBestAnswer");
+        this.game.setGameState(Game.State.ANSWERING);
+        Thread.sleep(25_000);
+        this.game.setGameState(Game.State.GRADING);
 
-        Thread.sleep(25000);
+        Thread.sleep(25_000);
         this.game.setQuestionNumber(game.getQuestionNumber() + 1);
         System.out.println(this.game.getQuestionNumber());
-        this.game.setGameState("awarding");
+        this.game.setGameState(Game.State.RESULTS);
 
-        Thread.sleep(25000);
+        Thread.sleep(10_000);
         if (questionsLeft > 0) {
             questionsLeft--;
             runRound(); // TODO make iterative
-        } else game.setGameState("ended");
+        } else game.setGameState(Game.State.INACTIVE);
 
     }
 
