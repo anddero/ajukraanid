@@ -3,10 +3,8 @@ package ee.ttu.idk0071.ajukraanid.database.internal;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Games {
@@ -14,6 +12,8 @@ public class Games {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter private Long id;
     @Getter private Integer code;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Getter private Date timestamp;
     @Getter @Setter private String state;
     @Getter @Setter private Integer questionNumber;
 

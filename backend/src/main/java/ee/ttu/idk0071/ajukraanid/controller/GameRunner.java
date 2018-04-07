@@ -3,40 +3,37 @@ package ee.ttu.idk0071.ajukraanid.controller;
 import ee.ttu.idk0071.ajukraanid.database.Game;
 
 public class GameRunner implements Runnable {
+    private static final int ANSWERING_TIME_MS = 25_000;
+    private static final int GRADING_TIME_MS = 25_000;
+    private static final int RESULTS_TIME_MS = 10_000;
 
     private final Game game;
-    private int questionsLeft = 3;
 
     GameRunner(Game game) {
         this.game = game;
     }
 
-    void runRound() throws InterruptedException {
-        this.game.setGameState("question");
-        Thread.sleep(25000);
-        this.game.setGameState("chooseBestAnswer");
+    private void runRound() throws InterruptedException {
+        this.game.setGameState(Game.State.ANSWERING);
+        Thread.sleep(ANSWERING_TIME_MS);
 
-        Thread.sleep(25000);
-        this.game.setQuestionNumber(game.getQuestionNumber() + 1);
-        System.out.println(this.game.getQuestionNumber());
-        this.game.setGameState("awarding");
+        this.game.setGameState(Game.State.GRADING);
+        Thread.sleep(GRADING_TIME_MS);
 
-        Thread.sleep(25000);
-        if (questionsLeft > 0) {
-            questionsLeft--;
-            runRound();
-        } else game.setGameState("ended");
-
+        this.game.setGameState(Game.State.RESULTS);
+        Thread.sleep(RESULTS_TIME_MS);
     }
 
     @Override
     public void run() {
         try {
-            runRound();
+            for (int i = game.getQuestionNumber(); i != game.getQuestions().size(); ++i) {
+                game.setQuestionNumber(i);
+                runRound();
+            }
+            game.setGameState(Game.State.INACTIVE);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 }

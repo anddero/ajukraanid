@@ -1,6 +1,7 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
 
+import ee.ttu.idk0071.ajukraanid.guard.GuardException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,13 @@ public class RestController {
             data = new JSONObject(request);
             action = data.getString("Action");
         } catch (JSONException e) {
-            return createErrorResponse(e.getMessage());
+            return createErrorResponse("JSONException: " + e.getMessage());
         }
 
         try {
             switch (action) {
                 case "CreateGame":
-                    return gameController.createNewGame();
+                    return gameController.createGame();
                 case "JoinGame":
                     return gameController.joinGame(data.getInt("Code"), data.getString("Name"));
                 case "StartGame":
@@ -46,20 +47,22 @@ public class RestController {
                     return gameController.submitAnswer(data.getInt("Code"), data.getString("Name"),
                             data.getString("Answer"));
                 case "GivePoints":
-                    return gameController.GivePoints(data.getInt("Code"), data.getString("Name"),
+                    return gameController.givePoints(data.getInt("Code"), data.getString("Name"),
                             data.getString("Target"));
                 case "GetPoints":
-                    return gameController.getTotalPlayerPointStatistics(data.getInt("Code"));
+                    return gameController.getPoints(data.getInt("Code"));
                 case "GetAnswers":
                     return gameController.getAnswers(data.getInt("Code"));
                 case "RemovePlayer":
-                    return gameController.removePlayerFromGame(data.getInt("Code"), data.getString("Name"));
+                    return gameController.removePlayer(data.getInt("Code"), data.getString("Name"));
                 case "GetQuestion":
                     return gameController.getQuestion(data.getInt("Code"));
                 default:
-                    return createErrorResponse("Invalid Action.");
+                    return createErrorResponse("Invalid Action: " + action);
             }
         } catch (JSONException e) {
+            return createErrorResponse("JSONException: " + e.getMessage());
+        } catch (GuardException e) {
             return createErrorResponse(e.getMessage());
         }
     }
