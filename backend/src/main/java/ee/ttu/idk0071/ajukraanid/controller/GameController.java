@@ -54,7 +54,7 @@ class GameController {
         new Question(game, "What did Johns mom tell him after he passed out drunk on the sofa?");
         // TODO Temporary above
         return new JSONObject()
-                .put("Action", "NewGame") // TODO CreateGame instead of NewGame
+                .put("Action", "CreateGame")
                 .put("Code", gameCode).toString();
     }
 
