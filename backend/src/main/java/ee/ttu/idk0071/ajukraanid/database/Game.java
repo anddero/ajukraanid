@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public final class Game extends Entry {
@@ -40,6 +41,7 @@ public final class Game extends Entry {
 
     // accessible
     @Getter private final int gameCode;
+    @Getter private final Date timestamp;
     @Getter private State gameState = State.LOBBY;
     @Getter private int questionNumber = 0;
 
@@ -55,6 +57,7 @@ public final class Game extends Entry {
         database.getGames().add(this);
         this.game = game;
         this.gameCode = game.getCode();
+        this.timestamp = game.getTimestamp();
         this.gameState = State.fromString(game.getState());
         this.questionNumber = game.getQuestionNumber();
     }
@@ -67,6 +70,7 @@ public final class Game extends Entry {
         database.getGames().add(this);
         game = new Games(code); // create a transient entity
         this.gameCode = code;
+        timestamp = new Date();
         game.setState(gameState.text);
         game.setQuestionNumber(questionNumber);
         game = database.getGamesRepository().save(game); // replace with persistent entity (ends up detached?)
