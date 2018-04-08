@@ -1,9 +1,16 @@
 body {
-  background-color: #2a8516 !important;
+  background-image: url('http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yellow.jpg'); height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+
+.btn btn-primary center-block .btn-lg {
+
 }
 
 .btn {
-  background-color: #321180  !important;
   border-color: Transparent  !important;
   font-family: 'Roboto', sans-serif  !important;
 }
@@ -12,13 +19,27 @@ body {
   transform: scale(1.25);
   -webkit-transition: transform .35s ease-in-out;
   border-color: Transparent;
-  background-color: #341185;
 }
 
 p, .display-3 {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Jua', sans-serif;
 }
 
-body {
-  width: 100%;
+html {
+  height: 100%;
+}
+
+#menubutton {
+  height:88px;
+  width: auto;
+}
+
+#text {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  width: 85%;
+  padding-left: 15%;
+  font-size: 25px;
+  text-align: justify;
 }

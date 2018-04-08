@@ -1,14 +1,13 @@
 /* eslint-disable */
 <template>
-  <div class="add container">
+  <div class="add container" style="padding-top: 8%;">
     <Alert v-if="alert" v-bind:message="alert"/>
-    <h1 class="page-header text-center">Are you sure you want to create a new game?</h1>
-    <form v-on:submit="createGame">
-      <button type="submit" class="btn btn-primary center-block">Yes</button>
-    </form>
+    <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleaseconfirmit.png"/>
     <br>
-    <button @click="routeToIndex()" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
-    </button>
+    <form v-on:submit="createGame" style="padding-top: 12%;">
+      <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yes.png'></button>
+    </form>
+    <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
     <br>
 
   </div>

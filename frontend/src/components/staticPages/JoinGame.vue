@@ -4,23 +4,21 @@
 
     <div class="jumbotron">
       <div class="container">
-        <h1 class="display-3">Join an existing game</h1>
-        <p>Enter a nickname and the gamecode that is shown in the host lobby. Remember to have fun!</p>
+        <!--<h1 class="display-3">Join an existing game</h1>-->
+        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/joinanexistinggame.png"/>
+        <p id="text">Enter a nickname and the gamecode that is shown in the host lobby. Remember to have fun!</p>
       </div>
     </div>
     <div class="container">
       <Alert v-if="alert" v-bind:message="alert"/>
-      <hr>
       <form v-on:submit.prevent="registerUser">
         <div class="well">
           <input type="text" class="form-control" placeholder="Nickname" v-model="name">
           <br/>
           <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode">
         </div>
-        <button type="submit" class="btn btn-primary center-block .btn-lg">Join</button>
-        <br>
-        <button @click="routeToIndex()" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
-        </button>
+        <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
+        <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
       </form>
     </div>
   </div>

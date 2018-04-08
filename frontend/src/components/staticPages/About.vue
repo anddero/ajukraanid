@@ -3,8 +3,9 @@
   <div>
     <div class="jumbotron">
       <div class="container">
-        <h1 class="display-3">Welcome to about!</h1>
-        <p>Mäng toimub mitmes seadmes korraga. On 2 vaadet: mängija ja host. Hosti ekraani pealt kuvatakse küsimus,
+        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/welcometoabout.png">
+        <br>
+        <p id="text">Mäng toimub mitmes seadmes korraga. On 2 vaadet: mängija ja host. Hosti ekraani pealt kuvatakse küsimus,
           millele kõik mängijad peavad vastama. Seejärel kui kõik on vastanud kuvatakse kõik vastused hosti ekraanil
           anonüümselt ning seejärel peavad kõik mängijad valima parima vastuse. Mida rohkem saab mängija hääli, seda
           rohkem saab ta punkte.</p>
@@ -12,8 +13,7 @@
     </div>
     <div class="container">
       <br>
-      <button @click="routeToIndex()" type="button" class="btn btn-primary center-block .btn-lg">Back to main menu
-      </button>
+      <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
     </div>
   </div>
 </template>
