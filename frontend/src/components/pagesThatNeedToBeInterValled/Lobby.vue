@@ -1,12 +1,13 @@
 /* eslint-disable */
 <template>
   <div id="summary">
-    <div>
-      <div class="jumbotron">
-        <div class="container">
-          <h1 class="display-3"> Gamecode <b>{{this.gameCode}}</b></h1>
-        </div>
-      </div>
+    <div style="padding-left: 30%; padding-top: 2%;">
+      <table><tr>
+          <td>
+          <img id="menubutton" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/gamecode.png"/></td><td><b style="font-size: 60px;">{{this.gameCode}}</b>
+          </td>
+      </tr>
+      </table>
     </div>
     <div v-if="username === 'host'">
       <div class="container">
@@ -30,7 +31,7 @@
         </transition-group>
       </div>
       <br>
-      <button v-if="username === 'host'" @click="startGame()" class="btn btn-primary center-block">Start game</button>
+      <input type="image" id="menubutton" @click="startGame()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/startgame.png" class="btn center-block .btn-lg"/>
     </div>
     <div v-if="username !== 'host'">
       <div class="container">
