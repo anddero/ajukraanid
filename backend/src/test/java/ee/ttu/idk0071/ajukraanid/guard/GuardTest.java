@@ -1,5 +1,6 @@
 package ee.ttu.idk0071.ajukraanid.guard;
 
+import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import ee.ttu.idk0071.ajukraanid.database.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GuardTest {
-    private final Guard guard = new Guard();
+    private final Guard guard = new Guard(Mockito.mock(GameConfig.class));
     private Game game;
 
     private ArrayList<Player> getPlayers(int amt) {
