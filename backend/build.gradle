@@ -54,7 +54,10 @@ dependencies {
 	compile 'org.json:json:20170516'
     compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter')
+    compile('org.springframework.boot:spring-boot-starter') {
+        exclude('org.springframework.boot:spring-boot-starter-logging')
+    }
+    compile('org.springframework.boot:spring-boot-starter-log4j2')
 	compile('mysql:mysql-connector-java')
     //compile 'org.slf4j:slf4j-api:1.7.25' // for logging activity
     compileOnly 'org.projectlombok:lombok' // TODO 1.16.18?

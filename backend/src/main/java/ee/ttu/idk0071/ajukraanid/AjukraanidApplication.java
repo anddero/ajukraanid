@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AjukraanidApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
 		SpringApplication.run(AjukraanidApplication.class, args);
 	}
 }

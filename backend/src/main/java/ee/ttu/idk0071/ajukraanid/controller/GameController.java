@@ -5,11 +5,17 @@ import ee.ttu.idk0071.ajukraanid.guard.Guard;
 import ee.ttu.idk0071.ajukraanid.guard.GuardException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,25 +27,31 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 
 @Component
 class GameController {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Value("${game.questions-per-game}")
     private int QUESTIONS_PER_GAME;
     @Value("${game.game-timeout-minutes}")
     private int GAME_TIMEOUT_MINUTES;
+    @Value("${game.questions-file-name}")
+    private String QUESTIONS_FILE;
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Random random = new Random();
     private final Guard guard;
     private final Database database;
+    private final ResourceLoader resourceLoader;
 
     @Autowired
-    private GameController(Database database, Guard guard) {
+    private GameController(Database database, Guard guard, ResourceLoader resourceLoader) {
         this.database = database;
         this.guard = guard;
+        this.resourceLoader = resourceLoader;
+        loadPlainQuestions();
         // TODO Questions created once only not on every launch.
-        new PlainQuestion(database, "If a horse and a duck would have a child, what would you name it?");
+        /*new PlainQuestion(database, "If a horse and a duck would have a child, what would you name it?");
         new PlainQuestion(database, "Name something Donal Trump would say to Vladimr Putin?");
         new PlainQuestion(database, "On a scale from squirrel to whale, how liberal is Russia?");
-        new PlainQuestion(database, "What did Johns mom tell him after he passed out drunk on the sofa?");
+        new PlainQuestion(database, "What did Johns mom tell him after he passed out drunk on the sofa?");*/
     }
 
     /**
@@ -299,13 +311,11 @@ class GameController {
                 case INACTIVE:
                     break;
                 case ERROR:
-                    System.err.println(LocalDateTime.now().toString() + " [TRACE] Archive task: Game with ID " +
-                            game.getGameCode() + " in Error state");
+                    log.error("Archive task: Game with ID {} in Error state", game.getGameCode());
                 default:
                     if (new Date().getTime() - game.getTimestamp().getTime() > 1000 * 60 * GAME_TIMEOUT_MINUTES) {
                         game.setGameState(Game.State.INACTIVE);
-                        System.out.println(LocalDateTime.now().toString() + " [LOG] Archive task: Game with ID " +
-                                game.getGameCode() + " has expired and has been archived");
+                        log.info("Archive task: Game with ID {} has expired and has been archived", game.getGameCode());
                     }
             }
         });
@@ -334,5 +344,20 @@ class GameController {
         return selectedIndices.stream()
                 .map(i -> database.getPlainQuestions().get(i))
                 .collect(Collectors.toList());
+    }
+
+    private void loadPlainQuestions() {
+        try (InputStream inStr = resourceLoader.getResource("classpath:" + QUESTIONS_FILE).getInputStream()) {
+            try (InputStreamReader reader = new InputStreamReader(inStr)) {
+                try (BufferedReader bufferedReader = new BufferedReader(reader)) {
+                    bufferedReader.lines().forEach(line -> {
+                        new PlainQuestion(database, line);
+                        log.info("Created new plain question: " + line);
+                    });
+                }
+            }
+        } catch (IOException e) {
+            log.error("Failed loading plain questions from file '" + QUESTIONS_FILE + "'", e);
+        }
     }
 }

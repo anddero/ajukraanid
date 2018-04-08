@@ -1,11 +1,14 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
 import ee.ttu.idk0071.ajukraanid.database.Game;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GameRunner implements Runnable {
     private static final int ANSWERING_TIME_MS = 25_000;
     private static final int GRADING_TIME_MS = 25_000;
     private static final int RESULTS_TIME_MS = 10_000;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final Game game;
 
@@ -33,7 +36,7 @@ public class GameRunner implements Runnable {
             }
             game.setGameState(Game.State.INACTIVE);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("Unexpected interruption", e);
         }
     }
 }
