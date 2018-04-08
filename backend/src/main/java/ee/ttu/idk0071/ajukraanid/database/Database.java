@@ -4,6 +4,8 @@ import ee.ttu.idk0071.ajukraanid.database.internal.*;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 
 @Component
 public final class Database extends Entry {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     // inaccessible internal repositories
     private final GamesRepository gamesRepository;
     private final PlayersRepository playersRepository;
@@ -34,6 +37,7 @@ public final class Database extends Entry {
         this.answersRepository = answersRepository;
         this.evaluationsRepository = evaluationsRepository;
         loadDatabaseEntries();
+        log.info("Finished loading existing database entries");
         printDatabaseEntries();
     }
 
@@ -83,6 +87,7 @@ public final class Database extends Entry {
     private void printDatabaseEntries() {
         StringBuilder stringBuilder = new StringBuilder("All loaded database entries in memory:\n");
         appendTo(stringBuilder, 1);
+
         System.out.println(stringBuilder.toString());
     }
 

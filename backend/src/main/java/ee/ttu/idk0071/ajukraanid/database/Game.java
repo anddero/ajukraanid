@@ -68,9 +68,9 @@ public final class Game extends Entry {
     public Game(Database database, int code) {
         this.database = database;
         database.getGames().add(this);
-        game = new Games(code); // create a transient entity
-        this.gameCode = code;
         timestamp = new Date();
+        game = new Games(code, timestamp); // create a transient entity
+        this.gameCode = code;
         game.setState(gameState.text);
         game.setQuestionNumber(questionNumber);
         game = database.getGamesRepository().save(game); // replace with persistent entity (ends up detached?)

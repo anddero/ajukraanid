@@ -20,7 +20,8 @@ public class Games {
     private Games() {
     }
 
-    public Games(Integer code) {
+    public Games(Integer code, Date timestamp) {
         this.code = code;
+        this.timestamp = timestamp;
     }
 }

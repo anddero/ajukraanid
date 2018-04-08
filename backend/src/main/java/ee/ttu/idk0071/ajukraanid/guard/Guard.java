@@ -1,19 +1,25 @@
 package ee.ttu.idk0071.ajukraanid.guard;
 
+import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.Game;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
+@Component
 public class Guard {
-    private static final int MINIMUM_PLAYERS = 2;
-    private static final int MAXIMUM_PLAYERS = 8;
+    private final GameConfig gameConfig;
+
+    @Autowired
+    public Guard(GameConfig gameConfig) {
+        this.gameConfig = gameConfig;
+    }
 
     public void checkJoinGame(Game game) {
         if (game.getGameState() != Game.State.LOBBY) {
             throw new GuardException("Cannot join the game at this point");
         }
-        if (game.getPlayers().size() >= MAXIMUM_PLAYERS) {
-            throw new GuardException("The game is full: " + MAXIMUM_PLAYERS + " players");
+        if (game.getPlayers().size() >= gameConfig.getMaximumPlayers()) {
+            throw new GuardException("The game is full: " + gameConfig.getMaximumPlayers() + " players");
         }
     }
 
@@ -21,8 +27,9 @@ public class Guard {
         if (game.getGameState() != Game.State.LOBBY) {
             throw new GuardException("Cannot start the game at this point");
         }
-        if (game.getPlayers().size() < MINIMUM_PLAYERS) {
-            throw new GuardException("Not enough players to start the game, need at least " + MINIMUM_PLAYERS);
+        if (game.getPlayers().size() < gameConfig.getMinimumPlayers()) {
+            throw new GuardException("Not enough players to start the game, need at least " + gameConfig
+                    .getMinimumPlayers());
         }
     }
 
