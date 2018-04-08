@@ -2,9 +2,7 @@ package ee.ttu.idk0071.ajukraanid.guard;
 
 import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.Game;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,8 +18,8 @@ public class Guard {
         if (game.getGameState() != Game.State.LOBBY) {
             throw new GuardException("Cannot join the game at this point");
         }
-        if (game.getPlayers().size() >= gameConfig.getMAXIMUM_PLAYERS()) {
-            throw new GuardException("The game is full: " + gameConfig.getMAXIMUM_PLAYERS() + " players");
+        if (game.getPlayers().size() >= gameConfig.getMaximumPlayers()) {
+            throw new GuardException("The game is full: " + gameConfig.getMaximumPlayers() + " players");
         }
     }
 
@@ -29,9 +27,9 @@ public class Guard {
         if (game.getGameState() != Game.State.LOBBY) {
             throw new GuardException("Cannot start the game at this point");
         }
-        if (game.getPlayers().size() < gameConfig.getMINIMUM_PLAYERS()) {
+        if (game.getPlayers().size() < gameConfig.getMinimumPlayers()) {
             throw new GuardException("Not enough players to start the game, need at least " + gameConfig
-                    .getMINIMUM_PLAYERS());
+                    .getMinimumPlayers());
         }
     }
 

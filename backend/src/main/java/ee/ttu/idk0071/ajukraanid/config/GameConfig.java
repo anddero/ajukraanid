@@ -14,7 +14,7 @@ public class GameConfig {
     @Value("${ajukraanid.game.questions-file-name}")
     private String questionsFile;
     @Value("${ajukraanid.game.min-players}")
-    private int MINIMUM_PLAYERS;
+    private int minimumPlayers;
     @Value("${ajukraanid.game.max-players}")
-    private int MAXIMUM_PLAYERS;
+    private int maximumPlayers;
 }
