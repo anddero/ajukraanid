@@ -6,6 +6,7 @@ import ee.ttu.idk0071.ajukraanid.guard.GuardException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,15 +21,18 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 
 @Component
 class GameController {
-    private static final int QUESTIONS_PER_GAME = 3;
+    @Value("${game.questions-per-game}")
+    private int QUESTIONS_PER_GAME;
+
     private final ExecutorService executor = Executors.newCachedThreadPool();
-    private final Guard guard = new Guard();
     private final Random random = new Random();
+    private final Guard guard;
     private final Database database;
 
     @Autowired
-    private GameController(Database database) {
+    private GameController(Database database, Guard guard) {
         this.database = database;
+        this.guard = guard;
         // TODO Questions created once only not on every launch.
         new PlainQuestion(database, "If a horse and a duck would have a child, what would you name it?");
         new PlainQuestion(database, "Name something Donal Trump would say to Vladimr Putin?");

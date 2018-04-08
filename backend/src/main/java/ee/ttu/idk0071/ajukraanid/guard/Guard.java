@@ -2,11 +2,15 @@ package ee.ttu.idk0071.ajukraanid.guard;
 
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
+@Component
 public class Guard {
-    private static final int MINIMUM_PLAYERS = 2;
-    private static final int MAXIMUM_PLAYERS = 8;
+    @Value("${game.min-players}")
+    private int MINIMUM_PLAYERS;
+    @Value("${game.max-players}")
+    private int MAXIMUM_PLAYERS;
 
     public void checkJoinGame(Game game) {
         if (game.getGameState() != Game.State.LOBBY) {
