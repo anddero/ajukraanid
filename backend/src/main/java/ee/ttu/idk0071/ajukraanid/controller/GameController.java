@@ -23,6 +23,8 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 class GameController {
     @Value("${game.questions-per-game}")
     private int QUESTIONS_PER_GAME;
+    @Value("${game.game-timeout-minutes}")
+    private int GAME_TIMEOUT_MINUTES;
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Random random = new Random();
@@ -300,7 +302,7 @@ class GameController {
                     System.err.println(LocalDateTime.now().toString() + " [TRACE] Archive task: Game with ID " +
                             game.getGameCode() + " in Error state");
                 default:
-                    if (new Date().getTime() - game.getTimestamp().getTime() > 1000 * 60 * 60) {
+                    if (new Date().getTime() - game.getTimestamp().getTime() > 1000 * 60 * GAME_TIMEOUT_MINUTES) {
                         game.setGameState(Game.State.INACTIVE);
                         System.out.println(LocalDateTime.now().toString() + " [LOG] Archive task: Game with ID " +
                                 game.getGameCode() + " has expired and has been archived");
