@@ -1,5 +1,6 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
+import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.*;
 import ee.ttu.idk0071.ajukraanid.guard.Guard;
 import ee.ttu.idk0071.ajukraanid.guard.GuardException;
@@ -28,30 +29,20 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 @Component
 class GameController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    @Value("${game.questions-per-game}")
-    private int QUESTIONS_PER_GAME;
-    @Value("${game.game-timeout-minutes}")
-    private int GAME_TIMEOUT_MINUTES;
-    @Value("${game.questions-file-name}")
-    private String QUESTIONS_FILE;
-
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Random random = new Random();
     private final Guard guard;
     private final Database database;
     private final ResourceLoader resourceLoader;
+    private final GameConfig gameConfig;
 
     @Autowired
-    private GameController(Database database, Guard guard, ResourceLoader resourceLoader) {
+    private GameController(Database database, Guard guard, ResourceLoader resourceLoader, GameConfig gameConfig) {
         this.database = database;
         this.guard = guard;
         this.resourceLoader = resourceLoader;
-        loadPlainQuestions();
-        // TODO Questions created once only not on every launch.
-        /*new PlainQuestion(database, "If a horse and a duck would have a child, what would you name it?");
-        new PlainQuestion(database, "Name something Donal Trump would say to Vladimr Putin?");
-        new PlainQuestion(database, "On a scale from squirrel to whale, how liberal is Russia?");
-        new PlainQuestion(database, "What did Johns mom tell him after he passed out drunk on the sofa?");*/
+        this.gameConfig = gameConfig;
+        loadPlainQuestions(); // TODO Questions created once only not on every launch.
     }
 
     /**
@@ -313,7 +304,7 @@ class GameController {
                 case ERROR:
                     log.error("Archive task: Game with ID {} in Error state", game.getGameCode());
                 default:
-                    if (new Date().getTime() - game.getTimestamp().getTime() > 1000 * 60 * GAME_TIMEOUT_MINUTES) {
+                    if (new Date().getTime() - game.getTimestamp().getTime() > 1000 * 60 * gameConfig.getGameTimeoutMinutes()) {
                         game.setGameState(Game.State.INACTIVE);
                         log.info("Archive task: Game with ID {} has expired and has been archived", game.getGameCode());
                     }
@@ -324,9 +315,9 @@ class GameController {
     private List<PlainQuestion> selectRandomQuestions() {
         int questionAmount = database.getPlainQuestions().size();
 
-        if (questionAmount < QUESTIONS_PER_GAME) {
+        if (questionAmount < gameConfig.getQuestionsPerGame()) {
             throw new GuardException("Not enough questions in database to choose from, found " + questionAmount +
-                    ", required " + QUESTIONS_PER_GAME);
+                    ", required " + gameConfig.getQuestionsPerGame());
         }
 
         List<Integer> allIndices = IntStream.range(0, database.getPlainQuestions().size())
@@ -335,7 +326,7 @@ class GameController {
 
         List<Integer> selectedIndices = new ArrayList<>();
 
-        for (int i = 0; i != QUESTIONS_PER_GAME; ++i) {
+        for (int i = 0; i != gameConfig.getQuestionsPerGame(); ++i) {
             int randomIndex = random.nextInt(allIndices.size());
             selectedIndices.add(randomIndex);
             allIndices.remove(randomIndex);
@@ -347,7 +338,7 @@ class GameController {
     }
 
     private void loadPlainQuestions() {
-        try (InputStream inStr = resourceLoader.getResource("classpath:" + QUESTIONS_FILE).getInputStream()) {
+        try (InputStream inStr = resourceLoader.getResource("classpath:" + gameConfig.getQuestionsFile()).getInputStream()) {
             try (InputStreamReader reader = new InputStreamReader(inStr)) {
                 try (BufferedReader bufferedReader = new BufferedReader(reader)) {
                     bufferedReader.lines().forEach(line -> {
@@ -357,7 +348,7 @@ class GameController {
                 }
             }
         } catch (IOException e) {
-            log.error("Failed loading plain questions from file '" + QUESTIONS_FILE + "'", e);
+            log.error("Failed loading plain questions from file '" + gameConfig.getQuestionsFile() + "'", e);
         }
     }
 }
