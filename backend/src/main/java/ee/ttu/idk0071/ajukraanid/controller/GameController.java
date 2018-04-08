@@ -328,7 +328,7 @@ class GameController {
 
         for (int i = 0; i != gameConfig.getQuestionsPerGame(); ++i) {
             int randomIndex = random.nextInt(allIndices.size());
-            selectedIndices.add(randomIndex);
+            selectedIndices.add(allIndices.get(randomIndex));
             allIndices.remove(randomIndex);
         }
 
