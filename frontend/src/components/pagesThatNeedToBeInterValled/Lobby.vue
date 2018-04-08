@@ -9,15 +9,17 @@
       </tr>
       </table>
     </div>
-    <div v-if="username === 'host'">
-      <div class="container">
+    <div v-if="username === 'host'" style="padding-top: 15%;">
+      <div class="container" style="width: 27%;">
         <transition-group class="ui horizontal list" name="list" tag="p">
           <div v-for="registration in items" :key="registration" class="row">
 
             <div class="row">
               <div class="col-sm-3 col-md-6">
-                <div class="col">{{ registration }}</div>
-
+                <div class="col" style='font-family: "Comic Sans MS", cursive, sans-serif;
+              font-style: italic;
+              font-weight: bold;
+              font-size: 25px; margin-left: 50%;'>{{ registration }}</div>
               </div>
               <div class="col-sm-9 col-md-6">
 
@@ -34,11 +36,14 @@
       <input type="image" id="menubutton" @click="startGame()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/startgame.png" class="btn center-block .btn-lg"/>
     </div>
     <div v-if="username !== 'host'">
-      <div class="container">
+      <div class="container" style="padding-top: 10%;">
         <transition-group class="ui horizontal list" name="list" tag="p">
           <div v-for="registration in items" :key="registration" class="row">
 
-            <div class="center-block"><b><h3 align="center">{{ registration }}</h3></b></div>
+            <div class="center-block"><b><h3 align="center" style='font-family: "Comic Sans MS", cursive, sans-serif;
+              font-style: italic;
+              font-weight: bold;
+              font-size: 25px;'>{{ registration }}</h3></b></div>
             <div align="center" style="width: 150px; background-color: black; height: 1px; margin-top: 10px; margin-bottom: 10px" class="center-block"></div>
           </div>
         </transition-group>

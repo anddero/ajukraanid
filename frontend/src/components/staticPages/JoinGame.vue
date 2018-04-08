@@ -12,7 +12,7 @@
     <div class="container">
       <Alert v-if="alert" v-bind:message="alert"/>
       <form v-on:submit.prevent="registerUser">
-        <div class="well">
+        <div class="well" style="width: 40%; text-align: center; margin-left: 30%;">
           <input type="text" class="form-control" placeholder="Nickname" v-model="name">
           <br/>
           <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode">
