@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database;
-
+//
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Answers;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;

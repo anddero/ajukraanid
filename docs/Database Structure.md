@@ -8,7 +8,7 @@ Game is an object associated with a session where a group of people are asked th
 Database table **games**
 ```
 +-----------+---------+------+-----+---------+----------------+
-| Field     | Type    | Null | Key | Default | Extra          |
+| Field     | Type    | Null | Key | Default | Extra          
 +-----------+---------+------+-----+---------+----------------+
 | game_id   | int(11) | NO   | PRI | null    | auto_increment |
 | game_code | char(4) | NO   |     | null    |                |

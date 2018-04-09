@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.util;
-
+//
 public abstract class StringUtilities {
     private static final int SINGLE_INDENT_SIZE_SPACES = 4;
 

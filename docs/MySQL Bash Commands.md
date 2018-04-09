@@ -12,7 +12,7 @@ mysql-js> \sql
 Switching to SQL mode... Commands end with ;
 ```
 
-##### Switch to JavaScript processing mode (default).
+##### Switch to JavaScript processing mode (default)
 ```
 \js
 ```

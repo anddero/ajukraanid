@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.guard;
-
+//
 import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import org.springframework.beans.factory.annotation.Autowired;

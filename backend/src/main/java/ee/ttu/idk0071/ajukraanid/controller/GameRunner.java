@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.controller;
-
+//
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

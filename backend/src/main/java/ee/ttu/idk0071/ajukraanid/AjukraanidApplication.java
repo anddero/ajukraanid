@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid;
-
+//
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

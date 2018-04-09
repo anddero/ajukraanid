@@ -8,7 +8,7 @@ TTÜ Tarkvaratehnika projeckt IDK0071
 Projekti "arendamise" salv.
 
 Muudatusettepanekute tegemine
------------------------------
+------------------------------
 
 
 Arendamine

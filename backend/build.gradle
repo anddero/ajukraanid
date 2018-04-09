@@ -38,7 +38,7 @@ task makeFolder {
 
 task copyFiles {
 	doLast {
-		println("Copying your files...")
+		println("Copying your files.....")
 	}
 }
 

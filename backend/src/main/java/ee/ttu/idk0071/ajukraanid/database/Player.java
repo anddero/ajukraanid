@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database;
-
+//
 import ee.ttu.idk0071.ajukraanid.database.internal.Players;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
