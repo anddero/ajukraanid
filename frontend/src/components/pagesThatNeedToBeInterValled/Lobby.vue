@@ -160,7 +160,7 @@
   /* Enter and leave animations can use different */
   /* durations and timing functions.              */
   .slide-fade-enter-active {
-    transition: all .3s ease;
+    transition: all .2s ease;
   }
 
   .slide-fade-leave-active {
