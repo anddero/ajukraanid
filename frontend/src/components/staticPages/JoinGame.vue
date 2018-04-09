@@ -5,7 +5,8 @@
     <div class="jumbotron">
       <div class="container">
         <!--<h1 class="display-3">Join an existing game</h1>-->
-        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/joinanexistinggame.png"/>
+        <img id="menubutton" class="center-block"
+             src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/joinanexistinggame.png"/>
         <p id="text">Enter a nickname and the gamecode that is shown in the host lobby. Remember to have fun!</p>
       </div>
     </div>
@@ -17,8 +18,12 @@
           <br/>
           <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode">
         </div>
-        <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
-        <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
+        <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg">
+          <img id='menubutton' class='btn center-block .btn-lg'
+               src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
+        <input type="image" id="menubutton" @click="routeToIndex()"
+               src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png"
+               class="btn center-block .btn-lg"/>
       </form>
     </div>
   </div>
@@ -51,10 +56,8 @@
         } else {
           this.$http.post(this.$store.state.requestDestination, requestData)
             .then(function (response) {
-              if (response.body.Data === "Did not find such game with game code: " + this.$data.gameCode) {
-                this.alert = "Game code was not found.";
-              } else if (response.body.Data === "Such username is already taken.") {
-                this.alert = "Such username is already taken.";
+              if (response.body.State === "Error") {
+                this.alert = response.body.Data;
               } else {
                 this.$store.dispatch('setGameCode', this.$data.gameCode);
                 this.$store.dispatch('setMyUsername', this.$data.name);

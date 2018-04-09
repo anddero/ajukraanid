@@ -1,5 +1,6 @@
 body {
-  background-image: url('http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yellow.jpg'); height: 100%;
+  background-image: url('http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yellow.jpg');
+  height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -10,9 +11,17 @@ body {
 
 }
 
+.jumbotron {
+  background: transparent !important;
+  padding-top: 30px !important;
+  padding-bottom: 30px !important;
+  margin-bottom: 30px !important;
+
+}
+
 .btn {
-  border-color: Transparent  !important;
-  font-family: 'Roboto', sans-serif  !important;
+  border-color: Transparent !important;
+  font-family: 'Roboto', sans-serif !important;
 }
 
 .btn:hover {
@@ -30,7 +39,7 @@ html {
 }
 
 #menubutton {
-  height:88px;
+  height: 88px;
   width: auto;
 }
 
