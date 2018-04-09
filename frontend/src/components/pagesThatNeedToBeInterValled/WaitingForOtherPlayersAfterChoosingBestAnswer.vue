@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div class="about container">
-    <h1 class="page-header text-center">Please wait till all players have answered</h1>
+    <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleasewaittillall.png" style="margin-top: 20%; height: 60px; width: auto;"/>
     <br>
     <br>
   </div>
