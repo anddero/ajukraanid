@@ -35,6 +35,10 @@ export default {
   setGameCode(state, gameCode) {
     state.gameCode = gameCode;
   },
+  setLastQuestion(state, question) {
+    console.log("set last question to " +  question)
+    state.lastQuestion = question;
+  },
 
   setMyUsername(state, name) {
     state.username = name;

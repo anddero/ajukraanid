@@ -34,14 +34,14 @@
       checkGameState() {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          if (response.body.State === "awarding") {
+          if (response.body.State === "Results") {
             window.clearInterval(window.interval);
-            console.log("Moving to " + "/awarding" + " from /question");
+            console.log("Moving to " + "/Results" + " from /Answering");
             this.$router.replace({path: this.$store.state.paths.awarding})
           }
-          if (response.body.State === "chooseBestAnswer") {
+          if (response.body.State === "Grading") {
             window.clearInterval(window.interval);
-            console.log("Moving to " + "/chooseBestAnwer" + " from /question");
+            console.log("Moving to " + "/Grading" + " from /Answering");
             this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
           }
         });
@@ -61,6 +61,7 @@
         };
         let q = "";
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          this.$router.replace({path: this.$store.state.paths.waitingScreen1})
         });
         window.clearInterval(window.interval);
 
@@ -80,8 +81,10 @@
 
     created: function () {
       this.setIntervalThatChecksGameState();
-      let requestData = {Action: "GetQuestion", 'Code': this.$store.state.gameCode}
+      let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+        console.log(response.body)
+        this.$store.dispatch('setLastQuestion', response.body.Data);
         this.question = response.body.Data
       })
     }

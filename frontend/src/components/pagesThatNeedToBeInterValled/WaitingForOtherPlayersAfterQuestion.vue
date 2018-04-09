@@ -27,9 +27,9 @@
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
 
-          if (response.body.State === 'awarding') {
+          if (response.body.State === 'Results') {
             window.clearInterval(window.intervalForWaitingScreen);
-            console.log('Moving to ' + '/awarding' + ' from /waitingForOtherPlayers2')
+            console.log('Moving to ' + '/Results' + ' from /waitingForOtherPlayers2')
             this.$router.replace({path: this.$store.state.paths.awarding})
           }
         })

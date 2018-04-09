@@ -27,9 +27,9 @@
       checkGameState () {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response){
-          if (response.body.State === 'chooseBestAnswer') {
+          if (response.body.State === 'Grading') {
             window.clearInterval(window.intervalForWaitingScreen)
-            console.log('Moving to ' + '/chooseBestAnswer' + ' from /waitingForOtherPlayers1')
+            console.log('Moving to ' + '/chooseBestAnswer' + ' from /waitingForOtherPlayers1111!')
             this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
           }
         })

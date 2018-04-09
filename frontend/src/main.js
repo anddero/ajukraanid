@@ -34,8 +34,8 @@ const router = new VueRouter({
     {path: '/~nilill/tarkvaratehnika/about', component: About},
     {path: '/~nilill/tarkvaratehnika/newGameConfirmation', component: NewGameConfirmation},
     {path: '/~nilill/tarkvaratehnika/lobby', component: Lobby},
-    {path: '/~nilill/tarkvaratehnika/awarding', component: Awarding},
-    {path: '/~nilill/tarkvaratehnika/chooseBestAnswer', component: ChooseBestAnswer},
+    {path: '/~nilill/tarkvaratehnika/results', component: Awarding},
+    {path: '/~nilill/tarkvaratehnika/grading', component: ChooseBestAnswer},
     {path: '/~nilill/tarkvaratehnika/waitingScreen1', component: WaitingForOtherPlayersAfterChoosingBestAnswer},
     {path: '/~nilill/tarkvaratehnika/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion},
   ]

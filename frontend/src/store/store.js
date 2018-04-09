@@ -12,6 +12,7 @@ export const store = new Vuex.Store({
     username: "",
     gameCode: 0,
     questionNumber: 0,
+    lastQuestion: "",
     paths: {
       gameState: "menu",
       registrations: [],
@@ -22,8 +23,8 @@ export const store = new Vuex.Store({
       question: '/~nilill/tarkvaratehnika/question',
       confirmation: '/~nilill/tarkvaratehnika/newGameConfirmation',
       lobby: '/~nilill/tarkvaratehnika/lobby',
-      awarding: '/~nilill/tarkvaratehnika/awarding',
-      chooseBestAnswer: '/~nilill/tarkvaratehnika/chooseBestAnswer',
+      awarding: '/~nilill/tarkvaratehnika/results',
+      chooseBestAnswer: '/~nilill/tarkvaratehnika/grading',
       waitingScreen1: '/~nilill/tarkvaratehnika/waitingScreen1',
       waitingScreen2: '/~nilill/tarkvaratehnika/waitingScreen2'
     }

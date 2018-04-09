@@ -9,8 +9,8 @@
       <hr>
       <form v-on:submit.prevent="registerUser">
         <div v-for="item in this.questions">
-          <button @click="awardPlayer(item.name)" type="button" class="btn btn-success center-block">
-            {{item.answer}}
+          <button v-if="item.Name!==username" @click="awardPlayer(item.Name)" type="button" class="btn btn-success center-block">
+            {{item.Answer}}
           </button>
           <br/>
         </div>
@@ -19,12 +19,10 @@
     </div>
     <div v-if="username === 'host'">
       <h3>Choose best answer for the question:</h3>
-      <h3>{{this.question}}</h3>
+      <h3>{{this.$store.state.lastQuestion}}</h3>
       <br>
       <div v-for="item in this.questions">
-        <button @click="awardPlayer(item.name)" type="button" class="btn btn-success center-block">
-          {{item.answer}}
-        </button>
+        <h3>{{item.Answer}} </h3>
         <br/>
       </div>
     </div>
@@ -58,9 +56,9 @@
       checkIfGameShouldStart() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          if (response.body.State === 'awarding') {
+          if (response.body.State === 'Results') {
             window.clearInterval(window.intervalForState)
-            console.log('Moving to /awarding from /choose best answer')
+            console.log('Moving to /Results from /choose best answer')
             this.$router.replace({path: this.$store.state.paths.awarding})
           }
         })
@@ -87,12 +85,12 @@
 
     created: function () {
       this.setIntervalThatChecksIfGameShouldStart()
-      let requestData = {Action: 'GetAnswers', 'Code': this.gameCode}
+      let requestData = {Action: 'FetchState', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
           this.questions = response.body.Data
         })
-      let data = {Action: 'GetQuestion', 'Code': this.gameCode}
+      let data = {Action: 'FetchState', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, data)
         .then(function (response) {
           this.question = response.body.Data

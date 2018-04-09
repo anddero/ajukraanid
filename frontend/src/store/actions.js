@@ -14,6 +14,9 @@ export default {
   setMyUsername ({commit}, name) {
     commit('setMyUsername', name)
   },
+  setLastQuestion ({commit}, question) {
+    commit('setLastQuestion', question)
+  },
   loadState ({commit}) {
     commit('loadState')
   }

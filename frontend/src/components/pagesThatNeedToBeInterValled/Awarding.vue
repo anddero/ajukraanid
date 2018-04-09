@@ -7,7 +7,7 @@
     </div>
     <hr>
     <div v-for="playerData in this.points">
-      <h3 style="text-align: center">{{playerData.name}} has {{playerData.points}} points</h3>
+      <h3 style="text-align: center">{{playerData.Name}} has {{playerData.Points}} points</h3>
     </div>
     <br>
     <br/>
@@ -29,9 +29,9 @@
       checkGameState() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          if (response.body.State === 'question') {
+          if (response.body.State === 'Answering') {
             window.clearInterval(window.interval)
-            console.log('Moving to ' + '/question' + ' from /awarding')
+            console.log('Moving to ' + '/question' + ' from /Answering')
             this.$router.replace({path: this.$store.state.paths.question})
           }
         })
@@ -53,9 +53,10 @@
 
     created: function () {
       this.setIntervalThatChecksGameState()
-      let requestData = {Action: 'GetPoints', 'Code': this.gameCode}
+      let requestData = {Action: 'FetchState', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
+          console.log(response.body.Data)
           this.points = response.body.Data
         })
     }

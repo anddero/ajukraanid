@@ -2,11 +2,13 @@
 <template>
   <div id="summary">
     <div style="padding-left: 30%; padding-top: 2%;">
-      <table><tr>
+      <table>
+        <tr>
           <td>
-          <img id="menubutton" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/gamecode.png"/></td><td><b style="font-size: 60px;">{{this.gameCode}}</b>
+            <img id="menubutton" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/gamecode.png"/></td>
+          <td><b style="font-size: 60px;">{{this.gameCode}}</b>
           </td>
-      </tr>
+        </tr>
       </table>
     </div>
     <div v-if="username === 'host'" style="padding-top: 15%;">
@@ -19,7 +21,8 @@
                 <div class="col" style='font-family: "Comic Sans MS", cursive, sans-serif;
               font-style: italic;
               font-weight: bold;
-              font-size: 25px; margin-left: 50%;'>{{ registration }}</div>
+              font-size: 25px; margin-left: 50%;'>{{ registration }}
+                </div>
               </div>
               <div class="col-sm-9 col-md-6">
 
@@ -33,7 +36,8 @@
         </transition-group>
       </div>
       <br>
-      <input type="image" id="menubutton" @click="startGame()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/startgame.png" class="btn center-block .btn-lg"/>
+      <input type="image" id="menubutton" @click="startGame()"
+             src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/startgame.png" class="btn center-block .btn-lg"/>
     </div>
     <div v-if="username !== 'host'">
       <div class="container" style="padding-top: 10%;">
@@ -44,7 +48,9 @@
               font-style: italic;
               font-weight: bold;
               font-size: 25px;'>{{ registration }}</h3></b></div>
-            <div align="center" style="width: 150px; background-color: black; height: 1px; margin-top: 10px; margin-bottom: 10px" class="center-block"></div>
+            <div align="center"
+                 style="width: 150px; background-color: black; height: 1px; margin-top: 10px; margin-bottom: 10px"
+                 class="center-block"></div>
           </div>
         </transition-group>
       </div>
@@ -65,7 +71,7 @@
     },
 
     methods: {
-      routeTo (state) {
+      routeTo(state) {
         let requestData = {Action: "StartGame", "Code": this.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData);
         console.log("Moving to " + state + " from /lobby vol 1")
@@ -74,10 +80,10 @@
         this.$router.replace({path: state})
       },
 
-      checkIfGameShouldStart () {
+      checkIfGameShouldStart() {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          if (response.body.State === "question") {
+          if (response.body.State === "Answering") {
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);
             console.log("Moving to /question from /lobby vol 2");
@@ -86,11 +92,11 @@
         });
       },
 
-      setIntervalThatChecksIfGameShouldStart () {
+      setIntervalThatChecksIfGameShouldStart() {
         window.gameStatusInterval = setInterval(this.checkIfGameShouldStart, 1000)
       },
 
-      loadPlayers () {
+      loadPlayers() {
         let requestData = {Action: "FetchState", "Code": this.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
@@ -98,15 +104,14 @@
               this.items = this.$store.state.registrations;
               this.$store.dispatch('updatePlayers', response.body.Data);
             }
-
           });
       },
 
-      setIntervalThatLoadsPlayersEverySecond () {
+      setIntervalThatLoadsPlayersEverySecond() {
         window.loadPlayerInterval = setInterval(this.loadPlayers, 1000)
       },
 
-      unregister (userName) {
+      unregister(userName) {
         let requestData = {Action: "RemovePlayer", "Code": this.gameCode, "Name": userName};
         console.log(requestData)
         this.$http.post(this.$store.state.requestDestination, requestData);
@@ -117,26 +122,28 @@
         });
       },
 
-      startGame () {
+      startGame() {
         window.clearInterval(window.gameStatusInterval)
         window.clearInterval(window.loadPlayerInterval)
-        this.$router.replace({path: this.$store.state.paths.question})
         let requestData = {Action: 'StartGame', 'Code': this.gameCode}
-        this.$http.post(this.$store.state.requestDestination, requestData)
+        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          this.$router.replace({path: this.$store.state.paths.question})
+        })
+
       }
     },
 
     computed: {
-      registrations () {
+      registrations() {
         this.items = this.$store.state.registrations
         return this.$store.state.registrations
       },
 
-      gameCode () {
+      gameCode() {
         return this.$store.state.gameCode
       },
 
-      username () {
+      username() {
         return this.$store.state.username
       }
     },
