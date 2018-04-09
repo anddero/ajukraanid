@@ -66,20 +66,12 @@
       return {
         items: [],
         loadPlayerInterval: "",
-        gameStatusInterval: ""
+        gameStatusInterval: "",
+
       }
     },
 
     methods: {
-      routeTo(state) {
-        let requestData = {Action: "StartGame", "Code": this.gameCode};
-        this.$http.post(this.$store.state.requestDestination, requestData);
-        console.log("Moving to " + state + " from /lobby vol 1")
-        window.clearInterval(window.gameStatusInterval)
-        window.clearInterval(window.loadPlayerInterval)
-        this.$router.replace({path: state})
-      },
-
       checkIfGameShouldStart() {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
@@ -88,6 +80,9 @@
             window.clearInterval(window.loadPlayerInterval);
             console.log("Moving to /question from /lobby vol 2");
             this.$router.replace({path: this.$store.state.paths.question})
+          } else if (response.body.State === "Error") {
+            console.log("Error: " + response.body.Data)
+            this.alert = response.body.Data;
           }
         });
       },
@@ -123,13 +118,19 @@
       },
 
       startGame() {
-        window.clearInterval(window.gameStatusInterval)
-        window.clearInterval(window.loadPlayerInterval)
-        let requestData = {Action: 'StartGame', 'Code': this.gameCode}
+        let requestData = {Action: "StartGame", "Code": this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          this.$router.replace({path: this.$store.state.paths.question})
-        })
-
+          if (response.body.State === "Answering") {
+            window.clearInterval(window.gameStatusInterval);
+            window.clearInterval(window.loadPlayerInterval);
+            console.log("Moving to /question from /lobby vol 2");
+            this.$router.replace({path: this.$store.state.paths.question})
+          } else if (response.body.State === "Error") {
+            console.log("Error: " + response.body.Data)
+            this.alert = response.body.Data;
+          }
+          console.log(response.body)
+        });
       }
     },
 
