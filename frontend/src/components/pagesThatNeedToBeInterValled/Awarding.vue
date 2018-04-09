@@ -2,12 +2,12 @@
 <template>
   <div id="summary">
     <div class="summary">
-      <h3>Results</h3>
+      <img id="menubutton" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/results.png" style="margin-top: 2%;"/>
       <h5></h5>
     </div>
     <hr>
     <div v-for="playerData in this.points">
-      <h3 style="text-align: center">{{playerData.Name}} has {{playerData.Points}} points</h3>
+      <h3 style="text-align: center" id="text">{{playerData.Name}} has {{playerData.Points}} points</h3>
     </div>
     <br>
     <br/>

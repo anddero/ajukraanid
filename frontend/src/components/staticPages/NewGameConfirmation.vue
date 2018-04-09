@@ -5,7 +5,7 @@
     <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleaseconfirmit.png"/>
     <br>
     <form v-on:submit="createGame" style="padding-top: 12%;">
-      <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yes.png'></button>
+      <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yes.png'></button>
     </form>
     <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
     <br>

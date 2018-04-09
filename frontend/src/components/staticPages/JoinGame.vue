@@ -10,14 +10,14 @@
       </div>
     </div>
     <div class="container">
-      <Alert v-if="alert" v-bind:message="alert"/>
+      <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
       <form v-on:submit.prevent="registerUser">
         <div class="well" style="width: 40%; text-align: center; margin-left: 30%;">
           <input type="text" class="form-control" placeholder="Nickname" v-model="name">
           <br/>
           <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode">
         </div>
-        <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
+        <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
         <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
       </form>
     </div>

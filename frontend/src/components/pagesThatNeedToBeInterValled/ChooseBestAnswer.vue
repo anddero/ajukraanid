@@ -3,7 +3,7 @@
   <div id="summary">
     <div v-if="username !== 'host'">
       <div class="summary">
-        <h3>Choose best answer</h3>
+        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer_player.png" style="margin-top: 2%;"/>
         <h5></h5>
       </div>
       <hr>
@@ -18,11 +18,11 @@
       <br/>
     </div>
     <div v-if="username === 'host'">
-      <h3>Choose best answer for the question:</h3>
-      <h3>{{this.$store.state.lastQuestion}}</h3>
+      <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer.png" style="margin-top: 2%; height: 60px; width: auto;"/>
+      <h3 id="text" class="center-block">{{this.$store.state.lastQuestion}}</h3>
       <br>
       <div v-for="item in this.questions">
-        <h3>{{item.Answer}} </h3>
+        <h3 id="text" class="center-block">{{item.Answer}} </h3>
         <br/>
       </div>
     </div>
