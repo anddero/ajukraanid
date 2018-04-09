@@ -6,7 +6,7 @@
         <tr>
           <td>
             <img id="menubutton" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/gamecode.png"/></td>
-          <td><b style="font-size: 60px;">{{this.gameCode}}</b>
+          <td><b class="code">{{this.gameCode}}</b>
           </td>
         </tr>
       </table>
@@ -157,6 +157,10 @@
 </script>
 
 <style scoped>
+
+  .code {
+    font-size: 90px;
+  }
   /* Enter and leave animations can use different */
   /* durations and timing functions.              */
   .slide-fade-enter-active {
