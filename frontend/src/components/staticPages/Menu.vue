@@ -2,7 +2,7 @@
 <template>
 
   <div id="menu" class="container">
-    <img src="https://raw.githubusercontent.com/anddero/ajukraanid/master/frontend/logo.png" style="margin-top: 50px" class="center-block">
+    <img src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/ajukraanid.png" style="margin-top: 50px" class="center-block">
     <br>
     <input id="menubutton" class="btn center-block .btn-lg" type="image" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/createanewgame.png" @click="routeToGameConfirmation"/>
     <input id="menubutton" type="image" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/joinagame.png" @click="routeToRegistration" class="btn center-block .btn-lg"/>
