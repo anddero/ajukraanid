@@ -16,7 +16,7 @@ import App from './App';
 
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import "./assets/css/main.scss"
+import "./assets/css/main.css"
 import Alert from './components/staticPages/Alert';
 
 Vue.use(vueResource);
