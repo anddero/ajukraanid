@@ -71,4 +71,10 @@
 </script>
 
 <style scoped>
+  .well {
+    background-color: transparent !important;
+    border-color: transparent !important;
+
+  }
+
 </style>
