@@ -1,10 +1,9 @@
 /* eslint-disable */
 <template>
   <div class="about container">
-    <h1 class="page-header text-center">Please wait till all players have answered (15 sec)</h1>
+    <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleasewaittillall.png" style="margin-top: 20%; height: 60px; width: auto;"/>
     <br>
     <br>
-    <button @click="routeToIndex()" type="button" class="btn btn-success center-block">Back to main menu</button>
   </div>
 </template>
 

@@ -7,7 +7,7 @@
     </div>
     <hr>
     <div v-for="playerData in this.points">
-      <h3 style="text-align: center" id="text">{{playerData.Name}} has {{playerData.Points}} points</h3>
+      <h3 style="text-align: center" id="text">{{playerData.Name}} earned {{playerData.Points}} points</h3>
     </div>
     <br>
     <br/>

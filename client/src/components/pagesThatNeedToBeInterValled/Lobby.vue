@@ -11,7 +11,7 @@
         </tr>
       </table>
     </div>
-    <div v-if="username === 'host'" style="padding-top: 15%;">
+    <div v-if="username === 'host'" style="padding-top: 8%;">
       <div class="container" style="width: 27%;">
         <transition-group class="ui horizontal list" name="list" tag="p">
           <div v-for="registration in items" :key="registration" class="row">

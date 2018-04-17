@@ -22,7 +22,7 @@
       <h3 id="text" class="center-block">{{this.$store.state.lastQuestion}}</h3>
       <br>
       <div v-for="item in this.questions">
-        <h3 id="text" class="center-block">{{item.Answer}} </h3>
+        <h3 style=" margin-right: 40px" id="text" class="center-block">{{item.Answer}} </h3>
         <br/>
       </div>
     </div>

@@ -56,6 +56,7 @@
               } else {
                 this.$store.dispatch('setGameCode', this.$data.gameCode)
                 this.$store.dispatch('setMyUsername', this.$data.name)
+                this.$router.replace({path: this.$store.state.paths.lobby})
               }
             });
         }
