@@ -10,15 +10,30 @@
   </div>
 </template>
 <script>
+  /* if (localStorage.getItem('gamecode') !== null) { // Here comes functionality to join crashed game.
+    var playerName = localStorage.getItem('playername')
+    var gameCode = localStorage.getItem('gamecode')
+    let requestData = {Action: "FetchState", "Code": gameCode};
+    this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+      if (response.body.State !== "Error") {
+        this.$router.replace({path: this.$store.state.paths.question})
+      } else if (response.body.State === "Error") {
+        console.log("Error: " + response.body.Data)
+        this.alert = response.body.Data;
+      }
+    })
+  } else {
+    console.log('tühi')
+  } */
   export default {
     methods: {
-      routeToGameConfirmation() {
+      routeToGameConfirmation () {
         this.$router.replace({path: this.$store.state.paths.confirmation})
       },
-      routeToAbout() {
+      routeToAbout () {
         this.$router.replace({path: this.$store.state.paths.about})
       },
-      routeToRegistration() {
+      routeToRegistration () {
         this.$router.replace({path: this.$store.state.paths.registration})
       }
     }
