@@ -26,39 +26,43 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
-  import Alert from './Alert';
+  import('../../assets/css/main.scss')
+  import Alert from './Alert'
 
   export default {
-    data() {
+    data () {
       return {
-        name: "",
-        gameCode: "",
+        name: '',
+        gameCode: '',
         alert: ''
       }
     },
     methods: {
-      routeToIndex() {
+      routeToIndex () {
         this.$router.replace({path: this.$store.state.paths.index})
       },
-      registerUser() {
-        let myuser = {name: 'Max', gameCode: "gameCode"};
-        myuser.name = this.$data.name;
-        myuser.gameCode = this.$data.gameCode;
-        let requestData = {Action: "JoinGame", "Code": this.$data.gameCode, "Name": this.$data.name};
+      registerUser () {
+        let myuser = {name: 'Max', gameCode: 'gameCode'}
+        myuser.name = this.$data.name
+        myuser.gameCode = this.$data.gameCode
+        localStorage.setItem('gamecode', this.$data.gameCode)
+        localStorage.setItem('playername', this.$data.name)
+        let requestData = {Action: 'JoinGame', 'Code': this.$data.gameCode, 'Name': this.$data.name}
         if (!this.$data.name || !this.$data.gameCode) {
-          this.alert = 'Please fill in all required fields';
+          this.alert = 'Please fill in all required fields'
         } else {
           this.$http.post(this.$store.state.requestDestination, requestData)
             .then(function (response) {
-              if (response.body.State === "Error") {
-                this.alert = response.body.Data
+              if (response.body.Data === 'Did not find such game with game code: ' + this.$data.gameCode) {
+                this.alert = 'Game code was not found.'
+              } else if (response.body.Data === 'Such username is already taken.') {
+                this.alert = 'Such username is already taken.'
               } else {
                 this.$store.dispatch('setGameCode', this.$data.gameCode)
                 this.$store.dispatch('setMyUsername', this.$data.name)
                 this.$router.replace({path: this.$store.state.paths.lobby})
               }
-            });
+            })
         }
       }
     },
