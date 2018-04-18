@@ -26,4 +26,6 @@ nbdist/
 
 ### Custom ###
 /out/
+backup/
+
 ### Client ###

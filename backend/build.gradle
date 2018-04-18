@@ -30,25 +30,16 @@ repositories {
 	mavenCentral()
 }
 
-task makeFolder {
+task backupFatJar {
 	doLast {
-		println("Making diretory...")
+		copy {
+			from "build/libs"
+			into "backup/build_" + new Date().format('yyyy_MM_dd_HH_mm_ss').toString()
+		}
 	}
 }
 
-task copyFiles {
-	doLast {
-		println("Copying your files.....")
-	}
-}
-
-task archive {
-	doLast {
-		tasks.makeFolder.execute()
-		tasks.copyFiles.execute()
-		println("Success!")
-	}
-}
+assemble.dependsOn backupFatJar
 
 configurations.all {
     exclude module: 'spring-boot-starter-logging'
