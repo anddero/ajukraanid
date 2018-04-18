@@ -38,7 +38,15 @@ html {
   height: 100%;
 }
 
-#menubutton {
+#menubutton1 {
+  height: 88px;
+  width: auto;
+}
+#menubutton2 {
+  height: 88px;
+  width: auto;
+}
+#menubutton3 {
   height: 88px;
   width: auto;
 }
@@ -57,4 +65,29 @@ html {
   padding-bottom: 30px;
   margin-bottom: 30px;
   color: inherit;
+}
+#menu img {
+  margin-top: 50px;
+  width: 70%;
+  height: auto;
+}
+@media screen and (min-width:320px) and (max-width:600px) {
+  #menu img {
+    margin-top: 30%;
+    width: 70%;
+    height: auto;
+    margin-bottom: 10%;
+  }
+  #menubutton1 {
+    width: 85%;
+    height: auto;
+  }
+  #menubutton2 {
+    width: 60%;
+    height: auto;
+  }
+  #menubutton3 {
+    width: 38%;
+    height: auto;
+  }
 }
