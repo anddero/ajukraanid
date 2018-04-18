@@ -10,21 +10,6 @@
   </div>
 </template>
 <script>
-  /* if (localStorage.getItem('gamecode') !== null) { // Here comes functionality to join crashed game.
-    var playerName = localStorage.getItem('playername')
-    var gameCode = localStorage.getItem('gamecode')
-    let requestData = {Action: "FetchState", "Code": gameCode};
-    this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-      if (response.body.State !== "Error") {
-        this.$router.replace({path: this.$store.state.paths.question})
-      } else if (response.body.State === "Error") {
-        console.log("Error: " + response.body.Data)
-        this.alert = response.body.Data;
-      }
-    })
-  } else {
-    console.log('tühi')
-  } */
   export default {
     methods: {
       routeToGameConfirmation () {
@@ -36,7 +21,56 @@
       routeToRegistration () {
         this.$router.replace({path: this.$store.state.paths.registration})
       }
+      /* // Frontend ootab backendipoolset funktsionaalsuse tekkimist siin.
+      getGameStateAndJoinGame () {
+        var gameCode = localStorage.getItem('gamecode')
+        let requestData = {Action: 'GetPlayers', 'Code': gameCode}
+        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          if (response.body.State === 'Answering') {
+            this.$router.replace({path: this.$store.state.paths.question})
+          } else if (response.body.State === 'Grading') {
+            this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
+          } else if (response.body.State === 'Results') {
+            this.$router.replace({path: this.$store.state.paths.awarding})
+          } else {
+            localStorage.clear()
+          }
+        })
+      },
+      getPlayers () {
+        var gameCode = localStorage.getItem('gamecode')
+        let requestData = {Action: 'GetPlayers', 'Code': gameCode}
+        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          var playerName = localStorage.getItem('playername')
+          var players = response.body.Players
+          console.log("Players")
+          console.log(players)
+          if (players.includes(playerName)) {
+            this.getGameStateAndJoinGame()
+          } else {
+            localStorage.clear()
+          }
+        })
+      }
+      */
     }
+    /*
+    created: function () {
+      if (localStorage.getItem('gamecode') !== null) { // Here comes functionality to join crashed game.
+        var gameCode = localStorage.getItem('gamecode')
+        let requestData = {Action: 'FetchState', 'Code': gameCode}
+        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          if (response.body.State !== 'Error' && response.body.State !== 'Inactive') {
+            this.getPlayers()
+          } else {
+            localStorage.clear()
+          }
+        })
+      } else {
+        console.log('tühi')
+      }
+    }
+    */
   }
 </script>
 <style scoped>
