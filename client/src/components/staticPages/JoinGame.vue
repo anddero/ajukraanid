@@ -5,7 +5,7 @@
     <div class="jumbotron">
       <div class="container">
         <!--<h1 class="display-3">Join an existing game</h1>-->
-        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/joinanexistinggame.png"/>
+        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/joinanexistinggame.png"/>
         <p id="text">Enter a nickname and the gamecode that is shown in the host lobby. Remember to have fun!</p>
       </div>
     </div>
@@ -17,8 +17,8 @@
           <br/>
           <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode">
         </div>
-        <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
-        <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
+        <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton3' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
+        <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
       </form>
     </div>
   </div>
