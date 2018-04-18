@@ -3,7 +3,7 @@
   <div>
     <div class="jumbotron">
       <div class="container">
-        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/welcometoabout.png">
+        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/welcometoabout.png">
         <br>
         <p id="text">The game is running in multiple devices simultaneously. There are 2 views of game: a player
           and a host. On host's screen there will be displayed a question that should be answered by everybody. After the answering round
@@ -13,7 +13,7 @@
     </div>
     <div class="container">
       <br>
-      <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
+      <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
     </div>
   </div>
 </template>
