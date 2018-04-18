@@ -1,11 +1,11 @@
 /* eslint-disable */
 <template>
   <div id="summary">
-    <div style="padding-left: 30%; padding-top: 2%;">
+    <div id="lobbytop" style="padding-left: 30%; padding-top: 2%;">
       <table>
         <tr>
           <td>
-            <img id="menubutton" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/gamecode.png"/></td>
+            <img id="menubutton1" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/gamecode.png"/></td>
           <td><b class="code">{{this.gameCode}}</b>
           </td>
         </tr>
@@ -36,7 +36,7 @@
         </transition-group>
       </div>
       <br>
-      <input type="image" id="menubutton" @click="startGame()"
+      <input type="image" id="menubutton2" @click="startGame()"
              src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/startgame.png" class="btn center-block .btn-lg"/>
     </div>
     <div v-if="username !== 'host'">
