@@ -49,14 +49,10 @@ public class RestController {
                 case "GivePoints":
                     return gameController.givePoints(data.getInt("Code"), data.getString("Name"),
                             data.getString("Target"));
-                case "GetPoints":
-                    return gameController.getPoints(data.getInt("Code"));
-                case "GetAnswers":
-                    return gameController.getAnswers(data.getInt("Code"));
                 case "RemovePlayer":
                     return gameController.removePlayer(data.getInt("Code"), data.getString("Name"));
-                case "GetQuestion":
-                    return gameController.getQuestion(data.getInt("Code"));
+                case "GetPlayers":
+                    return gameController.getPlayers(data.getInt("Code"));
                 default:
                     return createErrorResponse("Invalid Action: " + action);
             }

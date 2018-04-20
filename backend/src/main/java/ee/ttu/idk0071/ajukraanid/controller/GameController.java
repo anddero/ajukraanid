@@ -217,24 +217,6 @@ class GameController {
         return createSuccessResponse("Your points were given to " + targetName);
     }
 
-    /**
-     * @deprecated Do not handle this type of requests.
-     * @param gameCode The unique game code.
-     * @return The response JSON message.
-     */
-    String getPoints(int gameCode) {
-        throw new GuardException("GetPoints request is deprecated, use FetchState instead");
-    }
-
-    /**
-     * @deprecated Do not handle this type of requests.
-     * @param gameCode The unique game code.
-     * @return The response JSON message.
-     */
-    String getAnswers(int gameCode) {
-        throw new GuardException("GetAnswers request is deprecated, use FetchState instead");
-    }
-
     String removePlayer(int gameCode, String playerName) {
         Optional<Game> optionalGame = findActiveGame(gameCode);
 
@@ -255,13 +237,19 @@ class GameController {
         return createSuccessResponse("Player successfully removed: " + playerName);
     }
 
-    /**
-     * @deprecated Do not handle this type of requests.
-     * @param gameCode The unique game code.
-     * @return The response JSON message.
-     */
-    String getQuestion(int gameCode) {
-        throw new GuardException("GetQuestion request is deprecated, use FetchState instead");
+    String getPlayers(int gameCode) {
+        Optional<Game> optionalGame = findActiveGame(gameCode);
+
+        if (!optionalGame.isPresent()) {
+            throw new GuardException("Did not find such game with game code: " + gameCode);
+        }
+
+        JSONArray players = new JSONArray();
+        optionalGame.get().getPlayers().forEach(player -> players.put(player.toString()));
+        return new JSONObject()
+                .put("Action", "GetPlayers")
+                .put("Players", players)
+                .toString();
     }
 
     // private methods
