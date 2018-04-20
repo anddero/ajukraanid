@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -71,7 +70,7 @@ class GameController {
     }
 
     String joinGame(int gameCode, String playerName) {
-        Optional<Game> optionalGame = findActiveGame(gameCode);
+        Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Did not find such game with game code: " + gameCode);
@@ -92,7 +91,7 @@ class GameController {
      * @return the game state, if it is in lobby then return the list of player names.
      */
     String startGame(int gameCode) {
-        Optional<Game> optionalGame = findActiveGame(gameCode);
+        Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Was not able to start the game because such game was not found.");
@@ -105,7 +104,7 @@ class GameController {
     }
 
     String fetchState(int gameCode) {
-        Optional<Game> optionalGame = findActiveGame(gameCode);
+        Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("No game found with game code: " + gameCode);
@@ -153,7 +152,7 @@ class GameController {
 
     String submitAnswer(int gameCode, String playerName, String answer) {
         // TODO Need Question Number
-        Optional<Game> optionalGame = findActiveGame(gameCode);
+        Optional<Game> optionalGame = findGame(gameCode);
         if (!optionalGame.isPresent()) {
             throw new GuardException("Did not find such game with game code: " + gameCode);
         }
@@ -178,7 +177,7 @@ class GameController {
 
     String givePoints(int gameCode, String giverName, String targetName) {
         // TODO Need Question Number
-        Optional<Game> optionalGame = findActiveGame(gameCode);
+        Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Game with such id was not found");
@@ -218,7 +217,7 @@ class GameController {
     }
 
     String removePlayer(int gameCode, String playerName) {
-        Optional<Game> optionalGame = findActiveGame(gameCode);
+        Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Did not find such game with game code: " + gameCode);
@@ -238,11 +237,13 @@ class GameController {
     }
 
     String getPlayers(int gameCode) {
-        Optional<Game> optionalGame = findActiveGame(gameCode);
+        Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Did not find such game with game code: " + gameCode);
         }
+
+        guard.checkGetPlayers(optionalGame.get());
 
         JSONArray players = new JSONArray();
         optionalGame.get().getPlayers().forEach(player -> players.put(player.toString()));
@@ -266,9 +267,24 @@ class GameController {
                 .findAny();
     }
 
-    private Optional<Game> findActiveGame(int gameCode) {
-        return database.getGames().stream()
+    /**
+     * If there is an active game with the given code, it will be returned.
+     * If there is not an active game with the given code, but inactive games exist, any of them will be returned.
+     * Otherwise an empty optional is returned.
+     * @param gameCode The code of the game.
+     * @return Optional Game object with the exact same code given as argument to the function.
+     */
+    private Optional<Game> findGame(int gameCode) {
+        Optional<Game> optionalGame = database.getGames().stream()
                 .filter(game -> game.getGameState() != Game.State.INACTIVE)
+                .filter(game -> game.getGameCode() == gameCode)
+                .findAny();
+
+        if (optionalGame.isPresent()) {
+            return optionalGame;
+        }
+
+        return database.getGames().stream()
                 .filter(game -> game.getGameCode() == gameCode)
                 .findAny();
     }

@@ -50,4 +50,15 @@ public class Guard {
             throw new GuardException("Cannot remove players at this point");
         }
     }
+
+    public void checkGetPlayers(Game game) {
+        switch (game.getGameState()) {
+            case LOBBY:
+            case ANSWERING:
+            case GRADING:
+            case RESULTS:
+                return;
+        }
+        throw new GuardException("Cannot get list of players in the current game state");
+    }
 }
