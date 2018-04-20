@@ -32,6 +32,8 @@
             this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
           } else if (response.body.State === 'Results') {
             this.$router.replace({path: this.$store.state.paths.awarding})
+          } else if (response.body.State === 'Lobby') {
+            this.$router.replace({path: this.$store.state.paths.lobby})
           } else {
             localStorage.clear()
           }
