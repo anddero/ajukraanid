@@ -294,7 +294,8 @@ class GameController {
     }
 
     private int getPoints(Game game, Player player) {
-        return (int) getCurrentQuestion(game).getEvaluations().stream()
+        return (int) game.getQuestions().stream()
+                .flatMap(q -> q.getEvaluations().stream())
                 .map(Evaluation::getTarget)
                 .filter(target -> player == target)
                 .count() * 100;
