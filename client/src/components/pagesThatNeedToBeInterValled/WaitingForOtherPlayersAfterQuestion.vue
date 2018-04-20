@@ -27,7 +27,6 @@
       checkGameState() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-
           if (response.body.State === 'Results') {
             window.clearInterval(window.intervalForWaitingScreen);
             console.log('Moving to ' + '/Results' + ' from /waitingForOtherPlayers2')

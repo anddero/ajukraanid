@@ -20,24 +20,20 @@
       },
       routeToRegistration () {
         this.$router.replace({path: this.$store.state.paths.registration})
-      }
-      /* // Frontend ootab backendipoolset funktsionaalsuse tekkimist siin.
-      getGameStateAndJoinGame () {
-        var gameCode = localStorage.getItem('gamecode')
-        let requestData = {Action: 'GetPlayers', 'Code': gameCode}
-        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          if (response.body.State === 'Answering') {
+      },
+      joinGame () {
+        var state = localStorage.getItem('gamestate')
+        if (state === 'Answering') {
             this.$router.replace({path: this.$store.state.paths.question})
-          } else if (response.body.State === 'Grading') {
+          } else if (state === 'Grading') {
             this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
-          } else if (response.body.State === 'Results') {
+          } else if (state === 'Results') {
             this.$router.replace({path: this.$store.state.paths.awarding})
-          } else if (response.body.State === 'Lobby') {
+          } else if (state === 'Lobby') {
             this.$router.replace({path: this.$store.state.paths.lobby})
           } else {
             localStorage.clear()
           }
-        })
       },
       getPlayers () {
         var gameCode = localStorage.getItem('gamecode')
@@ -48,21 +44,20 @@
           console.log("Players")
           console.log(players)
           if (players.includes(playerName)) {
-            this.getGameStateAndJoinGame()
+            this.joinGame()
           } else {
             localStorage.clear()
           }
         })
       }
-      */
-    }
-    /*
+    },
     created: function () {
-      if (localStorage.getItem('gamecode') !== null) { // Here comes functionality to join crashed game.
+      if (localStorage.getItem('gamecode') !== null) {
         var gameCode = localStorage.getItem('gamecode')
-        let requestData = {Action: 'FetchState', 'Code': gameCode}
+        var requestData = {Action: 'FetchState', 'Code': gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State !== 'Error' && response.body.State !== 'Inactive') {
+            localStorage.setItem('gamestate', response.body.State)
             this.getPlayers()
           } else {
             localStorage.clear()
@@ -72,7 +67,6 @@
         console.log('tühi')
       }
     }
-    */
   }
 </script>
 <style scoped>
