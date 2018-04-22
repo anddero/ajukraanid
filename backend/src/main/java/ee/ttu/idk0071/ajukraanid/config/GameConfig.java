@@ -17,4 +17,10 @@ public class GameConfig {
     private int minimumPlayers;
     @Value("${ajukraanid.game.max-players}")
     private int maximumPlayers;
+    @Value("${ajukraanid.game.answering-time-seconds}")
+    private int answeringTimeSeconds;
+    @Value("${ajukraanid.game.grading-time-seconds}")
+    private int gradingTimeSeconds;
+    @Value("${ajukraanid.game.results-time-seconds}")
+    private int resultsTimeSeconds;
 }

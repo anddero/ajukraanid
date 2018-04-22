@@ -99,7 +99,10 @@ class GameController {
 
         guard.checkStartGame(optionalGame.get());
 
-        executor.submit(new GameRunner(optionalGame.get()));
+        GameRunner gameRunner = new GameRunner(gameConfig, optionalGame.get());
+        optionalGame.get().setRunner(gameRunner);
+        executor.submit(gameRunner);
+
         return createSuccessResponse("Game successfully started");
     }
 
@@ -121,21 +124,27 @@ class GameController {
                 data = players;
                 break;
             case ANSWERING:
-                data = getCurrentQuestion(game).getText();
+                data = new JSONObject()
+                        .put("TimeLeft", getTimeLeft(game))
+                        .put("Question", getCurrentQuestion(game).getText());
                 break;
             case GRADING:
                 JSONArray answers = new JSONArray();
                 getCurrentQuestion(game).getAnswers().forEach(answer -> answers.put(new JSONObject()
                         .put("Name", answer.getPlayer().getName())
                         .put("Answer", answer.getText())));
-                data = answers;
+                data = new JSONObject()
+                        .put("TimeLeft", getTimeLeft(game))
+                        .put("Answers", answers);
                 break;
             case RESULTS:
                 JSONArray points = new JSONArray();
                 game.getPlayers().forEach(player -> points.put(new JSONObject()
                         .put("Name", player.getName())
                         .put("Points", getPoints(game, player))));
-                data = points;
+                data = new JSONObject()
+                        .put("TimeLeft", getTimeLeft(game))
+                        .put("Scores", points);
                 break;
             case INACTIVE:
                 data = null;
@@ -355,5 +364,16 @@ class GameController {
         } catch (IOException e) {
             log.error("Failed loading plain questions from file '" + gameConfig.getQuestionsFile() + "'", e);
         }
+    }
+
+    private int getTimeLeft(Game game) {
+        Optional<GameRunner> runner = game.getRunner();
+
+        if (!runner.isPresent()) {
+            log.error("GameRunner for active Game instance is not present, game id: {}", game.getGameCode());
+            return 0;
+        }
+
+        return runner.get().getTimeLeftSeconds();
     }
 }

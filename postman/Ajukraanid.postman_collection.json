@@ -1,8 +1,7 @@
 {
 	"info": {
-		"name": "Ajukraaniid",
 		"_postman_id": "e737dc04-e071-4288-a878-959b0741cf0e",
-		"description": "",
+		"name": "Ajukraanid",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -44,7 +43,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Action\": \"JoinGame\",\n\t\"Code\": \"6426\",\n\t\"Name\": \"username\"\n}"
+					"raw": "{\n\t\"Action\": \"JoinGame\",\n\t\"Code\": \"7579\",\n\t\"Name\": \"minu nimi\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080",
@@ -55,6 +54,162 @@
 					"port": "8080"
 				},
 				"description": "Join an existing game session."
+			},
+			"response": []
+		},
+		{
+			"name": "StartGame",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"StartGame\",\n\t\"Code\": 7579\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Begin the game with the current players (can be only called in Lobby state)"
+			},
+			"response": []
+		},
+		{
+			"name": "FetchState",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"FetchState\",\n\t\"Code\": 7579\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Fetch the state of a game."
+			},
+			"response": []
+		},
+		{
+			"name": "SubmitAnswer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Action\": \"SubmitAnswer\",\r\n    \"Code\": 7579,\r\n    \"Name\": \"minu nimi\",\r\n    \"Answer\": \"Don't know\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Submit an answer by some player in the answering stage."
+			},
+			"response": []
+		},
+		{
+			"name": "GivePoints",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Action\": \"GivePoints\",\r\n    \"Code\": 7579,\r\n    \"Name\": \"minu nimi\",\r\n    \"Target\": \"keegi teine\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Give points to your favorite answer."
+			},
+			"response": []
+		},
+		{
+			"name": "RemovePlayer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Action\": \"RemovePlayer\",\r\n    \"Code\": 7579,\r\n    \"Name\": \"minu nimi\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Kick a player from the game in lobby state."
+			},
+			"response": []
+		},
+		{
+			"name": "GetPlayers",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Action\": \"GetPlayers\",\r\n    \"Code\": 7579\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": "Get the list of players in the game."
 			},
 			"response": []
 		}
