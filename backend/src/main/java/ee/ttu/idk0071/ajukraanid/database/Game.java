@@ -1,15 +1,18 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
 //
+import ee.ttu.idk0071.ajukraanid.controller.GameRunner;
 import ee.ttu.idk0071.ajukraanid.database.internal.Games;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public final class Game extends Entry {
     @RequiredArgsConstructor
@@ -42,12 +45,15 @@ public final class Game extends Entry {
     // accessible
     @Getter private final int gameCode;
     @Getter private final Date timestamp;
-    @Getter private State gameState = State.LOBBY;
+    private State gameState = State.LOBBY;
     @Getter private int questionNumber = 0;
 
     // referenced by
     @Getter private ArrayList<Player> players = new ArrayList<>();
     @Getter private List<Question> questions = new ArrayList<>();
+
+    // runtime
+    @Setter private GameRunner runner = null;
 
     /**
      * From an existing database entry.
@@ -80,8 +86,14 @@ public final class Game extends Entry {
         return game;
     }
 
+    public synchronized State getGameState() {
+        return gameState;
+    }
+
     public void setGameState(State gameState) {
-        this.gameState = gameState;
+        synchronized (this) {
+            this.gameState = gameState;
+        }
         game.setState(gameState.text);
         game = getDatabase().getGamesRepository().save(game);
     }
@@ -105,6 +117,10 @@ public final class Game extends Entry {
         StringUtilities.addIndent(indentSize + 1, stringBuilder);
         stringBuilder.append("Questions (").append(questions.size()).append(")").append("\n");
         questions.forEach(question -> question.appendTo(stringBuilder, indentSize + 2));
+    }
+
+    public Optional<GameRunner> getRunner() {
+        return Optional.of(runner);
     }
 
     @Override
