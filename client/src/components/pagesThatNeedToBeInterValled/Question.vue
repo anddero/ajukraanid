@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div id="registration">
-    <h3 v-if="username === 'host'" id="text" class="center-block" style="padding-top: 6%;"> {{ question }}</h3>
+    <h3 v-if="username === 'host'" id="text" class="center-block" style="padding-top: 60%;"> {{ question }}</h3>
     <Alert v-if="alert" v-bind:message="alert"/>
     <hr>
     <form v-on:submit.prevent="routeToWaitingScreen()" style="width: 40%; text-align: center; margin-left: 30%;">
@@ -9,7 +9,7 @@
         <br/>
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
       </div>
-      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
+      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton1' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
 
     </form>
     <br>
@@ -85,8 +85,8 @@
       let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
         console.log(response.body)
-        this.$store.dispatch('setLastQuestion', response.body.Data);
-        this.question = response.body.Data
+        this.$store.dispatch('setLastQuestion', response.body.Data.Question);
+        this.question = response.body.Data.Question
       })
     }
   }

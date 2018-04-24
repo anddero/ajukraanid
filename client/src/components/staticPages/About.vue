@@ -3,17 +3,17 @@
   <div>
     <div class="jumbotron">
       <div class="container">
-        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/welcometoabout.png">
+        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/welcometoabout.png">
         <br>
-        <p id="text">Mäng toimub mitmes seadmes korraga. On 2 vaadet: mängija ja host. Hosti ekraani pealt kuvatakse küsimus,
-          millele kõik mängijad peavad vastama. Seejärel kui kõik on vastanud kuvatakse kõik vastused hosti ekraanil
-          anonüümselt ning seejärel peavad kõik mängijad valima parima vastuse. Mida rohkem saab mängija hääli, seda
-          rohkem saab ta punkte.</p>
+        <p id="text">The game is running in multiple devices simultaneously. There are 2 views of game: a player
+          and a host. On host's screen there will be displayed a question that should be answered by everybody. After the answering round
+          all answers will be displayed anonymously on host's screen. Following that everybody must choose the best answer. The more
+          player gets votes the more he receives points. After all questions will be answered a player with most points will win.</p>
       </div>
     </div>
     <div class="container">
       <br>
-      <input type="image" id="menubutton" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
+      <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
     </div>
   </div>
 </template>
