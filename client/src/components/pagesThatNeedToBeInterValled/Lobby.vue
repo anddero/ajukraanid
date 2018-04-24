@@ -1,8 +1,8 @@
 /* eslint-disable */
 <template>
   <div id="summary">
-    <div id="lobbytop" style="padding-left: 30%; padding-top: 2%;">
-      <table>
+    <div id="lobbytop">
+      <table id="codetable">
         <tr>
           <td>
             <img id="menubutton1" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/gamecode.png"/></td>
@@ -18,10 +18,7 @@
 
             <div class="row">
               <div class="col-sm-3 col-md-6">
-                <div class="col" style='font-family: "Comic Sans MS", cursive, sans-serif;
-              font-style: italic;
-              font-weight: bold;
-              font-size: 25px; margin-left: 50%;'>{{ registration }}
+                <div class="col">{{ registration }}
                 </div>
               </div>
               <div class="col-sm-9 col-md-6">
@@ -49,7 +46,7 @@
               font-weight: bold;
               font-size: 25px;'>{{ registration }}</h3></b></div>
             <div align="center"
-                 style="width: 150px; background-color: black; height: 1px; margin-top: 10px; margin-bottom: 10px"
+                 style="width: 150px; background-color: black; height: 1px; margin-top: 5px; margin-bottom: 5px"
                  class="center-block"></div>
           </div>
         </transition-group>
@@ -157,10 +154,6 @@
 </script>
 
 <style scoped>
-
-  .code {
-    font-size: 90px;
-  }
   /* Enter and leave animations can use different */
   /* durations and timing functions.              */
   .slide-fade-enter-active {

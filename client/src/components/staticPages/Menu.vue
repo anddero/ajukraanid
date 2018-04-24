@@ -50,7 +50,8 @@
           }
         })
       }
-    },
+    }
+    /*
     created: function () {
       if (localStorage.getItem('gamecode') !== null) {
         var gameCode = localStorage.getItem('gamecode')
@@ -67,6 +68,7 @@
         console.log('tühi')
       }
     }
+    */
   }
 </script>
 <style scoped>

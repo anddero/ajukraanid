@@ -2,7 +2,7 @@
 <template>
   <div id="summary">
     <div class="summary">
-      <img id="menubutton" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/results.png" style="margin-top: 2%;"/>
+      <img id="menubutton1" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/results.png" style="margin-top: 2%;"/>
       <h5></h5>
     </div>
     <hr>

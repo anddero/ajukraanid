@@ -3,7 +3,7 @@
   <div id="summary">
     <div v-if="username !== 'host'">
       <div class="summary">
-        <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer_player.png" style="margin-top: 2%;"/>
+        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer_player.png" style="margin-top: 2%;"/>
         <h5></h5>
       </div>
       <hr>
@@ -18,7 +18,7 @@
       <br/>
     </div>
     <div v-if="username === 'host'">
-      <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer.png" style="margin-top: 2%; height: 60px; width: auto;"/>
+      <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer.png" style="margin-top: 2%; height: 60px; width: auto;"/>
       <h3 id="text" class="center-block">{{this.$store.state.lastQuestion}}</h3>
       <br>
       <div v-for="item in this.questions">
@@ -36,7 +36,7 @@
       return {
         question: '',
         questions: '',
-        intervalForState: ''
+        interval: ''
       }
     },
 
@@ -57,7 +57,7 @@
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === 'Results') {
-            window.clearInterval(window.intervalForState)
+            window.clearInterval(window.interval)
             console.log('Moving to /Results from /choose best answer')
             this.$router.replace({path: this.$store.state.paths.awarding})
           }
@@ -65,7 +65,7 @@
       },
 
       setIntervalThatChecksIfGameShouldStart() {
-        window.intervalForState = setInterval(this.checkIfGameShouldStart, 1000)
+        window.interval = setInterval(this.checkIfGameShouldStart, 1000)
       }
     },
 
@@ -88,12 +88,12 @@
       let requestData = {Action: 'FetchState', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
-          this.questions = response.body.Data
+          this.questions = response.body.Data.Answers
         })
       let data = {Action: 'FetchState', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, data)
         .then(function (response) {
-          this.question = response.body.Data
+          this.question = response.body.Data.Question
         })
     }
   }

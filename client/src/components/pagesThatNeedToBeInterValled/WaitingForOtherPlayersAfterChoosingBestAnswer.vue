@@ -13,14 +13,14 @@
     name: 'about',
     data () {
       return {
-        intervalForWaitingScreen: ''
+        interval: ''
       }
     },
 
     methods: {
       routeTo (state) {
         console.log('Moving to ' + state + ' from waitingForOtherPlayers1')
-        window.clearInterval(window.intervalForWaitingScreen)
+        window.clearInterval(window.interval)
         this.$router.replace({path: state})
       },
 
@@ -28,7 +28,7 @@
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response){
           if (response.body.State === 'Grading') {
-            window.clearInterval(window.intervalForWaitingScreen)
+            window.clearInterval(window.interval)
             console.log('Moving to ' + '/chooseBestAnswer' + ' from /waitingForOtherPlayers1111!')
             this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
           }
@@ -36,7 +36,7 @@
       },
 
       setIntervalThatChecksGameState () {
-        window.intervalForWaitingScreen = setInterval(this.checkGameState, 1000)
+        window.interval = setInterval(this.checkGameState, 1000)
       },
     },
 
