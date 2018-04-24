@@ -72,6 +72,19 @@ html {
   width: 70%;
   height: auto;
 }
+#lobbytop {
+  padding-left: 30%;
+  padding-top: 2%;
+}
+.code {
+  font-size: 400%;
+}
+.col {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 25px; margin-left: 50%;
+}
 @media screen and (min-width:320px) and (max-width:600px) {
   #menu img {
     margin-top: 30%;
@@ -93,18 +106,32 @@ html {
   }
   #text {
     font-family: 'Open Sans',serif;
-    font-size: 14px;
-  }
-  button {
-    width: 65%;
+    font-size: 15px;
   }
   .code {
-    font-size: 37%;
+    font-size: 230%;
   }
   #lobbytop {
-    padding-left: 10%;
+    padding-left: 5%;
     padding-top: 20%;
     width: 90%;
     margin-left: 5%;
+  }
+  #codetable {
+    width: 90%;
+  }
+  .container {
+    padding-top: 10%;
+  }
+  .col {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 25px;
+    margin-left: 5%;
+  }
+  .center-block {
+    display: block;
+    margin-right: auto;
   }
 }
