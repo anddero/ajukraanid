@@ -1,7 +1,8 @@
-/* eslint-disable */
+
 <template>
   <div id="registration">
-    <h3 v-if="username === 'host'" id="text" class="center-block" style="padding-top: 60%;"> {{ question }}</h3>
+    {{timeLeft}}
+    <h3 v-if="username === 'host'" id="text" class="center-block" style="padding-top: 35vh;"> {{ question }}</h3>
     <Alert v-if="alert" v-bind:message="alert"/>
     <hr>
     <form v-on:submit.prevent="routeToWaitingScreen()" style="width: 40%; text-align: center; margin-left: 30%;">
@@ -9,6 +10,7 @@
         <br/>
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
       </div>
+      {{timeLeft}} seconds remaining
       <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton1' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
 
     </form>
@@ -22,6 +24,7 @@
   export default {
     data() {
       return {
+        timeLeft: 30,
         answer: "",
         name: "",
         gameCode: "",
@@ -38,19 +41,23 @@
           if (response.body.State === "Results") {
             window.clearInterval(window.interval);
             console.log("Moving to " + "/Results" + " from /Answering");
-            this.$router.replace({path: this.$store.state.paths.awarding})
+            this.$router.replace('/results')
           }
           if (response.body.State === "Grading") {
             window.clearInterval(window.interval);
             console.log("Moving to " + "/Grading" + " from /Answering");
-            this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
+            this.$router.replace('/grading')
+          } else {
+            this.timeLeft = response.body.Data.TimeLeft
           }
         });
+
       },
 
       setIntervalThatChecksGameState() {
         window.interval = setInterval(this.checkGameState, 1000)
       },
+
 
       routeToWaitingScreen() {
         let requestData = {
@@ -62,11 +69,11 @@
         };
         let q = "";
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          this.$router.replace({path: this.$store.state.paths.waitingScreen1})
+          this.$router.replace('/waitingScreen1')
         });
         window.clearInterval(window.interval);
 
-        this.$router.replace({path: this.$store.state.paths.waitingScreen1})
+        this.$router.replace('/waitingScreen1')
       }
     },
 

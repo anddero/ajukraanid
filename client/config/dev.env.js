@@ -4,5 +4,5 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  requestDestination: "https://18.220.101.130:8080"
+  requestDestination: '"http://18.188.242.2:8080"'
 })

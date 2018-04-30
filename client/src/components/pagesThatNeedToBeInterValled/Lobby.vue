@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
   <div id="summary">
     <div id="lobbytop">
@@ -76,7 +76,7 @@
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);
             console.log("Moving to /question from /lobby vol 2");
-            this.$router.replace({path: this.$store.state.paths.question})
+            this.$router.replace('/question')
           } else if (response.body.State === "Error") {
             console.log("Error: " + response.body.Data)
             this.alert = response.body.Data;
@@ -121,7 +121,7 @@
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);
             console.log("Moving to /question from /lobby vol 2");
-            this.$router.replace({path: this.$store.state.paths.question})
+            this.$router.replace('/question')
           } else if (response.body.State === "Error") {
             console.log("Error: " + response.body.Data)
             this.alert = response.body.Data;

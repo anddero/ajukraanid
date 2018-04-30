@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
   <div class="about container">
     <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleasewaittillall.png" style="margin-top: 20%; height: 60px; width: auto;"/>
@@ -30,7 +30,7 @@
           if (response.body.State === 'Grading') {
             window.clearInterval(window.interval)
             console.log('Moving to ' + '/chooseBestAnswer' + ' from /waitingForOtherPlayers1111!')
-            this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
+            this.$router.replace('/grading')
           }
         })
       },

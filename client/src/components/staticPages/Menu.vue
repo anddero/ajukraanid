@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
 
   <div id="menu" class="container">
@@ -13,24 +13,24 @@
   export default {
     methods: {
       routeToGameConfirmation () {
-        this.$router.replace({path: this.$store.state.paths.confirmation})
+        this.$router.replace('/newGameConfirmation')
       },
       routeToAbout () {
-        this.$router.replace({path: this.$store.state.paths.about})
+        this.$router.replace('/about')
       },
       routeToRegistration () {
-        this.$router.replace({path: this.$store.state.paths.registration})
+        this.$router.replace('/registration')
       },
       joinGame () {
         var state = localStorage.getItem('gamestate')
         if (state === 'Answering') {
-            this.$router.replace({path: this.$store.state.paths.question})
+            this.$router.replace('/question')
           } else if (state === 'Grading') {
-            this.$router.replace({path: this.$store.state.paths.chooseBestAnswer})
+            this.$router.replace('/grading')
           } else if (state === 'Results') {
-            this.$router.replace({path: this.$store.state.paths.awarding})
+            this.$router.replace('/results')
           } else if (state === 'Lobby') {
-            this.$router.replace({path: this.$store.state.paths.lobby})
+            this.$router.replace('/lobby')
           } else {
             localStorage.clear()
           }
@@ -41,7 +41,7 @@
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           var playerName = localStorage.getItem('playername')
           var players = response.body.Players
-          console.log("Players")
+          console.log('Players')
           console.log(players)
           if (players.includes(playerName)) {
             this.joinGame()

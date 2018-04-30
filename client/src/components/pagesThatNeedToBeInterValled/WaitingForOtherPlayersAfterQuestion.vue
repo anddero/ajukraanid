@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
   <div class="about container">
     <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleasewaittillall.png" style="margin-top: 5%; height: 60px; width: auto;"/>
@@ -21,7 +21,7 @@
 
     methods: {
       routeToIndex() {
-        this.$router.replace({path: this.$store.state.paths.index})
+        this.$router.replace('/')
       },
 
       checkGameState() {
@@ -30,7 +30,7 @@
           if (response.body.State === 'Results') {
             window.clearInterval(window.interval);
             console.log('Moving to ' + '/Results' + ' from /waitingForOtherPlayers2')
-            this.$router.replace({path: this.$store.state.paths.awarding})
+            this.$router.replace('/results')
           }
         })
       },

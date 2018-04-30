@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
   <div id="summary">
     <div v-if="username !== 'host'">
@@ -7,6 +7,7 @@
         <h5></h5>
       </div>
       <hr>
+     <h1 > {{timeLeft}}  seconds remaining </h1>
       <form v-on:submit.prevent="registerUser">
         <div v-for="item in this.questions">
           <button v-if="item.Name!==username" @click="awardPlayer(item.Name)" type="button" class="btn btn-success center-block">
@@ -34,6 +35,7 @@
   export default {
     data() {
       return {
+        timeLeft: 30,
         question: '',
         questions: '',
         interval: ''
@@ -50,7 +52,8 @@
         }
         this.$http.post(this.$store.state.requestDestination, requestData)
         console.log('Moving to ' + '/waitingScreen1' + ' from /choosebestAnswer')
-        this.$router.replace({path: this.$store.state.paths.waitingScreen2})
+        window.clearInterval(window.interval)
+        this.$router.replace('/waitingScreen2')
       },
 
       checkIfGameShouldStart() {
@@ -59,7 +62,9 @@
           if (response.body.State === 'Results') {
             window.clearInterval(window.interval)
             console.log('Moving to /Results from /choose best answer')
-            this.$router.replace({path: this.$store.state.paths.awarding})
+            this.$router.replace('/results')
+          } else {
+            this.timeLeft = response.body.Data.TimeLeft
           }
         })
       },

@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
   <div id="summary">
     <div class="summary">
@@ -7,7 +7,7 @@
     </div>
     <hr>
     <div v-for="playerData in this.points">
-      <h3 style="text-align: center" id="text">{{playerData.Name}} earned {{playerData.Points}} points</h3>
+      <h3 style="text-align: center" id="text">{{playerData.Name}} has {{playerData.Points}} points</h3>
     </div>
     <br>
     <br/>
@@ -16,9 +16,9 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.css')
   export default {
-    data() {
+    data () {
       return {
         interval: '',
         points: ''
@@ -26,27 +26,27 @@
     },
 
     methods: {
-      checkGameState() {
+      checkGameState () {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === 'Answering') {
             window.clearInterval(window.interval)
             console.log('Moving to ' + '/question' + ' from /Answering')
-            this.$router.replace({path: this.$store.state.paths.question})
+            this.$router.replace('/question')
           }
         })
       },
 
-      setIntervalThatChecksGameState() {
+      setIntervalThatChecksGameState () {
         window.interval = setInterval(this.checkGameState, 1000)
       }
     },
 
     computed: {
-      registrations() {
+      registrations () {
         return this.$store.state.registrations
       },
-      gameCode() {
+      gameCode () {
         return this.$store.state.gameCode
       }
     },
@@ -56,8 +56,7 @@
       let requestData = {Action: 'FetchState', 'Code': this.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
-          console.log(response.body.Data)
-          this.points = response.body.Data
+          this.points = response.body.Data.Scores
         })
     }
   }

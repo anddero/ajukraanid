@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
   <div>
     <div class="jumbotron">
@@ -29,7 +29,7 @@
     },
     methods: {
       routeToIndex() {
-        this.$router.replace({path: this.$store.state.paths.index})
+        this.$router.replace('/')
       }
     }
   }

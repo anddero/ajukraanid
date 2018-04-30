@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 <template>
   <div class="add container" style="padding-top: 8%;">
     <Alert v-if="alert" v-bind:message="alert"/>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.css')
   import Alert from './Alert'
 
   export default {
@@ -22,21 +22,21 @@
     name: 'newGame',
     data () {
       return {
-        alert: ""
+        alert: ''
       }
     },
     methods: {
-      routeToIndex() {
-        this.$router.replace({path: this.$store.state.paths.index})
+      routeToIndex () {
+        this.$router.replace('/')
       },
 
       createGame (e) {
         this.$store.dispatch('setMyUsername', 'host')
-        let requestData = {Action: "CreateGame"}
+        let requestData = {Action: 'CreateGame'}
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
             this.$store.dispatch('setGameCode', response.body.Code)
-            this.$router.replace({path: this.$store.state.paths.lobby})
+            this.$router.replace('/lobby')
           })
         e.preventDefault()
       }
