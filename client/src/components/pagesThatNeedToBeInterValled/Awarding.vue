@@ -6,8 +6,8 @@
       <h5></h5>
     </div>
     <hr>
-    <div v-for="playerData in this.points">
-      <h3 style="text-align: center" id="text">{{playerData.Name}} has {{playerData.Points}} points</h3>
+    <div >
+      <column-chart :data="pointsForGraph"></column-chart>
     </div>
     <br>
     <br/>
@@ -17,11 +17,13 @@
 
 <script>
   import('../../assets/css/main.css')
+  import {VueChartkick} from 'vue-chartkick'
   export default {
     data () {
       return {
         interval: '',
-        points: ''
+        points: '',
+        pointsForGraph: []
       }
     },
 
@@ -57,6 +59,16 @@
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
           this.points = response.body.Data.Scores
+          console.log(this.points)
+          this.points.forEach(element => {
+            console.info('Element:')
+            console.info(element)
+            let el = []
+            el.push(element.Name)
+            el.push(element.Points)
+            this.pointsForGraph.push(el)
+          })
+          console.log(this.pointsForGraph)
         })
     }
   }

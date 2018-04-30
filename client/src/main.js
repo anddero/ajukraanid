@@ -13,12 +13,15 @@ import WaitingForOtherPlayersAfterChoosingBestAnswer from './components/pagesTha
 import WaitingForOtherPlayersAfterQuestion from './components/pagesThatNeedToBeInterValled/WaitingForOtherPlayersAfterQuestion.vue'
 import {store} from './store/store'
 import App from './App'
+import VueChartkick from 'vue-chartkick'
+import Chart from 'chart.js'
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './assets/css/main.css'
 import Alert from './components/staticPages/Alert'
 
 Vue.use(vueResource)
+Vue.use(VueChartkick)
 Vue.use(VueRouter)
 
 const router = new VueRouter({
