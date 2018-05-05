@@ -18,7 +18,7 @@
 
             <div class="row">
               <div class="col-sm-3 col-md-6">
-                <div class="col">{{ registration }}
+                <div class="col" style="text-align: center">{{ registration }}
                 </div>
               </div>
               <div class="col-sm-9 col-md-6">
