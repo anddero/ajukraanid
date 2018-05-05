@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.message;
-//
+
 import org.json.JSONObject;
 
 public abstract class Message {

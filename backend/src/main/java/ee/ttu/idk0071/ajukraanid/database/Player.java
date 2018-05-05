@@ -1,12 +1,12 @@
 package ee.ttu.idk0071.ajukraanid.database;
-//
+
 import ee.ttu.idk0071.ajukraanid.database.internal.Players;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 import lombok.Setter;
 
-public final class Player extends Entry {
+public class Player extends Entry {
     // inaccessible
     private final Game game;
     private Players player;

@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.guard;
-//
+
 import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import ee.ttu.idk0071.ajukraanid.database.Player;
@@ -25,33 +25,33 @@ class GuardTest {
 
     @BeforeEach
     void startUp() {
-        /*game = Mockito.mock(Game.class);*/
+        game = Mockito.mock(Game.class);
     }
 
     @Test
-    void testCheckJoinGameWhileLobby() {
-        /*Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
-        guard.checkJoinGame(game);*/
+    void testCheckJoinGameMaxPlayers() {
+        Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
     }
 
     @Test
     void testCheckJoinGameWhileOther() {
-        /*for (Game.State state : Game.State.values()) {
+        for (Game.State state : Game.State.values()) {
             if (state == Game.State.LOBBY) continue;
             Mockito.when(game.getGameState()).thenReturn(state);
             assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
-        }*/
+        }
     }
 
     @Test
     void testCheckJoinGameWhileFull() {
-        /*Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
+        Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
 
         Mockito.when(game.getPlayers()).thenReturn(getPlayers(30));
         assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
 
         Mockito.when(game.getPlayers()).thenReturn(getPlayers(20));
-        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));*/
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
     }
 
     @Test
@@ -62,6 +62,6 @@ class GuardTest {
         guard.checkJoinGame(game);
 
         Mockito.when(game.getPlayers()).thenReturn(getPlayers(2));
-        guard.checkJoinGame(game);*/
+        guard.checkJoinGame(game);*/ // TODO Cannot run this test, as default configuration allows max 0 players.
     }
 }

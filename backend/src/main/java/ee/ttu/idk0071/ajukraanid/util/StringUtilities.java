@@ -1,9 +1,9 @@
 package ee.ttu.idk0071.ajukraanid.util;
-//
+
 public abstract class StringUtilities {
     private static final int SINGLE_INDENT_SIZE_SPACES = 4;
 
-    public static void repeat(String substring, int amount, StringBuilder stringBuilder) {
+    private static void repeat(String substring, int amount, StringBuilder stringBuilder) {
         if (amount < 0) {
             throw new IllegalArgumentException("Repeat amount must not be negative");
         }

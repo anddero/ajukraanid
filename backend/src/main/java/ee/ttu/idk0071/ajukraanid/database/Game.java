@@ -1,6 +1,6 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
-//
+
 import ee.ttu.idk0071.ajukraanid.controller.GameRunner;
 import ee.ttu.idk0071.ajukraanid.database.internal.Games;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public final class Game extends Entry {
+public class Game extends Entry {
     @RequiredArgsConstructor
     public enum State {
         LOBBY("Lobby"),
