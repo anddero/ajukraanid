@@ -1,4 +1,3 @@
-
 <template>
   <div id="summary" class="center-block">
 
