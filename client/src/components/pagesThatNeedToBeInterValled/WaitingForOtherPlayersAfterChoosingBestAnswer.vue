@@ -1,7 +1,7 @@
 
 <template>
   <div class="about container">
-    <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 20%; height: 60px; width: auto;"/>
+    <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 20%; height: 60px; width: auto;"/>
     <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/15sec.png" style="height: 60px; width: auto;"/>
     <br>
     <br>

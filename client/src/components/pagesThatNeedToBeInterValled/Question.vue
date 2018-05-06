@@ -1,7 +1,7 @@
 
 <template>
   <div id="registration">
-    <h3 v-if="username === 'host'" id="text" class="center-block" style="padding-top: 35vh;"> {{ question }}</h3>
+    <h1 v-if="username === 'host'" id="question" class="center-block" style="padding-right: 10%;"> {{ question }}</h1>
     <Alert v-if="alert" v-bind:message="alert"/>
     <hr>
     <form v-on:submit.prevent="routeToWaitingScreen()" style="width: 40%; text-align: center; margin-left: 30%;">
@@ -10,7 +10,7 @@
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
       </div>
       <b style="font-size: 20px;">{{timeLeft}} seconds remaining</b>
-      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton1' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
+      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton4' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
 
     </form>
     <br>

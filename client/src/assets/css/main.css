@@ -51,6 +51,10 @@ html {
   height: 88px;
   width: auto;
 }
+#menubutton4 {
+  height: 88px;
+  width: auto;
+}
 
 #text {
   font-family: "Comic Sans MS", cursive, sans-serif;
@@ -58,8 +62,18 @@ html {
   font-weight: bold;
   width: 85%;
   padding-left: 15%;
-  font-size: 25px;
+  font-size: 50px;
   text-align: justify;
+}
+#question {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  width: 85%;
+  padding-left: 15%;
+  font-size: 50px;
+  text-align: justify;
+  padding-top: 10%;
 }
 .jumbotron {
   padding-top: 30px;
@@ -85,6 +99,11 @@ html {
   font-weight: bold;
   font-size: 25px; margin-left: 50%;
 }
+#seconds {
+  font-size: 20px;
+  text-align: center;
+  margin-left: 42%;
+}
 @media screen and (min-width:320px) and (max-width:600px) {
   #menu img {
     margin-top: 30%;
@@ -100,6 +119,10 @@ html {
     width: 85%;
     height: 40px !important;
   }
+  #menubutton12 {
+    width: 85%;
+    height: 30px !important;
+  }
   #menubutton2 {
     width: 60%;
     height: auto;
@@ -108,9 +131,19 @@ html {
     width: 38%;
     height: auto;
   }
+  #menubutton4 {
+    width: 120%;
+    height: auto;
+  }
   #text {
     font-family: 'Open Sans',serif;
     font-size: 15px;
+  }
+  #question {
+    font-family: 'Open Sans',serif;
+    font-size: 25px;
+    text-align: left;
+    padding-top: 20%;
   }
   .code {
     font-size: 230%;
@@ -136,6 +169,11 @@ html {
   }
   .center-block {
     display: block;
-    margin-left: inherit !important;
+    margin-left: auto;
+  }
+  #seconds {
+    font-size: 20px;
+    text-align: center;
+    margin-left: 20%;
   }
 }
