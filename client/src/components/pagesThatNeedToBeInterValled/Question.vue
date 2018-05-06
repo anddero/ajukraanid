@@ -19,7 +19,7 @@
 
 <script>
   import Alert from '../staticPages/Alert';
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
     data() {
       return {
