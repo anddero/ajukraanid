@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css')
+  import('../../assets/css/main.scss')
   import {VueChartkick} from 'vue-chartkick'
   export default {
     data () {

@@ -1,4 +1,3 @@
-
 <template>
   <div class="about container">
     <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 5%; height: 60px; width: auto;"/>
@@ -18,12 +17,10 @@
         interval: ''
       }
     },
-
     methods: {
       routeToIndex() {
         this.$router.replace('/')
       },
-
       checkGameState() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
@@ -34,12 +31,10 @@
           }
         })
       },
-
       setIntervalThatChecksGameState() {
         window.interval = setInterval(this.checkGameState, 1000)
       },
     },
-
     created: function () {
       let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
@@ -48,10 +43,8 @@
       this.setIntervalThatChecksGameState()
     }
   }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>
-

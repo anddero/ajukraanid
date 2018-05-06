@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
     name: 'about',
     data () {
