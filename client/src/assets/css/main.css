@@ -96,6 +96,10 @@ html {
     width: 85%;
     height: auto;
   }
+  #menubutton12 {
+    width: 85%;
+    height: 40px !important;
+  }
   #menubutton2 {
     width: 60%;
     height: auto;
@@ -132,6 +136,6 @@ html {
   }
   .center-block {
     display: block;
-    margin-right: auto;
+    margin-left: inherit !important;
   }
 }

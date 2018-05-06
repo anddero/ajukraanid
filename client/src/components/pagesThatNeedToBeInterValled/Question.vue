@@ -1,7 +1,6 @@
 
 <template>
   <div id="registration">
-    {{timeLeft}}
     <h3 v-if="username === 'host'" id="text" class="center-block" style="padding-top: 35vh;"> {{ question }}</h3>
     <Alert v-if="alert" v-bind:message="alert"/>
     <hr>
@@ -10,7 +9,7 @@
         <br/>
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
       </div>
-      {{timeLeft}} seconds remaining
+      <b style="font-size: 20px;">{{timeLeft}} seconds remaining</b>
       <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton1' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
 
     </form>
