@@ -1,10 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 body {
   background-image: url('http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yellow.jpg') !important;
-  background-repeat: repeat;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   height: 100%;
   background-position: center;
   background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   width: 100%;
 }
 
