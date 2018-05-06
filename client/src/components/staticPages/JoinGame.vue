@@ -77,5 +77,12 @@
     border-color: transparent !important;
 
   }
-
+  #text {
+    font-size: 25px;
+  }
+  @media screen and (min-width:320px) and (max-width:600px) {
+    #text {
+      font-size: 15px;
+    }
+  }
 </style>
