@@ -15,7 +15,7 @@
         <div class="well" style="width: 40%; text-align: center; margin-left: 30%;">
           <input type="text" class="form-control" placeholder="Nickname" v-model="name" style="text-align: center">
           <br/>
-          <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode" style="text-align: center">
+          <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode" style="text-align: center" pattern="\d{4}">
         </div>
         <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton3' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
         <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
