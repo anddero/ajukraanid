@@ -37,11 +37,23 @@
 
 <style scoped>
   #text {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-style: italic;
+    font-weight: bold;
+    width: 85%;
+    padding-left: 15%;
     font-size: 25px;
+    text-align: justify;
   }
   @media screen and (min-width:320px) and (max-width:600px) {
     #text {
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      font-style: italic;
+      font-weight: bold;
+      width: 85%;
+      padding-left: 15%;
       font-size: 15px;
+      text-align: justify;
     }
   }
 </style>
