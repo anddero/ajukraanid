@@ -1,11 +1,10 @@
 <template>
-  <div class="container">
-    <div class="jumbotron">
-      <h1>Bootstrap Tutorial</h1>
-      <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p>
-    </div>
-    <p>This is some text.</p>
-    <p>This is another text.</p>
+  <div class="about container">
+    <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 5%; height: 60px; width: auto;"/>
+    <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/15sec.png" style="height: 60px; width: auto;"/>
+    <br>
+    <br>
+    <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
   </div>
 </template>
 
@@ -18,8 +17,10 @@
         interval: ''
       }
     },
-
     methods: {
+      routeToIndex() {
+        this.$router.replace('/')
+      },
       checkGameState() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
@@ -30,16 +31,10 @@
           }
         })
       },
-
-      routeToIndex() {
-        this.$router.replace('/')
-      },
-
       setIntervalThatChecksGameState() {
         window.interval = setInterval(this.checkGameState, 1000)
       },
     },
-
     created: function () {
       let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
@@ -48,10 +43,8 @@
       this.setIntervalThatChecksGameState()
     }
   }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>
-
