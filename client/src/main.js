@@ -40,8 +40,8 @@ const router = new VueRouter({
     {path: '/lobby', component: Lobby},
     {path: '/results', component: Awarding},
     {path: '/grading', component: ChooseBestAnswer},
-    {path: '/waitingScreen1', component: WaitingForOtherPlayersAfterChoosingBestAnswer},
-    {path: '/waitingScreen2', component: WaitingForOtherPlayersAfterQuestion}
+    {path: '/waitingScreen2', component: WaitingForOtherPlayersAfterChoosingBestAnswer},
+    {path: '/waitingScreen1', component: WaitingForOtherPlayersAfterQuestion}
   ]
 })
 
