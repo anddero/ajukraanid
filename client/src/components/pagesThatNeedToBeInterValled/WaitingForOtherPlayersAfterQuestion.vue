@@ -1,11 +1,11 @@
-
 <template>
-  <div class="about container">
-    <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleasewaittillall.png" style="margin-top: 5%; height: 60px; width: auto;"/>
-    <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/15sec.png" style="height: 60px; width: auto;"/>
-    <br>
-    <br>
-    <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Bootstrap Tutorial</h1>
+      <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p>
+    </div>
+    <p>This is some text.</p>
+    <p>This is another text.</p>
   </div>
 </template>
 
@@ -20,10 +20,6 @@
     },
 
     methods: {
-      routeToIndex() {
-        this.$router.replace('/')
-      },
-
       checkGameState() {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
@@ -33,6 +29,10 @@
             this.$router.replace('/results')
           }
         })
+      },
+
+      routeToIndex() {
+        this.$router.replace('/')
       },
 
       setIntervalThatChecksGameState() {

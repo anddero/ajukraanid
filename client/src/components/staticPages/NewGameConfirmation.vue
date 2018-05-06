@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css')
+  import('../../assets/css/main.scss')
   import Alert from './Alert'
 
   export default {

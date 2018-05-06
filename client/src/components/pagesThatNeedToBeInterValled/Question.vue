@@ -1,4 +1,3 @@
-
 <template>
   <div id="registration">
     {{timeLeft}}
@@ -6,35 +5,57 @@
     <Alert v-if="alert" v-bind:message="alert"/>
     <hr>
     <form v-on:submit.prevent="routeToWaitingScreen()" style="width: 40%; text-align: center; margin-left: 30%;">
-      <div  v-if="username !== 'host'" class="well">
+      <div v-if="username !== 'host'" class="well">
         <br/>
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
       </div>
       {{timeLeft}} seconds remaining
-      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton1' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
+      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit"
+              class="btn center-block .btn-lg"><img id='menubutton1' class='btn center-block .btn-lg'
+                                                    src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'>
+      </button>
 
     </form>
+    <br>
     <br>
   </div>
 </template>
 
 <script>
   import Alert from '../staticPages/Alert';
-  import('../../assets/css/main.css');
+
+  import('../../assets/css/main.scss');
   export default {
     data() {
       return {
+        alert: '',
+        name: "",
+        interval: "",
+        question: "",
         timeLeft: 30,
         answer: "",
-        name: "",
-        gameCode: "",
-        alert: '',
-        question: "",
-        interval: ""
+        gameCode: ""
       }
     },
 
     methods: {
+      routeToWaitingScreen() {
+        let requestData = {
+          Action: "SubmitAnswer",
+          "Code": this.$store.state.gameCode,
+
+          "Name": this.$store.state.username,
+          "Answer": this.answer
+        };
+        let q = "";
+        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          this.$router.replace('/waitingScreen1')
+        });
+        window.clearInterval(window.interval);
+
+        this.$router.replace('/waitingScreen1')
+      },
+
       checkGameState() {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
@@ -54,26 +75,9 @@
 
       },
 
+
       setIntervalThatChecksGameState() {
         window.interval = setInterval(this.checkGameState, 1000)
-      },
-
-
-      routeToWaitingScreen() {
-        let requestData = {
-          Action: "SubmitAnswer",
-          "Code": this.$store.state.gameCode,
-
-          "Name": this.$store.state.username,
-          "Answer": this.answer
-        };
-        let q = "";
-        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          this.$router.replace('/waitingScreen1')
-        });
-        window.clearInterval(window.interval);
-
-        this.$router.replace('/waitingScreen1')
       }
     },
 
@@ -82,7 +86,6 @@
         return this.$store.state.username
       }
     },
-
     components: {
       Alert
     },
