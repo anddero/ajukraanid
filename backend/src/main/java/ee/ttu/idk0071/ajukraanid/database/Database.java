@@ -48,7 +48,11 @@ public final class Database extends Entry {
 
     private void loadGames() {
         gamesRepository.findAll()
-                .forEach(game -> new Game(this, game));
+                .forEach(game -> {
+                    if (!game.getState().equals(Game.State.INACTIVE.toString())) {
+                        new Game(this, game);
+                    }
+                });
         games.forEach(this::loadPlayers);
         games.forEach(this::loadQuestions);
     }
