@@ -1,6 +1,7 @@
 package ee.ttu.idk0071.ajukraanid.database.internal;
 //
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ public class PlainQuestions {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter private Long id;
-    @Getter private String text;
+    @Getter @Setter private String text;
 
     private PlainQuestions() {
     }

@@ -95,27 +95,27 @@ public final class Database extends Entry {
         System.out.println(stringBuilder.toString());
     }
 
-    GamesRepository getGamesRepository() {
+    public GamesRepository getGamesRepository() {
         return gamesRepository;
     }
 
-    PlayersRepository getPlayersRepository() {
+    public PlayersRepository getPlayersRepository() {
         return playersRepository;
     }
 
-    PlainQuestionsRepository getPlainQuestionsRepository() {
+    public PlainQuestionsRepository getPlainQuestionsRepository() {
         return plainQuestionsRepository;
     }
 
-    QuestionsRepository getQuestionsRepository() {
+    public QuestionsRepository getQuestionsRepository() {
         return questionsRepository;
     }
 
-    AnswersRepository getAnswersRepository() {
+    public AnswersRepository getAnswersRepository() {
         return answersRepository;
     }
 
-    EvaluationsRepository getEvaluationsRepository() {
+    public EvaluationsRepository getEvaluationsRepository() {
         return evaluationsRepository;
     }
 

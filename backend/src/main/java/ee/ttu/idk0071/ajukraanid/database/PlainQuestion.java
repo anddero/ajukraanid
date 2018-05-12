@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public final class PlainQuestion extends Entry {
     // inaccessible
     private final Database database;
-    private PlainQuestions question;
+    @Getter private PlainQuestions question;
     // accessible
-    @Getter private final String text;
+    @Getter private String text;
 
     /**
      * From an existing database entry.
@@ -33,6 +33,12 @@ public final class PlainQuestion extends Entry {
         question = new PlainQuestions(text);
         this.text = text;
         question = database.getPlainQuestionsRepository().save(question);
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        question.setText(text);
+        question = getDatabase().getPlainQuestionsRepository().save(question);
     }
 
     @Override

@@ -262,6 +262,44 @@ class GameController {
                 .toString();
     }
 
+    String getPlainQuestions() {
+        JSONArray questions = new JSONArray();
+        database.getPlainQuestions().forEach(question -> questions.put(new JSONObject()
+                    .put("Id", question.getQuestion().getId())
+                    .put("Text", question.getText())));
+        return new JSONObject()
+                .put("Action", "GetQuestions")
+                .put("Questions", questions)
+                .toString();
+    }
+
+    String addPlainQuestion(String text) {
+        if (addUniqueQuestion(text)) {
+            return createSuccessResponse("Question successfully added");
+        }
+        throw new GuardException("Cannot add the same question multiple times");
+    }
+
+    String deletePlainQuestion(long uniqueId) {
+        if (deleteQuestion(uniqueId)) {
+            return createSuccessResponse("Question successfully deleted");
+        }
+        throw new GuardException("Invalid question ID provided, a question with the ID " + uniqueId + " does not " +
+                "exist");
+    }
+
+    String updatePlainQuestion(long uniqueId, String text) {
+        Optional<PlainQuestion> question = getPlainQuesion(uniqueId);
+        if (!question.isPresent()) {
+            throw new GuardException("Question with id " + uniqueId + " does not exist");
+        }
+        if (!canAddUniqueQuestion(text)) {
+            throw new GuardException("Cannot change to the given text because a question like this already exists");
+        }
+        question.get().setText(text);
+        return createSuccessResponse("Successfully updated question");
+    }
+
     // private methods
 
     private Optional<Player> findPlayerIgnoreCase(Game game, String name) {
@@ -355,10 +393,7 @@ class GameController {
         try (InputStream inStr = resourceLoader.getResource("classpath:" + gameConfig.getQuestionsFile()).getInputStream()) {
             try (InputStreamReader reader = new InputStreamReader(inStr)) {
                 try (BufferedReader bufferedReader = new BufferedReader(reader)) {
-                    bufferedReader.lines().forEach(line -> {
-                        new PlainQuestion(database, line);
-                        log.info("Created new plain question: " + line);
-                    });
+                    bufferedReader.lines().forEach(this::addUniqueQuestion);
                 }
             }
         } catch (IOException e) {
@@ -375,5 +410,38 @@ class GameController {
         }
 
         return runner.get().getTimeLeftSeconds();
+    }
+
+    private boolean addUniqueQuestion(String text) {
+        if (!canAddUniqueQuestion(text)) {
+            return false;
+        }
+        new PlainQuestion(database, text);
+        log.info("Created new plain question: " + text);
+        return true;
+    }
+
+    private boolean canAddUniqueQuestion(String text) {
+        Optional<PlainQuestion> question = database.getPlainQuestions().stream()
+                .filter(q -> q.getText().equalsIgnoreCase(text))
+                .findAny();
+        return !question.isPresent();
+    }
+
+    private boolean deleteQuestion(long uniqueId) {
+        Optional<PlainQuestion> question = database.getPlainQuestions().stream()
+                .filter(q -> q.getQuestion().getId() == uniqueId)
+                .findAny();
+        question.ifPresent(q -> {
+            database.getPlainQuestions().remove(q);
+            database.getPlainQuestionsRepository().deleteById(uniqueId);
+        });
+        return question.isPresent();
+    }
+
+    private Optional<PlainQuestion> getPlainQuesion(long uniqueId) {
+        return database.getPlainQuestions().stream()
+                .filter(q -> q.getQuestion().getId() == uniqueId)
+                .findAny();
     }
 }

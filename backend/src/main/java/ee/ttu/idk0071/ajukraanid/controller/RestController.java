@@ -53,6 +53,14 @@ public class RestController {
                     return gameController.removePlayer(data.getInt("Code"), data.getString("Name"));
                 case "GetPlayers":
                     return gameController.getPlayers(data.getInt("Code"));
+                case "GetQuestions":
+                    return gameController.getPlainQuestions();
+                case "AddQuestion":
+                    return gameController.addPlainQuestion(data.getString("Text"));
+                case "DeleteQuestion":
+                    return gameController.deletePlainQuestion(data.getInt("Id"));
+                case "UpdateQuestion":
+                    return gameController.updatePlainQuestion(data.getInt("Id"), data.getString("Text"));
                 default:
                     return createErrorResponse("Invalid Action: " + action);
             }
