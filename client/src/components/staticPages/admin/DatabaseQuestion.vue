@@ -4,17 +4,17 @@
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body" v-if="editing===false">
-        {{question}}
-        <button type="button"  v-on:click="deleteQuestion()" class="btn btn-danger pull-right">Delete</button>
+        <b>{{question.Text}}</b>
+        <button type="button"  v-on:click="deleteQuestion" class="btn btn-danger pull-right">Delete</button>
         <button type="button" v-on:click="startEditing()" class="btn btn-success pull-right" style="margin-right: 1vw">Edit</button>
       </div>
 
       <div class="card-body" v-if="editing===true">
 
-        {{question}}<br>
+        <b>{{question.Text}}</b><br>
         <input type="text" class="form-control" id="usr" style="margin-bottom: 1vh"  v-model="newText">
-        <button type="button"  v-on:click="updateQuestionText()" class="btn btn-danger pull-left" style="margin-right: 1vw">Save</button>
-        <button type="button"  v-on:click="stopEditing()" class="btn btn-success pull-left">Cancel</button>
+        <button type="button"  v-on:click="updateQuestionText" class="btn btn-danger pull-left" style="margin-right: 1vw">Save</button>
+        <button type="button"  v-on:click="stopEditing" class="btn btn-success pull-left">Cancel</button>
       </div>
 
     </div>
@@ -46,28 +46,17 @@
         this.$router.replace('/')
       },
       updateQuestionText() {
-        let requestData = {Action: 'updateQuestion', oldText: this.question, newText: this.newText}
-        console.info("Admin sent request: " + requestData)
-        this.$http.put(this.$store.state.requestDestination, requestData).then(function (response) {
-          // Should handle response somehow
-        })
+        this.$emit('update-question', this.question, this.newText)
+        this.editing = false;
       },
       deleteQuestion() {
-        let requestData = {data: this.question}
-        this.$http.delete(this.$store.state.requestDestination, requestData).then(function (response) {
-          // Should handle response somehow
-        })
+          this.$emit('delete-question', this.question)
+
+        },
+      },
+    created: function () {
+      this.newText = this.question.Text
       }
-
-    },
-    created: function() {
-      //SHOULD GET THE QUESTIONS FROM DATABASE
-      // let requestData = {Action: 'getQuestions'}
-      // this.$http.get(this.$store.state.requestDestination, requestData).then(function (response) {
-      //   this.questions = response.body.Data;
-      // })
-    }
-
   }
 </script>
 

@@ -1,9 +1,10 @@
 
 <template>
   <div class="add container" style="padding-top: 8%;">
-    <Alert v-if="alert" v-bind:message="alert"/>
+
     <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleaseconfirmit.png"/>
     <br>
+    <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
     <form v-on:submit="createGame" style="padding-top: 12%;">
       <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton3' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/yes.png'></button>
     </form>
@@ -35,8 +36,13 @@
         let requestData = {Action: 'CreateGame'}
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
-            this.$store.dispatch('setGameCode', response.body.Code)
-            this.$router.replace('/lobby')
+            if (response.body.State === 'Error') {
+              this.alert = "Error: " + response.body.Data
+              console.log('Error: ' + response.body.Data)
+            } else {
+              this.$store.dispatch('setGameCode', response.body.Code)
+              this.$router.replace('/lobby')
+            }
           })
         e.preventDefault()
       }

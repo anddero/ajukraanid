@@ -10,9 +10,12 @@
         <button  v-on:click="createQuestion()" type="button" class="btn btn-primary">Add new question</button>
       </span>
     </div>
-    <div v-for="question in questions">
-      <question :question="question"></question>
+    <div v-for="question in aNOTWorkingList" v-if="question.Text !== ''">
+      <question :question="question"  v-on:delete-question="deleteQuestion" v-on:update-question="updateQuestion"></question>
     </div>
+    <span class="input-group-btn">
+        <button  v-on:click="logout()" type="button" class="btn btn-primary">Log out</button>
+      </span>
 
   </div>
 </template>
@@ -28,27 +31,89 @@
     data() {
       return {
         message: "",
-        questions: ["If donald Trump and Vladimir Putin met, what would they to eachother?",
-          "if a horse and a duck had a child, what would you name it?"]
+        aNOTWorkingList: [
+          {Text: "If a horse and a duck would have a child, what would you name it?", Id: 1},
+      {Text: "Name something Donal Trump would say to Vladimr Putin.", Id: 2}]
       }
     },
     methods: {
       routeToIndex() {
         this.$router.replace('/')
       },
-      createQuestion() {
-        let requestData = {Action: "CreateQuestion", data: this.message}
-        this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          // Should handle response somehow
+      logout() {
+        this.$store.dispatch('updateAuthorization', "")
+        this.$router.replace('/')
+      },
+      deleteQuestion(question) {
+        let requestData = {Action: "DeleteQuestion",  Id: question.Id}
+        this.$http.post(this.$store.state.adminDestination, requestData, {
+          headers: {
+            Authorization: this.$store.state.Authorization //the token is a variable which holds the token
+          }}).then(function (response) {
+          requestData = {"Action": "GetQuestions"}
+          this.$http.post(this.$store.state.adminDestination, requestData, {
+            headers: {
+              Authorization: this.$store.state.Authorization //the token is a variable which holds the token
+            }}).then(function (response) {
+            this.aNOTWorkingList = response.data.Questions
+
+          })
+          this.message= "";
         })
+      },
+
+      updateQuestion(question, newText) {
+        let requestData = {Action: "UpdateQuestion",  Id: question.Id, Text: newText}
+        this.$http.post(this.$store.state.adminDestination, requestData, {
+          headers: {
+            Authorization: this.$store.state.Authorization //the token is a variable which holds the token
+          }}).then(function (response) {
+          requestData = {"Action": "GetQuestions"}
+          this.$http.post(this.$store.state.adminDestination, requestData, {
+            headers: {
+              Authorization: this.$store.state.Authorization //the token is a variable which holds the token
+            }}).then(function (response) {
+            this.aNOTWorkingList = response.data.Questions
+
+          })
+          this.message= "";
+        })
+      },
+
+      createQuestion() {
+        let requestData = {Action: "AddQuestion", data: this.message,  Text: this.message}
+        this.$http.post(this.$store.state.adminDestination, requestData, {
+          headers: {
+            Authorization: this.$store.state.Authorization //the token is a variable which holds the token
+          }}).then(function (response) {
+          requestData = {"Action": "GetQuestions"}
+          this.$http.post(this.$store.state.adminDestination, requestData, {
+            headers: {
+              Authorization: this.$store.state.Authorization //the token is a variable which holds the token
+            }}).then(function (response) {
+            this.aNOTWorkingList = response.data.Questions
+
+          })
+          this.message= "";
+        })
+
       }
 
     },
     created: function () {
-      let requestData = {Action: 'getQuestions'}
-      this.$http.get(this.$store.state.requestDestination, requestData).then(function (response) {
-        this.questions = response.body.Data;
+      // axios.defaults.headers.common['Authorization'] =  this.$store.state.Authorization
+      let requestData = {"Action": "GetQuestions"}
+      this.$http.post(this.$store.state.adminDestination, requestData, {
+        headers: {
+          Authorization: this.$store.state.Authorization //the token is a variable which holds the token
+        }}).then(function (response) {
+        this.aNOTWorkingList = response.data.Questions
+
       })
+      if ( this.$store.state.Authorization === "") {
+        this.routeToIndex()
+      }
+
     }
 
   }

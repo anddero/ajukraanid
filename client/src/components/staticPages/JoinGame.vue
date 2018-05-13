@@ -52,10 +52,9 @@
         } else {
           this.$http.post(this.$store.state.requestDestination, requestData)
             .then(function (response) {
-              if (response.body.Data === 'Did not find such game with game code: ' + this.$data.gameCode) {
-                this.alert = 'Game code was not found.'
-              } else if (response.body.Data === 'Such username is already taken.') {
-                this.alert = 'Such username is already taken.'
+              console.log(response)
+             if (response.body.State === 'Error') {
+                this.alert = response.body.Data;  //TODO game cant be inactive.
               } else {
                 this.$store.dispatch('setGameCode', this.$data.gameCode)
                 this.$store.dispatch('setMyUsername', this.$data.name)

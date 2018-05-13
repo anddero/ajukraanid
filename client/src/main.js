@@ -5,6 +5,7 @@ import About from './components/staticPages/About.vue'
 import Question from './components/pagesThatNeedToBeInterValled/Question.vue'
 import Menu from './components/staticPages/Menu.vue'
 import Admin from './components/staticPages/admin/Admin.vue'
+import Login from './components/staticPages/admin/Login.vue'
 import JoinGame from './components/staticPages/JoinGame.vue'
 import NewGameConfirmation from './components/staticPages/NewGameConfirmation.vue'
 import Lobby from './components/pagesThatNeedToBeInterValled/Lobby.vue'
@@ -30,6 +31,7 @@ const router = new VueRouter({
   base: '/~nilill/tarkvaratehnika/',
   routes: [
     {path: '/', component: Menu},
+    {path: '/login', component: Login},
     {path: '/admin', component: Admin},
     {path: '/about', component: About},
     {path: '/registration', component: JoinGame},
