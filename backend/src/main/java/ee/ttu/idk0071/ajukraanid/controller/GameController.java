@@ -26,7 +26,7 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createFetchStateResponse
 import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
 
 @Component
-class GameController {
+public class GameController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Random random = new Random();
