@@ -43,19 +43,20 @@ public class RestController {
                 case "JoinGame":
                     return gameController.joinGame(data.getInt("Code"), data.getString("Name"));
                 case "StartGame":
-                    return gameController.startGame(data.getInt("Code"));
+                    return gameController.startGame(data.getInt("Code"), data.getString("Token"));
                 case "FetchState":
-                    return gameController.fetchState(data.getInt("Code"));
+                    return gameController.fetchState(data.getInt("Code"), data.getString("Token"));
                 case "SubmitAnswer":
                     return gameController.submitAnswer(data.getInt("Code"), data.getString("Name"),
-                            data.getString("Answer"));
+                            data.getString("Answer"), data.getString("Token"));
                 case "GivePoints":
                     return gameController.givePoints(data.getInt("Code"), data.getString("Name"),
-                            data.getString("Target"));
+                            data.getString("Target"), data.getString("Token"));
                 case "RemovePlayer":
-                    return gameController.removePlayer(data.getInt("Code"), data.getString("Name"));
+                    return gameController.removePlayer(data.getInt("Code"), data.getString("Name"),
+                            data.getString("Token"));
                 case "GetPlayers":
-                    return gameController.getPlayers(data.getInt("Code"));
+                    return gameController.getPlayers(data.getInt("Code"), data.getString("Token"));
                 default:
                     return createErrorResponse("Invalid Action: " + action);
             }

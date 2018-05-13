@@ -85,9 +85,9 @@ public class GameController {
             throw new GuardException("Such username is already taken.");
         }
 
-        new Player(optionalGame.get(), playerName);
+        Player player = new Player(optionalGame.get(), playerName);
         return createSuccessResponseJson("You have successfully joined the game")
-                .put("Token", optionalGame.get().getToken())
+                .put("Token", player.getToken())
                 .toString();
     }
 
