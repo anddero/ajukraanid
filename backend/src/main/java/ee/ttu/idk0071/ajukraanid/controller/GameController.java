@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.controller;
-//
+
 import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.*;
 import ee.ttu.idk0071.ajukraanid.guard.Guard;

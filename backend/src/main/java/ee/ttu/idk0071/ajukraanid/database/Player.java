@@ -5,8 +5,11 @@ import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.random.Random;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class Player extends Entry {
+    private static final Logger log = LoggerFactory.getLogger(Player.class);
     private static final int TOKEN_RAW_BYTE_COUNT = 64;
     private static final Random RANDOM = new Random();
     // inaccessible
@@ -37,10 +40,11 @@ public final class Player extends Entry {
     public Player(Game game, String name) {
         this.game = game;
         game.getPlayers().add(this);
-        this.token = RANDOM.nextBase64UrlSafeString(TOKEN_RAW_BYTE_COUNT);
+        token = RANDOM.nextBase64UrlSafeString(TOKEN_RAW_BYTE_COUNT);
         player = new Players(game.getGame().getId(), name, token, valid);
         this.name = name;
         player = getDatabase().getPlayersRepository().save(player);
+        log.debug("New player: {} --- {}", name, token);
     }
 
     Players getPlayer() {
