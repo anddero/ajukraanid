@@ -140,6 +140,14 @@ public class GameController {
                 data = new JSONObject()
                         .put("TimeLeft", getTimeLeft(game))
                         .put("Question", getCurrentQuestion(game).getText());
+                if (hasEveryoneAnswered(game)) {
+                    Optional<GameRunner> runner = game.getRunner();
+                    if (runner.isPresent()) {
+                        synchronized (runner.get()) {
+                            runner.get().notify(); // skip to grading if everyone has answered
+                        }
+                    }
+                }
                 break;
             case GRADING:
                 JSONArray answers = new JSONArray();
@@ -149,6 +157,14 @@ public class GameController {
                 data = new JSONObject()
                         .put("TimeLeft", getTimeLeft(game))
                         .put("Answers", answers);
+                if (hasEveryoneGraded(game)) {
+                    Optional<GameRunner> runner = game.getRunner();
+                    if (runner.isPresent()) {
+                        synchronized (runner.get()) {
+                            runner.get().notify(); // skip to points if everyone has graded
+                        }
+                    }
+                }
                 break;
             case RESULTS:
                 JSONArray points = new JSONArray();
@@ -199,10 +215,6 @@ public class GameController {
         }
         new Answer(currentQuestion, optionalPlayer.get(), answer);
 
-        if (hasEveryoneAnswered(optionalGame.get(), currentQuestion)) {
-            optionalGame.get().getRunner().notify(); // skip to grading if everyone has answered
-        }
-
         return createSuccessResponse("Your answer was submitted.");
     }
 
@@ -248,10 +260,6 @@ public class GameController {
         }
 
         new Evaluation(currentQuestion, giver, target);
-
-        if (hasEveryoneGraded(game, currentQuestion)) {
-            game.getRunner().notify(); // skip to points if everyone has graded
-        }
 
         return createSuccessResponse("Your points were given to " + targetName);
     }
@@ -497,8 +505,8 @@ public class GameController {
         return game.getToken().equals(token) || validPlayerToken(game, token);
     }
 
-    private boolean hasEveryoneAnswered(Game game, Question question) {
-        Set<Player> answerers = question.getAnswers().stream()
+    private boolean hasEveryoneAnswered(Game game) {
+        Set<Player> answerers = getCurrentQuestion(game).getAnswers().stream()
                 .map(Answer::getPlayer)
                 .collect(Collectors.toSet());
         Set<Player> players = new HashSet<>(game.getPlayers());
@@ -518,7 +526,8 @@ public class GameController {
                 .anyMatch(a -> a.getPlayer() != player);
     }
 
-    private boolean hasEveryoneGraded(Game game, Question question) {
+    private boolean hasEveryoneGraded(Game game) {
+        Question question = getCurrentQuestion(game);
         Set<Player> graders = question.getEvaluations().stream()
                 .map(Evaluation::getGiver)
                 .collect(Collectors.toSet());
