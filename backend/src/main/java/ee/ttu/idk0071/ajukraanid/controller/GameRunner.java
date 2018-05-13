@@ -30,21 +30,30 @@ public class GameRunner implements Runnable {
             totalCountdown = config.getAnsweringTimeSeconds();
             countdownStart = LocalDateTime.now();
         }
-        Thread.sleep(totalCountdown * MILLISECONDS_IN_SECOND);
+        log.debug("Waiting for answers ({} seconds)", totalCountdown);
+        synchronized (this) {
+            wait(totalCountdown * MILLISECONDS_IN_SECOND);
+        }
 
         game.setGameState(Game.State.GRADING);
         synchronized (this) {
             totalCountdown = config.getGradingTimeSeconds();
             countdownStart = LocalDateTime.now();
         }
-        Thread.sleep(totalCountdown * MILLISECONDS_IN_SECOND);
+        log.debug("Waiting for evaluations ({} seconds)", totalCountdown);
+        synchronized (this) {
+            wait(totalCountdown * MILLISECONDS_IN_SECOND);
+        }
 
         game.setGameState(Game.State.RESULTS);
         synchronized (this) {
             totalCountdown = config.getResultsTimeSeconds();
             countdownStart = LocalDateTime.now();
         }
-        Thread.sleep(totalCountdown * MILLISECONDS_IN_SECOND);
+        log.debug("Displaying points ({} seconds)", totalCountdown);
+        synchronized (this) {
+            wait(totalCountdown * MILLISECONDS_IN_SECOND);
+        }
     }
 
     @Override
