@@ -198,6 +198,11 @@ public class GameController {
             throw new GuardException("You already answered the question");
         }
         new Answer(currentQuestion, optionalPlayer.get(), answer);
+
+        if (hasEveryoneAnswered(optionalGame.get(), currentQuestion)) {
+            optionalGame.get().getRunner().notify(); // skip to grading if everyone has answered
+        }
+
         return createSuccessResponse("Your answer was submitted.");
     }
 
@@ -243,6 +248,11 @@ public class GameController {
         }
 
         new Evaluation(currentQuestion, giver, target);
+
+        if (hasEveryoneGraded(game, currentQuestion)) {
+            game.getRunner().notify(); // skip to points if everyone has graded
+        }
+
         return createSuccessResponse("Your points were given to " + targetName);
     }
 
@@ -485,5 +495,44 @@ public class GameController {
 
     private boolean validToken(Game game, String token) {
         return game.getToken().equals(token) || validPlayerToken(game, token);
+    }
+
+    private boolean hasEveryoneAnswered(Game game, Question question) {
+        Set<Player> answerers = question.getAnswers().stream()
+                .map(Answer::getPlayer)
+                .collect(Collectors.toSet());
+        Set<Player> players = new HashSet<>(game.getPlayers());
+        if (answerers.size() != players.size()) {
+            return false;
+        }
+        for (Player answerer : answerers) {
+            if (!players.contains(answerer)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean canGrade(Player player, Question question) {
+        return question.getAnswers().stream()
+                .anyMatch(a -> a.getPlayer() != player);
+    }
+
+    private boolean hasEveryoneGraded(Game game, Question question) {
+        Set<Player> graders = question.getEvaluations().stream()
+                .map(Evaluation::getGiver)
+                .collect(Collectors.toSet());
+        Set<Player> players = game.getPlayers().stream()
+                .filter(player -> canGrade(player, question))
+                .collect(Collectors.toSet());
+        if (graders.size() != players.size()) {
+            return false;
+        }
+        for (Player grader : graders) {
+            if (!players.contains(grader)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
