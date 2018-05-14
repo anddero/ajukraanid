@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database.internal;
-//
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,14 +14,16 @@ public class Games {
     @Getter private Integer code;
     @Temporal(TemporalType.TIMESTAMP)
     @Getter private Date timestamp;
+    @Getter private String token;
     @Getter @Setter private String state;
     @Getter @Setter private Integer questionNumber;
 
     private Games() {
     }
 
-    public Games(Integer code, Date timestamp) {
+    public Games(Integer code, Date timestamp, String token) {
         this.code = code;
         this.timestamp = timestamp;
+        this.token = token;
     }
 }

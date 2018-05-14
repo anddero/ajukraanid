@@ -2,16 +2,22 @@ package ee.ttu.idk0071.ajukraanid.database;
 
 import ee.ttu.idk0071.ajukraanid.database.internal.Players;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.random.Random;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
-import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Player extends Entry {
+    private static final Logger log = LoggerFactory.getLogger(Player.class);
+    private static final int TOKEN_RAW_BYTE_COUNT = 64;
+    private static final Random RANDOM = new Random();
     // inaccessible
     private final Game game;
     private Players player;
     // accessible
     @Getter private final String name;
+    @Getter private final String token;
     @Getter private boolean valid = true;
 
     // methods
@@ -24,6 +30,7 @@ public class Player extends Entry {
         game.getPlayers().add(this);
         this.player = player;
         this.name = player.getName();
+        this.token = player.getToken();
         this.valid = player.isValid();
     }
 
@@ -33,9 +40,11 @@ public class Player extends Entry {
     public Player(Game game, String name) {
         this.game = game;
         game.getPlayers().add(this);
-        player = new Players(game.getGame().getId(), name, valid);
+        token = RANDOM.nextBase64UrlSafeString(TOKEN_RAW_BYTE_COUNT);
+        player = new Players(game.getGame().getId(), name, token, valid);
         this.name = name;
         player = getDatabase().getPlayersRepository().save(player);
+        log.debug("New player: {} --- {}", name, token);
     }
 
     Players getPlayer() {

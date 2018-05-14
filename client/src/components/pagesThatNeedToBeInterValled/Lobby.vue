@@ -18,7 +18,7 @@
 
             <div class="row">
               <div class="col-sm-3 col-md-6">
-                <div class="col">{{ registration }}
+                <div class="col" style="text-align: center">{{ registration }}
                 </div>
               </div>
               <div class="col-sm-9 col-md-6">
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
 
     data() {
@@ -70,8 +70,22 @@
 
     methods: {
       checkIfGameShouldStart() {
-        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          //console.log("Lobby - checkIfGameShouldStart: ");
+          //console.log(response);
+          if (response.body.State === "Inactive") {
+            localStorage.clear();
+            window.clearInterval(window.interval);
+            this.$store.state.Authorization = "";
+            this.$store.state.username = "";
+            this.$store.state.gameCode = 0;
+            this.$store.state.questionNumber = 0;
+            this.$store.state.lastQuestion = "";
+            this.$store.state.registrations = [];
+            this.$store.state.token = "";
+            this.$router.replace('/')
+          }
           if (response.body.State === "Answering") {
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);
@@ -89,9 +103,23 @@
       },
 
       loadPlayers() {
-        let requestData = {Action: "FetchState", "Code": this.gameCode};
+        let requestData = {Action: "FetchState", "Code": this.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
+            if (response.body.State === "Inactive") {
+              localStorage.removeItem("token");
+              window.clearInterval(window.interval);
+              this.$store.state.Authorization = "";
+              this.$store.state.username = "";
+              this.$store.state.gameCode = 0;
+              this.$store.state.questionNumber = 0;
+              this.$store.state.lastQuestion = "";
+              this.$store.state.registrations = [];
+              this.$store.state.token = "";
+              this.$router.replace('/')
+            }
+            //console.log("Lobby - loadPlayers");
+            //console.log(response);
             if (this.items !== response.body.Data.length) {
               this.items = this.$store.state.registrations;
               this.$store.dispatch('updatePlayers', response.body.Data);
@@ -104,8 +132,7 @@
       },
 
       unregister(userName) {
-        let requestData = {Action: "RemovePlayer", "Code": this.gameCode, "Name": userName};
-        console.log(requestData)
+        let requestData = {Action: "RemovePlayer", "Code": this.gameCode, "Name": userName, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData);
 
         this.$store.commit({
@@ -115,8 +142,22 @@
       },
 
       startGame() {
-        let requestData = {Action: "StartGame", "Code": this.$store.state.gameCode};
+        let requestData = {Action: "StartGame", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          //console.log("Lobby - startGame: ");
+          //console.log(response);
+          if (response.body.State === "Inactive") {
+            localStorage.removeItem("token");
+            window.clearInterval(window.interval);
+            this.$store.state.Authorization = "";
+            this.$store.state.username = "";
+            this.$store.state.gameCode = 0;
+            this.$store.state.questionNumber = 0;
+            this.$store.state.lastQuestion = "";
+            this.$store.state.registrations = [];
+            this.$store.state.token = "";
+            this.$router.replace('/')
+          }
           if (response.body.State === "Answering") {
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);
@@ -126,7 +167,7 @@
             console.log("Error: " + response.body.Data)
             this.alert = response.body.Data;
           }
-          console.log(response.body)
+          //console.log(response.body)
         });
       }
     },

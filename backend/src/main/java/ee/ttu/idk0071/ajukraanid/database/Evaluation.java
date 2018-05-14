@@ -1,11 +1,11 @@
 package ee.ttu.idk0071.ajukraanid.database;
-//
+
 import ee.ttu.idk0071.ajukraanid.database.internal.Evaluations;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 
-public final class Evaluation extends Entry {
+public class Evaluation extends Entry {
     // inaccessible
     private final Question question;
     private Evaluations evaluation;

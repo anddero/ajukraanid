@@ -1,4 +1,3 @@
-
 <template>
   <div id="summary" class="center-block">
 
@@ -13,9 +12,9 @@
       <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
       <form v-on:submit.prevent="registerUser">
         <div class="well" style="width: 40%; text-align: center; margin-left: 30%;">
-          <input type="text" class="form-control" placeholder="Nickname" v-model="name">
+          <input type="text" class="form-control" placeholder="Nickname" v-model="name" style="text-align: center">
           <br/>
-          <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode">
+          <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode" style="text-align: center" pattern="\d{4}">
         </div>
         <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton3' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
         <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
@@ -53,10 +52,11 @@
         } else {
           this.$http.post(this.$store.state.requestDestination, requestData)
             .then(function (response) {
-              if (response.body.Data === 'Did not find such game with game code: ' + this.$data.gameCode) {
-                this.alert = 'Game code was not found.'
-              } else if (response.body.Data === 'Such username is already taken.') {
-                this.alert = 'Such username is already taken.'
+              console.log(response.body.Token);
+              localStorage.setItem("token", response.body.Token.toString());
+              this.$store.state.token = response.body.Token.toString();
+             if (response.body.State === 'Error') {
+                this.alert = response.body.Data;  //TODO game cant be inactive.
               } else {
                 this.$store.dispatch('setGameCode', this.$data.gameCode)
                 this.$store.dispatch('setMyUsername', this.$data.name)
@@ -78,5 +78,12 @@
     border-color: transparent !important;
 
   }
-
+  #text {
+    font-size: 25px;
+  }
+  @media screen and (min-width:320px) and (max-width:600px) {
+    #text {
+      font-size: 15px;
+    }
+  }
 </style>

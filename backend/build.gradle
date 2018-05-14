@@ -43,14 +43,16 @@ assemble.dependsOn backupFatJar
 
 configurations.all {
     exclude module: 'spring-boot-starter-logging'
+
 }
 
 dependencies {
 	compile 'org.json:json:20170516'
     compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
     compile('org.springframework.boot:spring-boot-starter') /*{
-        //exclude module: 'spring-boot-starter-logging'
+        exclude module: 'spring-boot-starter-logging'
     }//, {exclude group: 'org.springframework.boot'}*/
     compile('org.springframework.boot:spring-boot-starter-log4j2')
     compile('org.apache.logging.log4j:log4j-jul:2.1')
@@ -58,9 +60,15 @@ dependencies {
     //compile 'org.slf4j:slf4j-api:1.7.25' // for logging activity
     compileOnly 'org.projectlombok:lombok' // TODO 1.16.18?
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile("org.springframework.boot:spring-boot-starter-web")
+	testCompile("junit:junit")
+	compile("org.springframework.boot:spring-boot-devtools")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.security:spring-security-crypto:5.0.5.RELEASE")
+	compile("io.jsonwebtoken:jjwt:0.7.0")
 	runtime('com.h2database:h2')
-
+	compile group: 'com.auth0', name: 'auth0-spring-security-api', version: '1.0.0'
     // JUnit Jupiter API and TestEngine implementation
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0")

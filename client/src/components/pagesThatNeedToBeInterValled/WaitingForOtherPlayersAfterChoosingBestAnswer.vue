@@ -1,19 +1,22 @@
 
 <template>
   <div class="about container">
-    <img id="menubutton" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/pleasewaittillall.png" style="margin-top: 20%; height: 60px; width: auto;"/>
+    <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 20%; height: 60px; width: auto;"/>
+    <!--here come seconds-->
+    <b id="countdown">{{timeLeft}} seconds remaining</b>
     <br>
     <br>
   </div>
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
     name: 'about',
     data () {
       return {
-        interval: ''
+        interval: '',
+        timeLeft: 30
       }
     },
 
@@ -25,7 +28,7 @@
       },
 
       checkGameState () {
-        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response){
           if (response.body.State === 'Grading') {
             window.clearInterval(window.interval)
@@ -41,7 +44,7 @@
     },
 
     created: function () {
-      let requestData = {Action: 'GetQuestion', 'Code': this.$store.state.gameCode}
+      let requestData = {Action: 'GetQuestion', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
         this.question = response.body.Data
       })

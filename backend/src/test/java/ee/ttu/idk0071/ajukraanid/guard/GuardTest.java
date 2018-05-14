@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GuardTest {
     private final Guard guard = new Guard(Mockito.mock(GameConfig.class));
@@ -29,7 +29,7 @@ class GuardTest {
     }
 
     @Test
-    void testCheckJoinGameMaxPlayers() {
+    void testCheckJoinGameWhileLobby() {
         Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
         assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
     }
@@ -56,12 +56,16 @@ class GuardTest {
 
     @Test
     void testCheckJoinGameSucceed() {
-        /*Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
+        GameConfig config = Mockito.mock(GameConfig.class);
+        Mockito.when(config.getMaximumPlayers()).thenReturn(10);
+        game = Mockito.mock(Game.class);
 
-        Mockito.when(game.getPlayers()).thenReturn(getPlayers(5));
-        guard.checkJoinGame(game);
+        Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
 
-        Mockito.when(game.getPlayers()).thenReturn(getPlayers(2));
-        guard.checkJoinGame(game);*/ // TODO Cannot run this test, as default configuration allows max 0 players.
+        Mockito.when(game.getPlayers()).thenReturn(getPlayers(11));
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
+
+        Mockito.when(game.getPlayers()).thenReturn(getPlayers(9));
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
     }
 }

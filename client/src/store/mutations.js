@@ -32,6 +32,10 @@ export default {
     state.registrations = players;
   },
 
+  updateAuthorization(state, authorization) {
+    state.Authorization = authorization;
+  },
+
   setGameCode(state, gameCode) {
     state.gameCode = gameCode;
   },
@@ -42,5 +46,8 @@ export default {
 
   setMyUsername(state, name) {
     state.username = name;
+  },
+  setAllQuestions(state, questions) {
+    state.allQuestions = questions;
   },
 };

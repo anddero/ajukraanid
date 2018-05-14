@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css')
+  import('../../assets/css/main.scss')
   import {VueChartkick} from 'vue-chartkick'
   export default {
     data () {
@@ -29,8 +29,20 @@
 
     methods: {
       checkGameState () {
-        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          if (response.body.State === "Inactive") {
+            localStorage.clear()
+            window.clearInterval(window.interval);
+            this.$store.state.Authorization = "";
+            this.$store.state.username = "";
+            this.$store.state.gameCode = 0;
+            this.$store.state.questionNumber = 0;
+            this.$store.state.lastQuestion = "";
+            this.$store.state.registrations = [];
+            this.$store.state.token = "";
+            this.$router.replace('/')
+          }
           if (response.body.State === 'Answering') {
             window.clearInterval(window.interval)
             console.log('Moving to ' + '/question' + ' from /Answering')
@@ -55,7 +67,7 @@
 
     created: function () {
       this.setIntervalThatChecksGameState()
-      let requestData = {Action: 'FetchState', 'Code': this.gameCode}
+      let requestData = {Action: 'FetchState', 'Code': this.gameCode, "Token": this.$store.state.token}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
           this.points = response.body.Data.Scores

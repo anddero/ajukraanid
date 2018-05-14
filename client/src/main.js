@@ -4,6 +4,8 @@ import vueResource from 'vue-resource'
 import About from './components/staticPages/About.vue'
 import Question from './components/pagesThatNeedToBeInterValled/Question.vue'
 import Menu from './components/staticPages/Menu.vue'
+import Admin from './components/staticPages/admin/Admin.vue'
+import Login from './components/staticPages/admin/Login.vue'
 import JoinGame from './components/staticPages/JoinGame.vue'
 import NewGameConfirmation from './components/staticPages/NewGameConfirmation.vue'
 import Lobby from './components/pagesThatNeedToBeInterValled/Lobby.vue'
@@ -17,7 +19,7 @@ import VueChartkick from 'vue-chartkick'
 import Chart from 'chart.js'
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import './assets/css/main.css'
+import './assets/css/main.scss'
 import Alert from './components/staticPages/Alert'
 
 Vue.use(vueResource)
@@ -29,6 +31,8 @@ const router = new VueRouter({
   base: '/~nilill/tarkvaratehnika/',
   routes: [
     {path: '/', component: Menu},
+    {path: '/login', component: Login},
+    {path: '/admin', component: Admin},
     {path: '/about', component: About},
     {path: '/registration', component: JoinGame},
     {path: '/menu', component: Menu},

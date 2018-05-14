@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database;
-//
+
 import ee.ttu.idk0071.ajukraanid.database.internal.*;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
-public final class Database extends Entry {
+public class Database extends Entry {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     // inaccessible internal repositories
     private final GamesRepository gamesRepository;
@@ -48,7 +48,11 @@ public final class Database extends Entry {
 
     private void loadGames() {
         gamesRepository.findAll()
-                .forEach(game -> new Game(this, game));
+                .forEach(game -> {
+                    if (!game.getState().equals(Game.State.INACTIVE.toString())) {
+                        new Game(this, game);
+                    }
+                });
         games.forEach(this::loadPlayers);
         games.forEach(this::loadQuestions);
     }
@@ -91,27 +95,27 @@ public final class Database extends Entry {
         System.out.println(stringBuilder.toString());
     }
 
-    GamesRepository getGamesRepository() {
+    public GamesRepository getGamesRepository() {
         return gamesRepository;
     }
 
-    PlayersRepository getPlayersRepository() {
+    public PlayersRepository getPlayersRepository() {
         return playersRepository;
     }
 
-    PlainQuestionsRepository getPlainQuestionsRepository() {
+    public PlainQuestionsRepository getPlainQuestionsRepository() {
         return plainQuestionsRepository;
     }
 
-    QuestionsRepository getQuestionsRepository() {
+    public QuestionsRepository getQuestionsRepository() {
         return questionsRepository;
     }
 
-    AnswersRepository getAnswersRepository() {
+    public AnswersRepository getAnswersRepository() {
         return answersRepository;
     }
 
-    EvaluationsRepository getEvaluationsRepository() {
+    public EvaluationsRepository getEvaluationsRepository() {
         return evaluationsRepository;
     }
 

@@ -20,12 +20,18 @@
 					"raw": "{\n\t\"Action\": \"CreateGame\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api"
+					]
 				},
 				"description": "Create a new game session."
 			},
@@ -43,15 +49,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Action\": \"JoinGame\",\n\t\"Code\": \"7579\",\n\t\"Name\": \"minu nimi\"\n}"
+					"raw": "{\n\t\"Action\": \"JoinGame\",\n\t\"Code\": \"6859\",\n\t\"Name\": \"Name\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api"
+					]
 				},
 				"description": "Join an existing game session."
 			},
@@ -69,15 +81,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Action\": \"StartGame\",\n\t\"Code\": 7579\n}"
+					"raw": "{\n\t\"Action\": \"StartGame\",\n\t\"Token\":\"BSWVbe9SsTCt9B2YIScNghaLYo7hD9znls-C42zPxp0x5G5i5J4xu6RNCxPf-ey8ROkxWYmeGHY8JK3O4_CLxg==\",\n\t\"Code\": 6859\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api"
+					]
 				},
 				"description": "Begin the game with the current players (can be only called in Lobby state)"
 			},
@@ -95,15 +113,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Action\": \"FetchState\",\n\t\"Code\": 7579\n}"
+					"raw": "{\n\t\"Action\": \"FetchState\",\n\t\"Code\": 6859,\n\t\"Token\":\"0htEgeqmGLzbmUdBTZy8WH06pATjhEmNpm2cU20zSE72ivGpshLBRZVyQrv7mj-q3dePWkV10KljhrU4Csb55w==\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api"
+					]
 				},
 				"description": "Fetch the state of a game."
 			},
@@ -121,15 +145,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Action\": \"SubmitAnswer\",\r\n    \"Code\": 7579,\r\n    \"Name\": \"minu nimi\",\r\n    \"Answer\": \"Don't know\"\r\n}"
+					"raw": "{\r\n    \"Action\": \"SubmitAnswer\",\r\n    \"Code\": 6859,\r\n    \"Name\": \"Name\",\r\n    \"Answer\": \"Don't know\",\r\n    \"Token\": \"0htEgeqmGLzbmUdBTZy8WH06pATjhEmNpm2cU20zSE72ivGpshLBRZVyQrv7mj-q3dePWkV10KljhrU4Csb55w==\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api"
+					]
 				},
 				"description": "Submit an answer by some player in the answering stage."
 			},
@@ -147,15 +177,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Action\": \"GivePoints\",\r\n    \"Code\": 7579,\r\n    \"Name\": \"minu nimi\",\r\n    \"Target\": \"keegi teine\"\r\n}"
+					"raw": "{\r\n    \"Action\": \"GivePoints\",\r\n    \"Code\": 6859,\r\n    \"Name\": \"MyName\",\r\n    \"Target\": \"TheirName\",\r\n    \"Token\": \"abbbbbbbbbaaaaaaaaaaaaaaaaaaaaa\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api"
+					]
 				},
 				"description": "Give points to your favorite answer."
 			},
@@ -173,15 +209,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Action\": \"RemovePlayer\",\r\n    \"Code\": 7579,\r\n    \"Name\": \"minu nimi\"\r\n}"
+					"raw": "{\r\n    \"Action\": \"RemovePlayer\",\r\n    \"Code\": 7579,\r\n    \"Name\": \"minu nimi\",\r\n    \"Token\": \"some very random string\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api"
+					]
 				},
 				"description": "Kick a player from the game in lobby state."
 			},
@@ -199,17 +241,139 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Action\": \"GetPlayers\",\r\n    \"Code\": 7579\r\n}"
+					"raw": "{\r\n    \"Action\": \"GetPlayers\",\r\n    \"Code\": 7579,\r\n    \"Token\": \"Token\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://18.188.242.2:8080/api",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"18",
+						"188",
+						"242",
+						"2"
+					],
+					"port": "8080",
+					"path": [
+						"api"
+					]
+				},
+				"description": "Get the list of players in the game."
+			},
+			"response": []
+		},
+		{
+			"name": "GetQuestions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"GetQuestions\"\n}"
+				},
+				"url": {
+					"raw": "http://18.188.242.2:8080",
+					"protocol": "http",
+					"host": [
+						"18",
+						"188",
+						"242",
+						"2"
 					],
 					"port": "8080"
 				},
-				"description": "Get the list of players in the game."
+				"description": "Get all the questions from database."
+			},
+			"response": []
+		},
+		{
+			"name": "AddQuestion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"AddQuestion\",\n\t\"Text\": \"Access Will Probably Be Denied?\"\n}"
+				},
+				"url": {
+					"raw": "http://18.188.242.2:8080",
+					"protocol": "http",
+					"host": [
+						"18",
+						"188",
+						"242",
+						"2"
+					],
+					"port": "8080"
+				},
+				"description": "Add a new question to the database."
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteQuestion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"DeleteQuestion\",\n\t\"Id\": 2\n}"
+				},
+				"url": {
+					"raw": "http://18.188.242.2:8080",
+					"protocol": "http",
+					"host": [
+						"18",
+						"188",
+						"242",
+						"2"
+					],
+					"port": "8080"
+				},
+				"description": "Delete a question from database."
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateQuestion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Action\": \"UpdateQuestion\",\n\t\"Id\": 1,\n\t\"Text\": \"What did Java say to C++?\"\n}"
+				},
+				"url": {
+					"raw": "http://18.188.242.2:8080",
+					"protocol": "http",
+					"host": [
+						"18",
+						"188",
+						"242",
+						"2"
+					],
+					"port": "8080"
+				},
+				"description": "Update an existing question in database."
 			},
 			"response": []
 		}

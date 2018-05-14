@@ -3,12 +3,12 @@
   <div id="summary">
     <div v-if="username !== 'host'">
       <div class="summary">
-        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer_player.png" style="margin-top: 2%;"/>
+        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer_player.png" style="margin-top: 8%;"/>
         <h5></h5>
       </div>
       <hr>
-     <h1 > {{timeLeft}}  seconds remaining </h1>
-      <form v-on:submit.prevent="registerUser">
+     <b id="seconds"> {{timeLeft}}  seconds remaining </b>
+      <form v-on:submit.prevent="registerUser" style="margin-top: 2%;">
         <div v-for="item in this.questions">
           <button v-if="item.Name!==username" @click="awardPlayer(item.Name)" type="button" class="btn btn-success center-block">
             {{item.Answer}}
@@ -19,11 +19,11 @@
       <br/>
     </div>
     <div v-if="username === 'host'">
-      <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer.png" style="margin-top: 2%; height: 60px; width: auto;"/>
-      <h3 id="text" class="center-block">{{this.$store.state.lastQuestion}}</h3>
+      <img id="menubutton13" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/answers.png" style="margin-top: 2%; height: 60px; width: auto;"/>
+      <h3 id="text" class="center-block" style="padding-right: 14%;">{{this.$store.state.lastQuestion}}</h3>
       <br>
       <div v-for="item in this.questions">
-        <h3 style=" margin-right: 40px" id="text" class="center-block">{{item.Answer}} </h3>
+        <h3 style=" margin-right: 30%; padding-left: 23%;" id="text" class="center-block">{{item.Answer}} </h3>
         <br/>
       </div>
     </div>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
     data() {
       return {
@@ -48,7 +48,8 @@
           Action: 'GivePoints',
           'Code': this.gameCode,
           Name: this.$store.state.username,
-          Target: Awardee
+          Target: Awardee,
+          Token: this.$store.state.token,
         }
         this.$http.post(this.$store.state.requestDestination, requestData)
         console.log('Moving to ' + '/waitingScreen1' + ' from /choosebestAnswer')
@@ -57,7 +58,7 @@
       },
 
       checkIfGameShouldStart() {
-        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === 'Results') {
             window.clearInterval(window.interval)
@@ -90,7 +91,7 @@
 
     created: function () {
       this.setIntervalThatChecksIfGameShouldStart()
-      let requestData = {Action: 'FetchState', 'Code': this.gameCode}
+      let requestData = {Action: 'FetchState', 'Code': this.gameCode, "Token": this.$store.state.token}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
           this.questions = response.body.Data.Answers

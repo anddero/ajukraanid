@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database;
-//
+
 import ee.ttu.idk0071.ajukraanid.database.internal.Questions;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-public final class Question extends Entry {
+public class Question extends Entry {
     // inaccessible
     private final Game game;
     private Questions question;

@@ -1,8 +1,7 @@
 
 <template>
   <div id="registration">
-    {{timeLeft}}
-    <h3 v-if="username === 'host'" id="text" class="center-block" style="padding-top: 35vh;"> {{ question }}</h3>
+    <h1 id="question" class="center-block" style="padding-right: 15vw;"> {{ question }}</h1>
     <Alert v-if="alert" v-bind:message="alert"/>
     <hr>
     <form v-on:submit.prevent="routeToWaitingScreen()" style="width: 40%; text-align: center; margin-left: 30%;">
@@ -10,8 +9,8 @@
         <br/>
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
       </div>
-      {{timeLeft}} seconds remaining
-      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton1' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
+      <b id="countdown">{{timeLeft}} seconds remaining</b>
+      <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton4' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
 
     </form>
     <br>
@@ -20,7 +19,7 @@
 
 <script>
   import Alert from '../staticPages/Alert';
-  import('../../assets/css/main.css');
+  import('../../assets/css/main.scss');
   export default {
     data() {
       return {
@@ -36,8 +35,22 @@
 
     methods: {
       checkGameState() {
-        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          console.log("Question - checkGameState: ");
+          console.log(response);
+          if (response.body.State === "Inactive") {
+            localStorage.clear()
+            window.clearInterval(window.interval);
+            this.$store.state.Authorization = "";
+            this.$store.state.username = "";
+            this.$store.state.gameCode = 0;
+            this.$store.state.questionNumber = 0;
+            this.$store.state.lastQuestion = "";
+            this.$store.state.registrations = [];
+            this.$store.state.token = "";
+            this.$router.replace('/')
+          }
           if (response.body.State === "Results") {
             window.clearInterval(window.interval);
             console.log("Moving to " + "/Results" + " from /Answering");
@@ -65,10 +78,13 @@
           "Code": this.$store.state.gameCode,
 
           "Name": this.$store.state.username,
-          "Answer": this.answer
+          "Answer": this.answer,
+          "Token": this.$store.state.token
         };
         let q = "";
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          console.log("Question - routeToWaitingScreen: ");
+          console.log(response);
           this.$router.replace('/waitingScreen1')
         });
         window.clearInterval(window.interval);
@@ -89,9 +105,10 @@
 
     created: function () {
       this.setIntervalThatChecksGameState();
-      let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+      let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-        console.log(response.body)
+        console.log("Question - created: ");
+        console.log(response);
         this.$store.dispatch('setLastQuestion', response.body.Data.Question);
         this.question = response.body.Data.Question
       })

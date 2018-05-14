@@ -1,9 +1,9 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
-
 import ee.ttu.idk0071.ajukraanid.controller.GameRunner;
 import ee.ttu.idk0071.ajukraanid.database.internal.Games;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
+import ee.ttu.idk0071.ajukraanid.random.Random;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class Game extends Entry {
+    private static final int TOKEN_RAW_BYTE_COUNT = 64;
+    private static final Random RANDOM = new Random();
     @RequiredArgsConstructor
     public enum State {
         LOBBY("Lobby"),
@@ -45,6 +47,7 @@ public class Game extends Entry {
     // accessible
     @Getter private final int gameCode;
     @Getter private final Date timestamp;
+    @Getter private final String token;
     private State gameState = State.LOBBY;
     @Getter private int questionNumber = 0;
 
@@ -64,6 +67,7 @@ public class Game extends Entry {
         this.game = game;
         this.gameCode = game.getCode();
         this.timestamp = game.getTimestamp();
+        this.token = game.getToken();
         this.gameState = State.fromString(game.getState());
         this.questionNumber = game.getQuestionNumber();
     }
@@ -75,7 +79,8 @@ public class Game extends Entry {
         this.database = database;
         database.getGames().add(this);
         timestamp = new Date();
-        game = new Games(code, timestamp); // create a transient entity
+        token = RANDOM.nextBase64UrlSafeString(TOKEN_RAW_BYTE_COUNT);
+        game = new Games(code, timestamp, token); // create a transient entity
         this.gameCode = code;
         game.setState(gameState.text);
         game.setQuestionNumber(questionNumber);
@@ -108,7 +113,7 @@ public class Game extends Entry {
     protected void appendTo(StringBuilder stringBuilder, int indentSize) {
         StringUtilities.addIndent(indentSize, stringBuilder);
         stringBuilder.append(gameCode).append(" ").append(gameState.text).append(" questionNumber: ")
-                .append(questionNumber).append("\n");
+                .append(questionNumber).append(" token: ").append(token).append("\n");
 
         StringUtilities.addIndent(indentSize + 1, stringBuilder);
         stringBuilder.append("Players (").append(players.size()).append(")").append("\n");

@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.controller;
-//
+
 import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.*;
 import ee.ttu.idk0071.ajukraanid.guard.Guard;
@@ -24,9 +24,10 @@ import java.util.stream.IntStream;
 
 import static ee.ttu.idk0071.ajukraanid.message.Message.createFetchStateResponse;
 import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponse;
+import static ee.ttu.idk0071.ajukraanid.message.Message.createSuccessResponseJson;
 
 @Component
-class GameController {
+public class GameController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Random random = new Random();
@@ -66,7 +67,9 @@ class GameController {
         selectRandomQuestions().forEach(question -> new Question(game, question.getText()));
         return new JSONObject()
                 .put("Action", "CreateGame")
-                .put("Code", gameCode).toString();
+                .put("Code", gameCode)
+                .put("Token", game.getToken())
+                .toString();
     }
 
     String joinGame(int gameCode, String playerName) {
@@ -82,19 +85,25 @@ class GameController {
             throw new GuardException("Such username is already taken.");
         }
 
-        new Player(optionalGame.get(), playerName);
-        return createSuccessResponse("You have successfully joined the game");
+        Player player = new Player(optionalGame.get(), playerName);
+        return createSuccessResponseJson("You have successfully joined the game")
+                .put("Token", player.getToken())
+                .toString();
     }
 
     /**
      * @param gameCode the unique code to each game
      * @return the game state, if it is in lobby then return the list of player names.
      */
-    String startGame(int gameCode) {
+    String startGame(int gameCode, String token) {
         Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Was not able to start the game because such game was not found.");
+        }
+
+        if (!optionalGame.get().getToken().equals(token)) {
+            throw new GuardException("Invalid game token");
         }
 
         guard.checkStartGame(optionalGame.get());
@@ -106,7 +115,7 @@ class GameController {
         return createSuccessResponse("Game successfully started");
     }
 
-    String fetchState(int gameCode) {
+    String fetchState(int gameCode, String playerOrGameToken) {
         Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
@@ -115,6 +124,10 @@ class GameController {
 
         Game game = optionalGame.get();
         Game.State gameState = optionalGame.get().getGameState();
+
+        if (!validToken(game, playerOrGameToken)) {
+            throw new GuardException("Invalid game or player token");
+        }
 
         Object data;
         switch (gameState) {
@@ -127,6 +140,14 @@ class GameController {
                 data = new JSONObject()
                         .put("TimeLeft", getTimeLeft(game))
                         .put("Question", getCurrentQuestion(game).getText());
+                if (hasEveryoneAnswered(game)) {
+                    Optional<GameRunner> runner = game.getRunner();
+                    if (runner.isPresent()) {
+                        synchronized (runner.get()) {
+                            runner.get().notify(); // skip to grading if everyone has answered
+                        }
+                    }
+                }
                 break;
             case GRADING:
                 JSONArray answers = new JSONArray();
@@ -136,6 +157,14 @@ class GameController {
                 data = new JSONObject()
                         .put("TimeLeft", getTimeLeft(game))
                         .put("Answers", answers);
+                if (hasEveryoneGraded(game)) {
+                    Optional<GameRunner> runner = game.getRunner();
+                    if (runner.isPresent()) {
+                        synchronized (runner.get()) {
+                            runner.get().notify(); // skip to points if everyone has graded
+                        }
+                    }
+                }
                 break;
             case RESULTS:
                 JSONArray points = new JSONArray();
@@ -159,7 +188,7 @@ class GameController {
         return createFetchStateResponse(gameState.toString(), data);
     }
 
-    String submitAnswer(int gameCode, String playerName, String answer) {
+    String submitAnswer(int gameCode, String playerName, String answer, String token) {
         // TODO Need Question Number
         Optional<Game> optionalGame = findGame(gameCode);
         if (!optionalGame.isPresent()) {
@@ -173,6 +202,10 @@ class GameController {
             throw new GuardException("Wrong username was given");
         }
 
+        if (!optionalPlayer.get().getToken().equals(token)) {
+            throw new GuardException("Invalid player token");
+        }
+
         Question currentQuestion = getCurrentQuestion(optionalGame.get());
 
         boolean hasAnswered = currentQuestion.getAnswers().stream()
@@ -181,10 +214,11 @@ class GameController {
             throw new GuardException("You already answered the question");
         }
         new Answer(currentQuestion, optionalPlayer.get(), answer);
+
         return createSuccessResponse("Your answer was submitted.");
     }
 
-    String givePoints(int gameCode, String giverName, String targetName) {
+    String givePoints(int gameCode, String giverName, String targetName, String token) {
         // TODO Need Question Number
         Optional<Game> optionalGame = findGame(gameCode);
 
@@ -199,12 +233,20 @@ class GameController {
         Optional<Player> optionalGiver = findPlayer(game, giverName);
         Optional<Player> optionalTarget = findPlayer(game, targetName);
 
-        if (!optionalGiver.isPresent() || !optionalTarget.isPresent()) { // TODO Different exceptions for giver/target
-            throw new GuardException("Wrong username was given");
+        if (!optionalGiver.isPresent()) {
+            throw new GuardException("Invalid evaluation author username given");
+        }
+
+        if (!optionalTarget.isPresent()) {
+            throw new GuardException("Invalid evaluation target username given");
         }
 
         Player giver = optionalGiver.get();
         Player target = optionalTarget.get();
+
+        if (!giver.getToken().equals(token)) {
+            throw new GuardException("Invalid player token");
+        }
 
         if (giver == target) {
             throw new GuardException("You cannot give points to yourself");
@@ -222,14 +264,19 @@ class GameController {
         }
 
         new Evaluation(currentQuestion, giver, target);
+
         return createSuccessResponse("Your points were given to " + targetName);
     }
 
-    String removePlayer(int gameCode, String playerName) {
+    String removePlayer(int gameCode, String playerName, String token) {
         Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Did not find such game with game code: " + gameCode);
+        }
+
+        if (!optionalGame.get().getToken().equals(token)) {
+            throw new GuardException("Invalid game token");
         }
 
         guard.checkRemovePlayer(optionalGame.get());
@@ -245,11 +292,15 @@ class GameController {
         return createSuccessResponse("Player successfully removed: " + playerName);
     }
 
-    String getPlayers(int gameCode) {
+    String getPlayers(int gameCode, String gameOrPlayerToken) {
         Optional<Game> optionalGame = findGame(gameCode);
 
         if (!optionalGame.isPresent()) {
             throw new GuardException("Did not find such game with game code: " + gameCode);
+        }
+
+        if (!validToken(optionalGame.get(), gameOrPlayerToken)) {
+            throw new GuardException("Invalid game or player token");
         }
 
         guard.checkGetPlayers(optionalGame.get());
@@ -260,6 +311,44 @@ class GameController {
                 .put("Action", "GetPlayers")
                 .put("Players", players)
                 .toString();
+    }
+
+    String getPlainQuestions() {
+        JSONArray questions = new JSONArray();
+        database.getPlainQuestions().forEach(question -> questions.put(new JSONObject()
+                    .put("Id", question.getQuestion().getId())
+                    .put("Text", question.getText())));
+        return new JSONObject()
+                .put("Action", "GetQuestions")
+                .put("Questions", questions)
+                .toString();
+    }
+
+    String addPlainQuestion(String text) {
+        if (addUniqueQuestion(text)) {
+            return createSuccessResponse("Question successfully added");
+        }
+        throw new GuardException("Cannot add the same question multiple times");
+    }
+
+    String deletePlainQuestion(long uniqueId) {
+        if (deleteQuestion(uniqueId)) {
+            return createSuccessResponse("Question successfully deleted");
+        }
+        throw new GuardException("Invalid question ID provided, a question with the ID " + uniqueId + " does not " +
+                "exist");
+    }
+
+    String updatePlainQuestion(long uniqueId, String text) {
+        Optional<PlainQuestion> question = getPlainQuesion(uniqueId);
+        if (!question.isPresent()) {
+            throw new GuardException("Question with id " + uniqueId + " does not exist");
+        }
+        if (!canAddUniqueQuestion(text)) {
+            throw new GuardException("Cannot change to the given text because a question like this already exists");
+        }
+        question.get().setText(text);
+        return createSuccessResponse("Successfully updated question");
     }
 
     // private methods
@@ -355,10 +444,7 @@ class GameController {
         try (InputStream inStr = resourceLoader.getResource("classpath:" + gameConfig.getQuestionsFile()).getInputStream()) {
             try (InputStreamReader reader = new InputStreamReader(inStr)) {
                 try (BufferedReader bufferedReader = new BufferedReader(reader)) {
-                    bufferedReader.lines().forEach(line -> {
-                        new PlainQuestion(database, line);
-                        log.info("Created new plain question: " + line);
-                    });
+                    bufferedReader.lines().forEach(this::addUniqueQuestion);
                 }
             }
         } catch (IOException e) {
@@ -375,5 +461,92 @@ class GameController {
         }
 
         return runner.get().getTimeLeftSeconds();
+    }
+
+    private boolean addUniqueQuestion(String text) {
+        if (!canAddUniqueQuestion(text)) {
+            log.debug("Could not add an already existing question: " + text);
+            return false;
+        }
+        new PlainQuestion(database, text);
+        log.info("Created new plain question: " + text);
+        return true;
+    }
+
+    private boolean canAddUniqueQuestion(String text) {
+        Optional<PlainQuestion> question = database.getPlainQuestions().stream()
+                .filter(q -> q.getText().equalsIgnoreCase(text))
+                .findAny();
+        return !question.isPresent();
+    }
+
+    private boolean deleteQuestion(long uniqueId) {
+        Optional<PlainQuestion> question = database.getPlainQuestions().stream()
+                .filter(q -> q.getQuestion().getId() == uniqueId)
+                .findAny();
+        question.ifPresent(q -> {
+            database.getPlainQuestions().remove(q);
+            database.getPlainQuestionsRepository().deleteById(uniqueId);
+        });
+        return question.isPresent();
+    }
+
+    private Optional<PlainQuestion> getPlainQuesion(long uniqueId) {
+        return database.getPlainQuestions().stream()
+                .filter(q -> q.getQuestion().getId() == uniqueId)
+                .findAny();
+    }
+
+    private boolean validPlayerToken(Game game, String token) {
+        for (Player player : game.getPlayers()) {
+            if (player.getToken().equals(token)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean validToken(Game game, String token) {
+        return game.getToken().equals(token) || validPlayerToken(game, token);
+    }
+
+    private boolean hasEveryoneAnswered(Game game) {
+        Set<Player> answerers = getCurrentQuestion(game).getAnswers().stream()
+                .map(Answer::getPlayer)
+                .collect(Collectors.toSet());
+        Set<Player> players = new HashSet<>(game.getPlayers());
+        if (answerers.size() != players.size()) {
+            return false;
+        }
+        for (Player answerer : answerers) {
+            if (!players.contains(answerer)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean canGrade(Player player, Question question) {
+        return question.getAnswers().stream()
+                .anyMatch(a -> a.getPlayer() != player);
+    }
+
+    private boolean hasEveryoneGraded(Game game) {
+        Question question = getCurrentQuestion(game);
+        Set<Player> graders = question.getEvaluations().stream()
+                .map(Evaluation::getGiver)
+                .collect(Collectors.toSet());
+        Set<Player> players = game.getPlayers().stream()
+                .filter(player -> canGrade(player, question))
+                .collect(Collectors.toSet());
+        if (graders.size() != players.size()) {
+            return false;
+        }
+        for (Player grader : graders) {
+            if (!players.contains(grader)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
