@@ -74,6 +74,18 @@
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           console.log("Lobby - checkIfGameShouldStart: ");
           console.log(response);
+          if (response.body.State === "Inactive") {
+            localStorage.clear();
+            window.clearInterval(window.interval);
+            this.$store.state.Authorization = "";
+            this.$store.state.username = "";
+            this.$store.state.gameCode = 0;
+            this.$store.state.questionNumber = 0;
+            this.$store.state.lastQuestion = "";
+            this.$store.state.registrations = [];
+            this.$store.state.token = "";
+            this.$router.replace('/')
+          }
           if (response.body.State === "Answering") {
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);
@@ -94,6 +106,18 @@
         let requestData = {Action: "FetchState", "Code": this.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
+            if (response.body.State === "Inactive") {
+              localStorage.removeItem("token");
+              window.clearInterval(window.interval);
+              this.$store.state.Authorization = "";
+              this.$store.state.username = "";
+              this.$store.state.gameCode = 0;
+              this.$store.state.questionNumber = 0;
+              this.$store.state.lastQuestion = "";
+              this.$store.state.registrations = [];
+              this.$store.state.token = "";
+              this.$router.replace('/')
+            }
             console.log("Lobby - loadPlayers");
             console.log(response);
             if (this.items !== response.body.Data.length) {
@@ -122,6 +146,18 @@
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           console.log("Lobby - startGame: ");
           console.log(response);
+          if (response.body.State === "Inactive") {
+            localStorage.removeItem("token");
+            window.clearInterval(window.interval);
+            this.$store.state.Authorization = "";
+            this.$store.state.username = "";
+            this.$store.state.gameCode = 0;
+            this.$store.state.questionNumber = 0;
+            this.$store.state.lastQuestion = "";
+            this.$store.state.registrations = [];
+            this.$store.state.token = "";
+            this.$router.replace('/')
+          }
           if (response.body.State === "Answering") {
             window.clearInterval(window.gameStatusInterval);
             window.clearInterval(window.loadPlayerInterval);

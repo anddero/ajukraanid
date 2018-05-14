@@ -40,7 +40,7 @@
           console.log("Question - checkGameState: ");
           console.log(response);
           if (response.body.State === "Inactive") {
-            localStorage.removeItem("token");
+            localStorage.clear()
             window.clearInterval(window.interval);
             this.$store.state.Authorization = "";
             this.$store.state.username = "";

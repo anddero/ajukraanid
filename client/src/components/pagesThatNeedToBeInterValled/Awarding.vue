@@ -32,7 +32,7 @@
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === "Inactive") {
-            localStorage.removeItem("token");
+            localStorage.clear()
             window.clearInterval(window.interval);
             this.$store.state.Authorization = "";
             this.$store.state.username = "";
