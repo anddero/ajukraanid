@@ -5,7 +5,7 @@ import ee.ttu.idk0071.ajukraanid.database.sync.Entry;
 import ee.ttu.idk0071.ajukraanid.util.StringUtilities;
 import lombok.Getter;
 
-public final class PlainQuestion extends Entry {
+public class PlainQuestion extends Entry {
     // inaccessible
     private final Database database;
     @Getter private PlainQuestions question;

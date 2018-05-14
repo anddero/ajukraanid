@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
-public final class Database extends Entry {
+public class Database extends Entry {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     // inaccessible internal repositories
     private final GamesRepository gamesRepository;

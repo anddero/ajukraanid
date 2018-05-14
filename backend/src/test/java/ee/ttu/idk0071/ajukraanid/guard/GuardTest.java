@@ -31,7 +31,7 @@ class GuardTest {
     @Test
     void testCheckJoinGameWhileLobby() {
         Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
-        guard.checkJoinGame(game);
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
     }
 
     @Test
@@ -56,12 +56,16 @@ class GuardTest {
 
     @Test
     void testCheckJoinGameSucceed() {
+        GameConfig config = Mockito.mock(GameConfig.class);
+        Mockito.when(config.getMaximumPlayers()).thenReturn(10);
+        game = Mockito.mock(Game.class);
+
         Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
 
-        Mockito.when(game.getPlayers()).thenReturn(getPlayers(5));
-        guard.checkJoinGame(game);
+        Mockito.when(game.getPlayers()).thenReturn(getPlayers(11));
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
 
-        Mockito.when(game.getPlayers()).thenReturn(getPlayers(2));
-        guard.checkJoinGame(game);
+        Mockito.when(game.getPlayers()).thenReturn(getPlayers(9));
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
     }
 }

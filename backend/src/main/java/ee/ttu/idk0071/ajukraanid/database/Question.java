@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-public final class Question extends Entry {
+public class Question extends Entry {
     // inaccessible
     private final Game game;
     private Questions question;
