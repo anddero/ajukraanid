@@ -41,8 +41,9 @@
       },
       getPlayers () {
         var gameCode = localStorage.getItem('gamecode')
-        let requestData = {Action: 'GetPlayers', 'Code': gameCode}
+        let requestData = {Action: 'GetPlayers', 'Code': gameCode, "Token": this.$store.state.token}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          console.log("Menu - getPlayers: " + response)
           var playerName = localStorage.getItem('playername')
           var players = response.body.Players
           console.log('Players')
@@ -59,7 +60,8 @@
     created: function () {
       if (localStorage.getItem('gamecode') !== null) {
         var gameCode = localStorage.getItem('gamecode')
-        var requestData = {Action: 'FetchState', 'Code': gameCode}
+        var requestData = {Action: 'FetchState', 'Code': gameCode, "Token": localStorage.getItem("token")}
+        this.$store.state.token = localStorage.getItem("token");
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State !== 'Error' && response.body.State !== 'Inactive') {
             localStorage.setItem('gamestate', response.body.State)

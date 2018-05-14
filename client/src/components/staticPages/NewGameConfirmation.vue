@@ -36,6 +36,10 @@
         let requestData = {Action: 'CreateGame'}
         this.$http.post(this.$store.state.requestDestination, requestData)
           .then(function (response) {
+            console.log("NewGameConfirmation - createGame: ");
+            console.log(response.body.Token);
+            localStorage.setItem("token", response.body.Token.toString());
+            this.$store.state.token = response.body.Token.toString();
             if (response.body.State === 'Error') {
               this.alert = "Error: " + response.body.Data
               console.log('Error: ' + response.body.Data)
@@ -53,8 +57,10 @@
     },
 
     created: function () {
-      let requestData = {Action: 'GetQuestion', 'Code': this.$store.state.gameCode}
+      let requestData = {Action: 'GetQuestion', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+        console.log("NewGameConfirmation - created: ");
+        console.log(response);
         this.question = response.body.Data
       })
     }

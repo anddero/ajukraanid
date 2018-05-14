@@ -16,7 +16,8 @@ export const store = new Vuex.Store({
     gameCode: 0,
     questionNumber: 0,
     lastQuestion: '',
-    registrations: []
+    registrations: [],
+    token: ""
   },
   mutations,
   actions

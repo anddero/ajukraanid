@@ -48,7 +48,8 @@
           Action: 'GivePoints',
           'Code': this.gameCode,
           Name: this.$store.state.username,
-          Target: Awardee
+          Target: Awardee,
+          Token: this.$store.state.token,
         }
         this.$http.post(this.$store.state.requestDestination, requestData)
         console.log('Moving to ' + '/waitingScreen1' + ' from /choosebestAnswer')
@@ -57,7 +58,7 @@
       },
 
       checkIfGameShouldStart() {
-        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode}
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === 'Results') {
             window.clearInterval(window.interval)
@@ -90,7 +91,7 @@
 
     created: function () {
       this.setIntervalThatChecksIfGameShouldStart()
-      let requestData = {Action: 'FetchState', 'Code': this.gameCode}
+      let requestData = {Action: 'FetchState', 'Code': this.gameCode, "Token": this.$store.state.token}
       this.$http.post(this.$store.state.requestDestination, requestData)
         .then(function (response) {
           this.questions = response.body.Data.Answers

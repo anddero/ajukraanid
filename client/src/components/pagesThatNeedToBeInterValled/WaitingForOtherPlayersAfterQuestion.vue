@@ -22,7 +22,7 @@
         this.$router.replace('/')
       },
       checkGameState() {
-        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode};
+        let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
           if (response.body.State === 'Results') {
             window.clearInterval(window.interval);
@@ -36,7 +36,7 @@
       },
     },
     created: function () {
-      let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode}
+      let requestData = {Action: "GetQuestion", "Code": this.$store.state.gameCode, "Token": this.$store.state.token}
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
         this.question = response.body.Data
       })

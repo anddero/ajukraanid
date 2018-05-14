@@ -45,7 +45,7 @@
         this.$router.replace('/')
       },
       deleteQuestion(question) {
-        let requestData = {Action: "DeleteQuestion",  Id: question.Id}
+        let requestData = {Action: "DeleteQuestion",  Id: question.Id, "Token": localStorage.getItem("token")}
         this.$http.post(this.$store.state.adminDestination, requestData, {
           headers: {
             Authorization: this.$store.state.Authorization //the token is a variable which holds the token
@@ -63,7 +63,7 @@
       },
 
       updateQuestion(question, newText) {
-        let requestData = {Action: "UpdateQuestion",  Id: question.Id, Text: newText}
+        let requestData = {Action: "UpdateQuestion",  Id: question.Id, Text: newText, "Token": localStorage.getItem("token")}
         this.$http.post(this.$store.state.adminDestination, requestData, {
           headers: {
             Authorization: this.$store.state.Authorization //the token is a variable which holds the token
@@ -81,7 +81,7 @@
       },
 
       createQuestion() {
-        let requestData = {Action: "AddQuestion", data: this.message,  Text: this.message}
+        let requestData = {Action: "AddQuestion", data: this.message,  Text: this.message, "Token": localStorage.getItem("token")}
         this.$http.post(this.$store.state.adminDestination, requestData, {
           headers: {
             Authorization: this.$store.state.Authorization //the token is a variable which holds the token
@@ -102,7 +102,7 @@
     },
     created: function () {
       // axios.defaults.headers.common['Authorization'] =  this.$store.state.Authorization
-      let requestData = {"Action": "GetQuestions"}
+      let requestData = {"Action": "GetQuestions", "Token": localStorage.getItem("token")}
       this.$http.post(this.$store.state.adminDestination, requestData, {
         headers: {
           Authorization: this.$store.state.Authorization //the token is a variable which holds the token

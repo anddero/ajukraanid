@@ -35,8 +35,22 @@
 
     methods: {
       checkGameState() {
-        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+        let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          console.log("Question - checkGameState: ");
+          console.log(response);
+          if (response.body.State === "Inactive") {
+            localStorage.removeItem("token");
+            window.clearInterval(window.interval);
+            this.$store.state.Authorization = "";
+            this.$store.state.username = "";
+            this.$store.state.gameCode = 0;
+            this.$store.state.questionNumber = 0;
+            this.$store.state.lastQuestion = "";
+            this.$store.state.registrations = [];
+            this.$store.state.token = "";
+            this.$router.replace('/')
+          }
           if (response.body.State === "Results") {
             window.clearInterval(window.interval);
             console.log("Moving to " + "/Results" + " from /Answering");
@@ -64,10 +78,13 @@
           "Code": this.$store.state.gameCode,
 
           "Name": this.$store.state.username,
-          "Answer": this.answer
+          "Answer": this.answer,
+          "Token": this.$store.state.token
         };
         let q = "";
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
+          console.log("Question - routeToWaitingScreen: ");
+          console.log(response);
           this.$router.replace('/waitingScreen1')
         });
         window.clearInterval(window.interval);
@@ -88,9 +105,10 @@
 
     created: function () {
       this.setIntervalThatChecksGameState();
-      let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode};
+      let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
       this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-        console.log(response.body)
+        console.log("Question - created: ");
+        console.log(response);
         this.$store.dispatch('setLastQuestion', response.body.Data.Question);
         this.question = response.body.Data.Question
       })
