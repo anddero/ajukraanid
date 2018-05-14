@@ -12,7 +12,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static ee.ttu.idk0071.ajukraanid.auth.SecurityConstants.SIGN_UP_URL;
 
-
 @EnableWebSecurity
 public class WebSecurityConf extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;

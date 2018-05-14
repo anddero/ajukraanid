@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database.internal;
-//
+
 import lombok.Getter;
 import lombok.Setter;
 

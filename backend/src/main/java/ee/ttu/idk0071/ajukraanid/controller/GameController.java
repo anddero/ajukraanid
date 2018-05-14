@@ -233,8 +233,12 @@ public class GameController {
         Optional<Player> optionalGiver = findPlayer(game, giverName);
         Optional<Player> optionalTarget = findPlayer(game, targetName);
 
-        if (!optionalGiver.isPresent() || !optionalTarget.isPresent()) { // TODO Different exceptions for giver/target
-            throw new GuardException("Wrong username was given");
+        if (!optionalGiver.isPresent()) {
+            throw new GuardException("Invalid evaluation author username given");
+        }
+
+        if (!optionalTarget.isPresent()) {
+            throw new GuardException("Invalid evaluation target username given");
         }
 
         Player giver = optionalGiver.get();
@@ -461,6 +465,7 @@ public class GameController {
 
     private boolean addUniqueQuestion(String text) {
         if (!canAddUniqueQuestion(text)) {
+            log.debug("Could not add an already existing question: " + text);
             return false;
         }
         new PlainQuestion(database, text);

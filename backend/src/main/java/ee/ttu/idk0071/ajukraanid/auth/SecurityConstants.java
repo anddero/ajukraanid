@@ -1,4 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.auth;
+
 public class SecurityConstants {
     public static final String SECRET = "AjUkRAaNiD";
     public static final long EXPIRATION_TIME = 864_000_00; // 1 day

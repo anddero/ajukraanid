@@ -1,5 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.guard;
-//
+
 import ee.ttu.idk0071.ajukraanid.config.GameConfig;
 import ee.ttu.idk0071.ajukraanid.database.Game;
 import ee.ttu.idk0071.ajukraanid.database.Player;
@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GuardTest {
     private final Guard guard = new Guard(Mockito.mock(GameConfig.class));
@@ -25,43 +25,43 @@ class GuardTest {
 
     @BeforeEach
     void startUp() {
-        /*game = Mockito.mock(Game.class);*/
+        game = Mockito.mock(Game.class);
     }
 
     @Test
     void testCheckJoinGameWhileLobby() {
-        /*Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
-        guard.checkJoinGame(game);*/
+        Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
+        guard.checkJoinGame(game);
     }
 
     @Test
     void testCheckJoinGameWhileOther() {
-        /*for (Game.State state : Game.State.values()) {
+        for (Game.State state : Game.State.values()) {
             if (state == Game.State.LOBBY) continue;
             Mockito.when(game.getGameState()).thenReturn(state);
             assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
-        }*/
+        }
     }
 
     @Test
     void testCheckJoinGameWhileFull() {
-        /*Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
+        Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
 
         Mockito.when(game.getPlayers()).thenReturn(getPlayers(30));
         assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
 
         Mockito.when(game.getPlayers()).thenReturn(getPlayers(20));
-        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));*/
+        assertThrows(GuardException.class, () -> guard.checkJoinGame(game));
     }
 
     @Test
     void testCheckJoinGameSucceed() {
-        /*Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
+        Mockito.when(game.getGameState()).thenReturn(Game.State.LOBBY);
 
         Mockito.when(game.getPlayers()).thenReturn(getPlayers(5));
         guard.checkJoinGame(game);
 
         Mockito.when(game.getPlayers()).thenReturn(getPlayers(2));
-        guard.checkJoinGame(game);*/
+        guard.checkJoinGame(game);
     }
 }

@@ -1,6 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.database;
 
-
 import ee.ttu.idk0071.ajukraanid.controller.GameRunner;
 import ee.ttu.idk0071.ajukraanid.database.internal.Games;
 import ee.ttu.idk0071.ajukraanid.database.sync.Entry;

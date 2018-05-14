@@ -1,4 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.auth;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 

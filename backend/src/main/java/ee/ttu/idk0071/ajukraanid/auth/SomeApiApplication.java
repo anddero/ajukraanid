@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 public class SomeApiApplication {
 
-
     //Enable Global CORS support for the application
     @Bean
     public WebMvcConfigurer corsConfigurer() {

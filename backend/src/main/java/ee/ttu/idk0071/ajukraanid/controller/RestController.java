@@ -1,6 +1,5 @@
 package ee.ttu.idk0071.ajukraanid.controller;
 
-
 import ee.ttu.idk0071.ajukraanid.guard.GuardException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,13 +15,10 @@ import static ee.ttu.idk0071.ajukraanid.message.Message.createErrorResponse;
 public class RestController {
     private final GameController gameController;
 
-
     @Autowired
     private RestController(GameController gameController) {
         this.gameController = gameController;
     }
-
-
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST, value = "/api")
