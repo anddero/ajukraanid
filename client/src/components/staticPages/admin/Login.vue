@@ -42,8 +42,8 @@
       },
       login() {
         let requestData = {'username': this.username, 'password': this.password}
-        console.info(requestData)
-        this.$http.post(this.$store.state.adminDestination, requestData)
+        console.info(this.$store.state.loginDestination)
+        this.$http.post("http://18.188.242.2:8080/login", requestData)
           .then(response => {
             this.$store.dispatch('updateAuthorization', response.body.Authorization)
             this.$router.replace('/admin')

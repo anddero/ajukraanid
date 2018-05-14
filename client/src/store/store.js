@@ -11,11 +11,13 @@ export const store = new Vuex.Store({
     Authorization: '',
     requestDestination: process.env.requestDestination,
     adminDestination: process.env.adminDestination,
+    loginDestination: process.env.loginDestination,
     username: '',
     gameCode: 0,
     questionNumber: 0,
     lastQuestion: '',
-    registrations: []
+    registrations: [],
+    token: ""
   },
   mutations,
   actions

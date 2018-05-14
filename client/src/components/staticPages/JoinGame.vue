@@ -52,7 +52,9 @@
         } else {
           this.$http.post(this.$store.state.requestDestination, requestData)
             .then(function (response) {
-              console.log(response)
+              console.log(response.body.Token);
+              localStorage.setItem("token", response.body.Token.toString());
+              this.$store.state.token = response.body.Token.toString();
              if (response.body.State === 'Error') {
                 this.alert = response.body.Data;  //TODO game cant be inactive.
               } else {
