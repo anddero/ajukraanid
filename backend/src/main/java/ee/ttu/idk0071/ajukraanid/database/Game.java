@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public final class Game extends Entry {
+public class Game extends Entry {
     private static final int TOKEN_RAW_BYTE_COUNT = 64;
     private static final Random RANDOM = new Random();
     @RequiredArgsConstructor

@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class Player extends Entry {
+public class Player extends Entry {
     private static final Logger log = LoggerFactory.getLogger(Player.class);
     private static final int TOKEN_RAW_BYTE_COUNT = 64;
     private static final Random RANDOM = new Random();
