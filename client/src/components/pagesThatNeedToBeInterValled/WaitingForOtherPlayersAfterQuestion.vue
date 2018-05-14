@@ -1,7 +1,8 @@
 <template>
   <div class="about container">
     <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 5%; height: 60px; width: auto;"/>
-    <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/15sec.png" style="height: 60px; width: auto;"/>
+    <!--here come seconds-->
+    <b id="countdown">{{timeLeft}} seconds remaining</b>
     <br>
     <br>
     <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
@@ -14,7 +15,8 @@
     name: 'about',
     data() {
       return {
-        interval: ''
+        interval: '',
+        timeLeft: 30
       }
     },
     methods: {

@@ -72,8 +72,8 @@
       checkIfGameShouldStart() {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          console.log("Lobby - checkIfGameShouldStart: ");
-          console.log(response);
+          //console.log("Lobby - checkIfGameShouldStart: ");
+          //console.log(response);
           if (response.body.State === "Inactive") {
             localStorage.clear();
             window.clearInterval(window.interval);
@@ -118,8 +118,8 @@
               this.$store.state.token = "";
               this.$router.replace('/')
             }
-            console.log("Lobby - loadPlayers");
-            console.log(response);
+            //console.log("Lobby - loadPlayers");
+            //console.log(response);
             if (this.items !== response.body.Data.length) {
               this.items = this.$store.state.registrations;
               this.$store.dispatch('updatePlayers', response.body.Data);
@@ -144,8 +144,8 @@
       startGame() {
         let requestData = {Action: "StartGame", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          console.log("Lobby - startGame: ");
-          console.log(response);
+          //console.log("Lobby - startGame: ");
+          //console.log(response);
           if (response.body.State === "Inactive") {
             localStorage.removeItem("token");
             window.clearInterval(window.interval);
@@ -167,7 +167,7 @@
             console.log("Error: " + response.body.Data)
             this.alert = response.body.Data;
           }
-          console.log(response.body)
+          //console.log(response.body)
         });
       }
     },
