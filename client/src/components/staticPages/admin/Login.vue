@@ -41,7 +41,7 @@
         this.$router.replace('/')
       },
       login() {
-        let requestData = {'username': this.username, 'password': this.password, "Token": localStorage.getItem("token")}
+        let requestData = {'username': this.username, 'password': this.password}
         console.info(this.$store.state.loginDestination)
         this.$http.post("http://18.188.242.2:8080/login", requestData)
           .then(response => {
