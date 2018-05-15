@@ -11,7 +11,9 @@
     </div>
     <br>
     <br/>
-    <button @click="routeToIndex" class="myBtn" title="Go to top">Exit</button>
+    <div id="exitButton">
+      <button @click="routeToIndex" class="btn pull-right btn-danger" style="background-color: #ef9427;" title="Go to top">Exit</button>
+    </div>
   </div>
 
 </template>

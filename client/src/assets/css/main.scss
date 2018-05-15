@@ -137,7 +137,15 @@ html {
   font-size: 40px;
   text-align: center;
 }
+#exitButton {
+  padding-top: 40vh;
+  padding-right: 3vw;
+}
 @media screen and (min-width:320px) and (max-width:600px) {
+  #exitButton {
+    padding-top: 55vh;
+    padding-right: 7vw;
+  }
   #countdown2 {
     font-size: 20px !important;
   }
