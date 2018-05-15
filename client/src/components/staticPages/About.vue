@@ -13,7 +13,7 @@
     </div>
     <div class="container">
       <br>
-      <input type="image" id="myBtn" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
+      <input type="image" id="myBtn" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png"/>
     </div>
   </div>
 </template>
