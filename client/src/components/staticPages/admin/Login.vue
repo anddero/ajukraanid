@@ -3,7 +3,7 @@
 
 
     <div class="imgcontainer">
-      <img src="https://www.shareicon.net/data/2016/06/27/787465_man_512x512.png" alt="Avatar"  style="height: 35vh; width: 35vw" class="avatar">
+      <img src="https://www.shareicon.net/data/2016/06/27/787465_man_512x512.png" alt="Avatar"  style="height: 230px; width: 230px;" class="avatar">
     </div>
 
     <div class="container">
