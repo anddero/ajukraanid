@@ -11,7 +11,7 @@
     <div class="container">
       <Alert v-on:close-alert="closeAlert" v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>      <form v-on:submit.prevent="registerUser">
         <div class="well" style="width: 40%; text-align: center; margin-left: 30%;">
-          <input type="text" class="form-control" placeholder="Nickname" v-model="name" style="text-align: center" pattern="\w+|\s*\w+|\w+\s*" required="required">
+          <input type="text" class="form-control" placeholder="Nickname" v-model="name" style="text-align: center" pattern=".{1,}" required="required">
           <br/>
           <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode" style="text-align: center" pattern="\d{4}" required="required">
         </div>
