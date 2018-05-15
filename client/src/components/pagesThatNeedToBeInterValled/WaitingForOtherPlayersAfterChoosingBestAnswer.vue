@@ -1,7 +1,7 @@
 
 <template>
   <div class="about container">
-    <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 20%; height: 60px; width: auto;"/>
+    <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 40vh; height: 60px; width: auto;"/>
     <!--here come seconds-->
     <b id="countdown">{{timeLeft}} seconds remaining</b>
     <br>
@@ -34,6 +34,8 @@
             window.clearInterval(window.interval)
             console.log('Moving to ' + '/chooseBestAnswer' + ' from /waitingForOtherPlayers1111!')
             this.$router.replace('/grading')
+          } else {
+            this.timeLeft = response.body.Data.TimeLeft
           }
         })
       },

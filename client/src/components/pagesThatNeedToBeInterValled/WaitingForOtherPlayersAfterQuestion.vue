@@ -30,6 +30,8 @@
             window.clearInterval(window.interval);
             console.log('Moving to ' + '/Results' + ' from /waitingForOtherPlayers2')
             this.$router.replace('/results')
+          } else {
+            this.timeLeft = response.body.Data.TimeLeft
           }
         })
       },

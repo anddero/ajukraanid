@@ -9,7 +9,7 @@
         <br/>
         <input type="text" class="form-control" placeholder="Answer" v-model="answer">
       </div>
-      <b id="countdown">{{timeLeft}} seconds remaining</b>
+      <b id="countdown2">{{timeLeft}} seconds remaining</b>
       <button v-if="username !== 'host'" style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton4' class='btn center-block .btn-lg' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/submit.png'></button>
 
     </form>

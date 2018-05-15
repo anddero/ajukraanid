@@ -3,11 +3,11 @@
   <div id="summary">
     <div v-if="username !== 'host'">
       <div class="summary">
-        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer_player.png" style="margin-top: 8%;"/>
+        <img id="menubutton1" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/choosebestanswer_player.png" style="margin-top: 20vh;"/>
         <h5></h5>
       </div>
       <hr>
-     <b id="seconds"> {{timeLeft}}  seconds remaining </b>
+     <b id="seconds2"> {{timeLeft}}  seconds remaining </b>
       <form v-on:submit.prevent="registerUser" style="margin-top: 2%;">
         <div v-for="item in this.questions">
           <button v-if="item.Name!==username" @click="awardPlayer(item.Name)" type="button" class="btn btn-success center-block">
@@ -19,11 +19,11 @@
       <br/>
     </div>
     <div v-if="username === 'host'">
-      <img id="menubutton13" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/answers.png" style="margin-top: 2%; height: 60px; width: auto;"/>
+      <img id="menubutton13" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/answers.png" style="margin-top: 20vh; height: 60px; width: auto;"/>
       <h3 id="text" class="center-block" style="padding-right: 14%;">{{this.$store.state.lastQuestion}}</h3>
       <br>
       <div v-for="item in this.questions">
-        <h3 style=" margin-right: 30%; padding-left: 23%;" id="text" class="center-block">{{item.Answer}} </h3>
+        <h3 style=" margin-right: 30%; padding-left: 23%; color: red;" id="text" class="center-block">{{item.Answer}} </h3>
         <br/>
       </div>
     </div>

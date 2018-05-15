@@ -105,16 +105,36 @@ html {
   font-size: 25px; margin-left: 50%;
 }
 #seconds {
-  font-size: 20px;
+  font-size: 40px;
   text-align: center;
   margin-left: 42%;
 }
 #countdown {
   font-size: 40px;
+  text-align: center;
+  padding-left: 23vw;
+}
+#seconds2 {
+  font-size: 40px;
+  text-align: center;
+  padding-left: 37vw;
+}
+#countdown2 {
+  font-size: 40px;
+  text-align: center;
 }
 @media screen and (min-width:320px) and (max-width:600px) {
+  #countdown2 {
+    font-size: 20px !important;
+  }
+  #seconds2 {
+    font-size: 20px;
+    text-align: center;
+    padding-left: 23vw;
+  }
   #countdown {
     font-size: 20px !important;
+    padding-left: 15vw !important;
   }
   #menu img {
     margin-top: 30%;
