@@ -1,9 +1,8 @@
 
 <template>
   <div class="alert alert-warning alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+    <button  v-on:mousedown="close" class="close" data-dismiss="alert" aria-label="Close"><span   aria-hidden="true">&times;</span>
     </button>
-
     {{message}}
   </div>
 </template>
@@ -15,6 +14,11 @@
     props: ['message'],
     data () {
       return {}
+    },
+    methods: {
+      close: function () {
+       this.$emit('close-alert')
+      }
     }
   }
 </script>

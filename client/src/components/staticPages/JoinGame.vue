@@ -9,8 +9,7 @@
       </div>
     </div>
     <div class="container">
-      <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
-      <form v-on:submit.prevent="registerUser">
+      <Alert v-on:close-alert="closeAlert" v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>      <form v-on:submit.prevent="registerUser">
         <div class="well" style="width: 40%; text-align: center; margin-left: 30%;">
           <input type="text" class="form-control" placeholder="Nickname" v-model="name" style="text-align: center" pattern="\w+|\s*\w+|\w+\s*" required="required">
           <br/>
@@ -37,6 +36,10 @@
       }
     },
     methods: {
+      closeAlert () {
+        console.log("Should close alert")
+        this.alert = ''
+      },
       routeToIndex () {
         localStorage.clear();
         window.clearInterval(window.interval);

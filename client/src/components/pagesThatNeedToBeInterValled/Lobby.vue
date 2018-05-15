@@ -32,7 +32,7 @@
           </div>
         </transition-group>
       </div>
-      <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
+      <Alert v-on:close-alert="closeAlert" v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
       <br>
       <input type="image" id="menubutton2" @click="startGame()"
              src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/startgame.png" class="btn center-block .btn-lg"/>
@@ -53,6 +53,7 @@
         </transition-group>
       </div>
     </div>
+    <button @click="routeToIndex" class="myBtn" title="Go to top">Exit</button>
   </div>
 </template>
 
@@ -71,6 +72,22 @@
     },
 
     methods: {
+      routeToIndex () {
+        localStorage.clear();
+        window.clearInterval(window.interval);
+        this.$store.state.Authorization = "";
+        this.$store.state.username = "";
+        this.$store.state.gameCode = 0;
+        this.$store.state.questionNumber = 0;
+        this.$store.state.lastQuestion = "";
+        this.$store.state.registrations = [];
+        this.$store.state.token = "";
+        this.$router.replace('/')
+      },
+      closeAlert () {
+        console.log("Should close alert")
+        this.alert = ''
+      },
       checkIfGameShouldStart() {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {

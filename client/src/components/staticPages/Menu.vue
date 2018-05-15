@@ -7,12 +7,17 @@
     <input id="menubutton1" class="btn center-block .btn-lg" type="image" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/createanewgame.png" @click="routeToGameConfirmation"/>
     <input id="menubutton2" type="image" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/joinagame.png" @click="routeToRegistration" class="btn center-block .btn-lg"/>
     <input id="menubutton3" @click="routeToAbout" class="btn center-block .btn-lg btn" type="image" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/about.png"/>
+
+
     <button @click="routeToLogin" id="myBtn" title="Go to top">Admin</button>
   </div>
 </template>
 <script>
   export default {
     methods: {
+      routeTest () {
+        this.$router.replace('/test')
+      },
       routeToGameConfirmation () {
         this.$router.replace('/newGameConfirmation')
       },

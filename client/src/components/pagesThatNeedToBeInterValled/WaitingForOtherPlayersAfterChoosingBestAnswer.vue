@@ -5,6 +5,7 @@
     <b id="countdown">{{timeLeft}} seconds remaining</b>
     <br>
     <br>
+    <button @click="routeToIndex" class="myBtn" title="Go to top">Exit</button>
   </div>
 </template>
 
@@ -20,6 +21,18 @@
     },
 
     methods: {
+      routeToIndex () {
+        localStorage.clear();
+        window.clearInterval(window.interval);
+        this.$store.state.Authorization = "";
+        this.$store.state.username = "";
+        this.$store.state.gameCode = 0;
+        this.$store.state.questionNumber = 0;
+        this.$store.state.lastQuestion = "";
+        this.$store.state.registrations = [];
+        this.$store.state.token = "";
+        this.$router.replace('/')
+      },
       routeTo (state) {
         console.log('Moving to ' + state + ' from waitingForOtherPlayers1')
         window.clearInterval(window.interval)

@@ -5,7 +5,7 @@
     <div class="imgcontainer">
       <img src="https://www.shareicon.net/data/2016/06/27/787465_man_512x512.png" alt="Avatar"  style="height: 230px; width: 230px;" class="avatar">
     </div>
-
+    <Alert v-on:close-alert="closeAlert" v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
     <div class="container">
       <label><b>Username</b></label>
       <input v-model="username" type="text" placeholder="Enter Username"  required  autocomplete="off">
@@ -24,14 +24,16 @@
 
 <script>
   import Question from '../admin/DatabaseQuestion'
+  import Alert from '../Alert'
 
   export default {
     name: 'about',
     components: {
-      Question
+      Question, Alert
     },
     data() {
       return {
+        alert: '',
         username: '',
         password: ''
       }
@@ -54,11 +56,19 @@
         console.info(this.$store.state.loginDestination)
         this.$http.post("http://18.188.242.2:8080/login", requestData)
           .then(response => {
+            this.alert = 'EERRERE'
             this.$store.dispatch('updateAuthorization', response.body.Authorization)
             this.$router.replace('/admin')
 
-          })
+          }).catch(error => {
+          console.log(error)
+          this.alert ='Error: ' + error.body.error
+        })
 
+      },
+      closeAlert () {
+        console.log("Should close alert")
+        this.alert = ''
       }
 
     },

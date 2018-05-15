@@ -27,6 +27,7 @@
         <br/>
       </div>
     </div>
+    <button @click="routeToIndex" class="myBtn" title="Go to top">Exit</button>
   </div>
 </template>
 
@@ -43,6 +44,18 @@
     },
 
     methods: {
+      routeToIndex () {
+        localStorage.clear();
+        window.clearInterval(window.interval);
+        this.$store.state.Authorization = "";
+        this.$store.state.username = "";
+        this.$store.state.gameCode = 0;
+        this.$store.state.questionNumber = 0;
+        this.$store.state.lastQuestion = "";
+        this.$store.state.registrations = [];
+        this.$store.state.token = "";
+        this.$router.replace('/')
+      },
       awardPlayer(Awardee) {
         let requestData = {
           Action: 'GivePoints',

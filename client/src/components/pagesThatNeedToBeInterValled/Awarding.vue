@@ -7,10 +7,11 @@
     </div>
     <hr>
     <div >
-      <column-chart :data="pointsForGraph"></column-chart>
+      <column-chart :library="{backgroundColor: '#eee'}" xtitle="Players" ytitle="Points" :colors="['#8b0000', '#666']" :discrete="true" :data="pointsForGraph" style="height: 65vh"></column-chart>
     </div>
     <br>
     <br/>
+    <button @click="routeToIndex" class="myBtn" title="Go to top">Exit</button>
   </div>
 
 </template>
@@ -28,6 +29,18 @@
     },
 
     methods: {
+      routeToIndex () {
+        localStorage.clear();
+        window.clearInterval(window.interval);
+        this.$store.state.Authorization = "";
+        this.$store.state.username = "";
+        this.$store.state.gameCode = 0;
+        this.$store.state.questionNumber = 0;
+        this.$store.state.lastQuestion = "";
+        this.$store.state.registrations = [];
+        this.$store.state.token = "";
+        this.$router.replace('/')
+      },
       checkGameState () {
         let requestData = {Action: 'FetchState', 'Code': this.$store.state.gameCode, "Token": this.$store.state.token}
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
