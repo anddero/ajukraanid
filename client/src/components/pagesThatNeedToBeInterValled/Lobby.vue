@@ -32,15 +32,16 @@
           </div>
         </transition-group>
       </div>
+      <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
       <br>
       <input type="image" id="menubutton2" @click="startGame()"
              src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/startgame.png" class="btn center-block .btn-lg"/>
     </div>
     <div v-if="username !== 'host'">
       <div class="container" style="padding-top: 10%;">
+        <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
         <transition-group class="ui horizontal list" name="list" tag="p">
           <div v-for="registration in items" :key="registration" class="row">
-
             <div class="center-block"><b><h3 align="center" style='font-family: "Comic Sans MS", cursive, sans-serif;
               font-style: italic;
               font-weight: bold;
@@ -57,6 +58,7 @@
 
 <script>
   import('../../assets/css/main.scss');
+  import Alert from '../staticPages/Alert'
   export default {
 
     data() {
@@ -64,7 +66,7 @@
         items: [],
         loadPlayerInterval: "",
         gameStatusInterval: "",
-
+        alert: ''
       }
     },
 
@@ -72,8 +74,6 @@
       checkIfGameShouldStart() {
         let requestData = {Action: "FetchState", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          //console.log("Lobby - checkIfGameShouldStart: ");
-          //console.log(response);
           if (response.body.State === "Inactive") {
             localStorage.clear();
             window.clearInterval(window.interval);
@@ -117,12 +117,14 @@
               this.$store.state.registrations = [];
               this.$store.state.token = "";
               this.$router.replace('/')
-            }
-            //console.log("Lobby - loadPlayers");
-            //console.log(response);
-            if (this.items !== response.body.Data.length) {
-              this.items = this.$store.state.registrations;
-              this.$store.dispatch('updatePlayers', response.body.Data);
+            } else if (response.body.State === "Error") {
+              this.alert = '';
+              this.alert = response.body.Data;
+            } else {
+              if (this.items !== response.body.Data.length) {
+                this.items = this.$store.state.registrations;
+                this.$store.dispatch('updatePlayers', response.body.Data);
+              }
             }
           });
       },
@@ -144,8 +146,6 @@
       startGame() {
         let requestData = {Action: "StartGame", "Code": this.$store.state.gameCode, "Token": this.$store.state.token};
         this.$http.post(this.$store.state.requestDestination, requestData).then(function (response) {
-          //console.log("Lobby - startGame: ");
-          //console.log(response);
           if (response.body.State === "Inactive") {
             localStorage.removeItem("token");
             window.clearInterval(window.interval);
@@ -167,9 +167,11 @@
             console.log("Error: " + response.body.Data)
             this.alert = response.body.Data;
           }
-          //console.log(response.body)
         });
       }
+    },
+    components: {
+      Alert
     },
 
     computed: {

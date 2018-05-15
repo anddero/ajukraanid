@@ -12,9 +12,9 @@
       <Alert v-if="alert" v-bind:message="alert" style="width: 40%; text-align: center; margin-left: 30%;"/>
       <form v-on:submit.prevent="registerUser">
         <div class="well" style="width: 40%; text-align: center; margin-left: 30%;">
-          <input type="text" class="form-control" placeholder="Nickname" v-model="name" style="text-align: center">
+          <input type="text" class="form-control" placeholder="Nickname" v-model="name" style="text-align: center" pattern="\w+|\s*\w+|\w+\s*" required="required">
           <br/>
-          <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode" style="text-align: center" pattern="\d{4}">
+          <input type="text" class="form-control" placeholder="Gamecode" v-model="gameCode" style="text-align: center" pattern="\d{4}" required="required">
         </div>
         <button style="background-color: transparent; outline: none;" type="submit" class="btn center-block .btn-lg"><img id='menubutton3' src='http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/join.png'></button>
         <input type="image" id="menubutton1" @click="routeToIndex()" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/backtomainmenu.png" class="btn center-block .btn-lg"/>
@@ -52,12 +52,15 @@
         } else {
           this.$http.post(this.$store.state.requestDestination, requestData)
             .then(function (response) {
-              console.log(response.body.Token);
-              localStorage.setItem("token", response.body.Token.toString());
-              this.$store.state.token = response.body.Token.toString();
+              //console.log(response);
              if (response.body.State === 'Error') {
+                console.log("error");
+                this.alert = '';
                 this.alert = response.body.Data;  //TODO game cant be inactive.
               } else {
+               localStorage.setItem("token", response.body.Token.toString());
+               this.$store.state.token = response.body.Token.toString();
+                console.log("nope");
                 this.$store.dispatch('setGameCode', this.$data.gameCode)
                 this.$store.dispatch('setMyUsername', this.$data.name)
                 this.$router.replace('/lobby')

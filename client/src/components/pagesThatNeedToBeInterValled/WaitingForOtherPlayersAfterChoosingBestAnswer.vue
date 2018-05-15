@@ -1,4 +1,3 @@
-
 <template>
   <div class="about container">
     <img id="menubutton12" class="center-block" src="http://dijkstra.cs.ttu.ee/~ailoop/tarkvara/pildid/waitforothers.png" style="margin-top: 40vh; height: 60px; width: auto;"/>
